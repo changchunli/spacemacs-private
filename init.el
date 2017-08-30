@@ -13,7 +13,7 @@ values."
    dotspacemacs-distribution 'spacemacs
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
-   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
+   ;; and `nil'. `unused' wmelpaill lazy install only unused layers (i.e. layers
    ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
    ;; lazy install any layer that support lazy installation even the layers
    ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
@@ -25,7 +25,7 @@ values."
    ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation nil
    ;; If non-nil layers with lazy install support are lazy installed.
-   ;; List of additional paths where to look for configuration layers.
+   ;; Lhttps://github.com/redguardtoo/emacs.d.gitist of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
    dotspacemacs-configuration-layer-path '()
    ;; List of configuration layers to load.
@@ -76,14 +76,15 @@ values."
      html
      javascript
      (typescript :variables
-                typescript-fmt-on-save nil
-                typescript-fmt-tool 'typescript-formatter)
+                 typescript-fmt-on-save nil
+                 typescript-fmt-tool 'typescript-formatter)
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      racket
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      zilongshanren
+     version-control
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx nil
               chinese-enable-youdao-dict t)
@@ -92,7 +93,8 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(sicp)
+   ;; dotspacemacs-additional-packages '(sicp)
+   dotspacemacs-additional-packages '()
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -149,7 +151,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'vim
+   dotspacemacs-editing-style 'emacs
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays
@@ -180,8 +182,8 @@ values."
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 14
+   dotspacemacs-default-font '("Consolas"
+                               :size 13
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -338,10 +340,10 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
-  (setq configuration-layer--elpa-archives
-        '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
-          ("org-cn"   . "https://elpa.emacs-china.org/org/")
-          ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
+  ;; (setq configuration-layer--elpa-archives
+  ;;       '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
+  ;;         ("org-cn"   . "https://elpa.emacs-china.org/org/")
+  ;;         ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   ;; (setq tramp-mode nil)

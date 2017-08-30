@@ -1000,7 +1000,7 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
     (prodigy-define-service
       :name "Debug Fireball"
       :command "npm"
-      :args '("start" "--" "--nologin" "/Users/guanghui/Github/example-cases")
+      ;; :args '("start" "--" "--nologin" "/Users/guanghui/Github/example-cases")
       :cwd "~/Github/fireball/"
       :tags '(work)
       :kill-signal 'sigkill

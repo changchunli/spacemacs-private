@@ -128,9 +128,9 @@
   (setq python-shell-interpreter "python"))
 
 (defun zilongshanren-programming/post-init-js-doc ()
-  (setq js-doc-mail-address "guanghui8827@gmail.com"
-        js-doc-author (format "Guanghui Qu <%s>" js-doc-mail-address)
-        js-doc-url "http://www.zilongshanren.com"
+  (setq js-doc-mail-address "changchunli93@gmail.com"
+        js-doc-author (format "Changchun Li <%s>" js-doc-mail-address)
+        ;; js-doc-url "http://www.zilongshanren.com"
         js-doc-license "MIT")
 
   )
@@ -533,7 +533,7 @@
   (progn
     (setq company-c-headers-path-system
           (quote
-           ("/usr/include/" "/usr/local/include/" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")))
+           ("/usr/include/" "/usr/local/include/")))
     (setq company-c-headers-path-user
           (quote
-           ("/Users/guanghui/cocos2d-x/cocos/platform" "/Users/guanghui/cocos2d-x/cocos" "." "/Users/guanghui/cocos2d-x/cocos/audio/include/")))))
+           (".")))))

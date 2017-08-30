@@ -311,8 +311,8 @@ unwanted space when exporting org-mode to html."
                :exclude-tags ("ol" "noexport")
                :section-numbers nil
                :html-preamble ,zilongshanren-website-html-preamble
-               :author "zilongshanren"
-               :email "guanghui8827@gmail.com"
+               :author "Changchun Li"
+               :email "changchunli93@gmail.com"
                :auto-sitemap t          ; Generate sitemap.org automagically...
                :sitemap-filename "index.org" ; ... call it sitemap.org (it's the default)...
                :sitemap-title "我的wiki"     ; ... with title 'Sitemap'.
@@ -430,7 +430,7 @@ holding contextual information."
     :defer t))
 
 (defun zilongshanren-org/post-init-ox-reveal ()
-  (setq org-reveal-root "file:///Users/guanghui/.emacs.d/reveal-js"))
+  (setq org-reveal-root "file:////usr/william/.emacs.d/reveal-js"))
 
 
 (defun zilongshanren-org/init-org-tree-slide ()
@@ -448,7 +448,7 @@ holding contextual information."
 (defun zilongshanren-org/init-plain-org-wiki ()
   (use-package plain-org-wiki
     :init
-    (setq pow-directory "~/org-notes")))
+    (setq pow-directory "~/Jot/org-notes")))
 
 (defun zilongshanren-org/init-worf ()
   (use-package worf

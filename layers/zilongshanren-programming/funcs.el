@@ -250,12 +250,14 @@ version 2015-08-21"
 
 (defun my-setup-develop-environment ()
   (interactive)
-  (when (my-project-name-contains-substring "guanghui")
+  (when (my-project-name-contains-substring "changchun")
     (cond
      ((my-project-name-contains-substring "cocos2d-x")
       ;; C++ project don't need html tags
-      (setq tags-table-list (list (my-create-tags-if-needed "~/cocos2d-x/cocos"))))
+      ;; (setq tags-table-list (list (my-create-tags-if-needed "~/cocos2d-x/cocos")))
+      )
      ((my-project-name-contains-substring "Github/fireball")
       (message "load tags for fireball engine repo...")
       ;; html project donot need C++ tags
-      (setq tags-table-list (list (my-create-tags-if-needed "~/Github/fireball/engine/cocos2d")))))))
+      ;; (setq tags-table-list (list (my-create-tags-if-needed "~/Github/fireball/engine/cocos2d")))
+      ))))
