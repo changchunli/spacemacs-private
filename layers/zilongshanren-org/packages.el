@@ -86,7 +86,7 @@
             org-archive-mark-done nil
             org-hide-emphasis-markers t
             org-catch-invisible-edits 'show
-            org-export-coding-system 'utf-8
+            ;; org-export-coding-system 'utf-8
             org-fast-tag-selection-single-key 'expert
             org-html-validation-link nil
             org-export-kill-product-buffer-when-displayed t
@@ -164,9 +164,6 @@ typical word processor."
       ;; Targets include this file and any file contributing to the agenda - up to 5 levels deep
       (setq org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
 
-      (with-eval-after-load 'org-agenda
-        (add-to-list 'org-agenda-after-show-hook 'org-show-entry))
-
       (defadvice org-refile (after sanityinc/save-all-after-refile activate)
         "Save all org buffers after each refile operation."
         (org-save-all-org-buffers))
@@ -238,8 +235,7 @@ typical word processor."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
       ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-      (after-load 'org
-                  (org-clock-persistence-insinuate))
+      (org-clock-persistence-insinuate)
       (setq org-clock-persist t)
       (setq org-clock-in-resume t)
 
@@ -260,7 +256,7 @@ typical word processor."
           (beginning-of-line 0)
           (org-remove-empty-drawer-at "LOGBOOK" (point))))
 
-      (after-load 'org-clock
+      (with-eval-after-load 'org-clock
                   (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
 
 
@@ -368,16 +364,16 @@ typical word processor."
       (org-babel-do-load-languages
        'org-babel-load-languages
        '((perl . t)
-         (R . t)
+         ;; (R . t)
          (gnuplot . t)
          (haskell . nil)
          (ledger . t)
          (ocaml . nil)
          (octave . t)
          (ruby . t)
-         ;; (sh . t)
+         (sh . t)
          (screen . nil)
-         (,(if (locate-library "ob-sh") 'sh 'shell) . t)
+         ;; (,(if (locate-library "ob-sh") 'sh 'shell) . t)
          (sql . nil)
          (sqlite . t)
          (dot . t)
@@ -416,6 +412,7 @@ unwanted space when exporting org-mode to html."
         (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
         (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
           "." 'spacemacs/org-agenda-transient-state/body)
+        (add-to-list 'org-agenda-after-show-hook 'org-show-entry)
         )
       ;; the %i would copy the selected text into the template
       ;;http://www.howardism.org/Technical/Emacs/journaling-org.html
@@ -459,7 +456,7 @@ unwanted space when exporting org-mode to html."
 
         (setq org-agenda-compact-blocks t
               org-agenda-sticky t
-              org-agenda-start-on-weekday nil
+              ;; org-agenda-start-on-weekday nil
               org-agenda-span 'day
               org-agenda-include-diary nil
               org-agenda-sorting-strategy
