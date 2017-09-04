@@ -51,6 +51,8 @@ values."
           magit-revert-buffers 'silent
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
+     github
+     ; diff-h1
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (auto-completion :variables auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
@@ -60,14 +62,19 @@ values."
      restclient
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      (shell :variables shell-default-shell 'eshell)
+     shell-scripts
      ;; docker
-     latex
+     (latex :variables
+            latex-build-command "XeLaTeX")
      deft
      markdown
      (org :variables org-want-todo-bindings t)
      gpu
      yaml
      react
+     ; yasnippet
+     tmux
+     themes-megapack
      (python :variables
              python-test-runner '(nose pytest))
      ;; (ruby :variables ruby-version-manager 'chruby)
@@ -176,8 +183,11 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(solarized-dark
-                         solarized-light)
+   dotspacemacs-themes '(spacemacs-dark
+                         solarized-dark
+                         solarized-light
+                         spacemacs-light
+                         leuven)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -363,6 +373,9 @@ values."
   )
 
 (defun dotspacemacs/user-config ()
+  "Configuration function.
+ This function is called at the very end of Spacemacs initialization after
+layers configuration."
   ;;解决org表格里面中英文对齐的问题
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
@@ -402,6 +415,24 @@ values."
 
   (add-to-list 'auto-mode-alist
                '("Capstanfile\\'" . yaml-mode))
+  
+  ;; set TeX-view-program-list
+  (setq TeX-view-program-list
+        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+        ("Skim" "displayline -b -g %n %o %b")
+        ("Zathura" "zathura-sync.sh %n:1:%b %o")))
+  
+  ;; set pdf viewer on OSX and Linux
+  (cond
+    ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
+    ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
+
+  ;; enable PDF-LaTeX synchronization
+  ;; press SPC m v to highlight line in PDF
+  ;; press shift cmd and click in PDF to show line in sourcecode
+  (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-start-server t)
+  (setq TeX-source-correlate-method 'synctex)
 
   (defun js-indent-line ()
     "Indent the current line as JavaScript."
