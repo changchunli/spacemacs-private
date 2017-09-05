@@ -416,6 +416,30 @@ layers configuration."
   (add-to-list 'auto-mode-alist
                '("Capstanfile\\'" . yaml-mode))
   
+  ;; texlive path configure
+  (defun TeXlive (year)
+   "Use TeXlive with the given year (given as string), nil if no TeXlive."
+   (interactive
+    (let* ((year
+            (directory-files "/usr/local/texlive/" nil "\\`[0-9]+\\'")))
+     (setq year
+      (completing-read (format "Year to use (default %s): "
+                        (car (last year)))
+       (cons "none" year)
+       nil t nil nil (car (last year))))
+     (list (unless (string= year "none") year))))
+   (let ((path (getenv "PATH")))
+    (while (string-match "/usr/local/texlive/[0-9]+/bin/x86_64-linux:" path)
+     (setq path (replace-match "" t t path)))
+    (when year
+     (setq path (format "/usr/local/texlive/%s/bin/x86_64-linux:%s"
+                 year path)))
+    (setenv "PATH" path)))
+
+  (TeXlive 2017)
+  (setq exec-path (append exec-path
+                   '("/usr/local/texlive/2017/bin/x86_64-linux/")))
+  
   ;; set TeX-view-program-list
   (setq TeX-view-program-list
         '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
