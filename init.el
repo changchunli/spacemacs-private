@@ -441,10 +441,11 @@ layers configuration."
                    '("/usr/local/texlive/2017/bin/x86_64-linux/")))
   
   ;; set TeX-view-program-list
-  (setq TeX-view-program-list
-        '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
-        ("Skim" "displayline -b -g %n %o %b")
-        ("Zathura" "zathura-sync.sh %n:1:%b %o")))
+  ;; use TeX-view-program-list-builtin, which is in auctex
+  ;; (setq TeX-view-program-list
+        ;; '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+        ;; ("Skim" "displayline -b -g %n %o %b")
+        ;; ("Zathura" "zathura-sync.sh %n:1:%b %o")))
   
   ;; set pdf viewer on OSX and Linux
   (cond
