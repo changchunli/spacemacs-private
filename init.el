@@ -70,6 +70,7 @@ values."
      markdown
      (org :variables org-want-todo-bindings t)
      gpu
+     notmuch
      yaml
      react
      ; yasnippet
