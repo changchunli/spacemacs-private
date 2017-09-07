@@ -341,9 +341,25 @@ typical word processor."
       ;;    `sudo USE="cjk" emerge texlive-xetex` on Gentoo Linux
       ;; }}
 
-      (add-to-list 'org-latex-classes '("article" "\\documentclass[10pt,a4paper]{article}
-                                        [NO-DEFAULT-PACKAGES]
+      (add-to-list 'org-latex-classes '("article" "\\documentclass[12pt,a4paper,german,normalheadings]{article}
+                                        \\usepackage{bm}
+                                        \\usepackage{amsfonts}
+                                        %% \\usepackage{CJK}
                                         \\usepackage{graphicx}
+                                        \\usepackage{amsmath}
+                                        \\usepackage{amssymb}
+                                        \\usepackage{subfigure}
+                                        \\usepackage{indentfirst}
+                                        \\usepackage{multicol}    % 正文双栏
+                                        %% \\usepackage{picins}      % 图片嵌入段落宏包 比如照片 % Something will have error
+                                        \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
+                                        \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
+                                        %% \\usepackage{hyperref} % 文献引用的宏包
+                                        \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
+                                        \\usepackage{color} % 可以产生有颜色的符号
+                                        \\usepackage{units} % 用于美化单位及分式
+                                        \\usepackage{tabularx} % 用于灵活地控制表格的生成
+                                        \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
                                         \\usepackage{xcolor}
                                         \\usepackage{xeCJK}
                                         \\usepackage{lmodern}
@@ -364,19 +380,24 @@ typical word processor."
                                         \\usepackage{latexsym}
                                         \\usepackage{natbib}
                                         \\usepackage{fancyhdr}
+                                        \\usepackage{fancyvrb}
+                                        \\usepackage{fancybox}
                                         \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
                                                       linkcolor=blue,
                                                       urlcolor=blue,
                                                       menucolor=blue]{hyperref}
                                         \\usepackage{fontspec,xunicode,xltxtra}
-                                        \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
-                                        \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
-                                        \\setmonofont{Bitstream Vera Sans Mono}  
-                                        \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
-                                        \\newfontinstance\\MONO{\\fontnamemono}
-                                        \\newcommand{\\mono}[1]{{\\MONO #1}}
-                                        \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
-                                        \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
+                                        %% \\usepackage{chngcntr}
+                                        %% \\counterwithout{equation}{chapter}
+                                        %% \\counterwithout{equation}{section}
+                                        %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
+                                        %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
+                                        %% \\setmonofont{Bitstream Vera Sans Mono}  
+                                        %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
+                                        %% \\newfontinstance\\MONO{\\fontnamemono}
+                                        %% \\newcommand{\\mono}[1]{{\\MONO #1}}
+                                        %% \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
+                                        %% \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
                                         \\hypersetup{unicode=true}
                                         \\geometry{a4paper, textwidth=6.5in, textheight=10in,
                                         marginparsep=7pt, marginparwidth=.6in}
@@ -407,7 +428,7 @@ typical word processor."
                                         ("\\paragraph{%s}" . "\\paragraph*{%s}")
                                         ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
-      (setq org-latex-default-class "my-article")
+      (setq org-latex-default-class "article")
       (setq org-latex-pdf-process
             '(
               "xelatex -interaction nonstopmode -output-directory %o %f"
@@ -415,16 +436,6 @@ typical word processor."
               "xelatex -interaction nonstopmode -output-directory %o %f"
               "rm -fr %b.out %b.log %b.tex auto"))
       
-      ;; PDFs visited in Org-mode are opened in Evince 
-      ;; (and other file extensions are handled according to the defaults)
-      (add-hook 'org-mode-hook
-       '(lambda ()
-           (setq org-file-apps
-                '((auto-mode . emacs)
-                 ("\\.mm\\'" . default)
-                 ("\\.x?html?\\'" . default)
-                 ("\\.pdf\\'" . "zathura %s")))))
-
       (setq org-latex-listings t)
       ;; Options for \lset command（reference to listing Manual)
       (setq org-latex-listings-options
@@ -476,9 +487,9 @@ typical word processor."
                               \\usepackage{lmodern}
                               \\usepackage{fontspec,xunicode,xltxtra}
                               \\usepackage{polyglossia}
-                              \\setmainfont{Times New Roman}
-                              \\setCJKmainfont{DejaVu Sans YuanTi}
-                              \\setCJKmonofont{DejaVu Sans YuanTi Mono}
+                              %% \\setmainfont{Times New Roman}
+                              %% \\setCJKmainfont{DejaVu Sans YuanTi}
+                              %% \\setCJKmonofont{DejaVu Sans YuanTi Mono}
                               \\usepackage{verbatim}
                               \\usepackage{listings}
                               \\institute{{{{beamerinstitute}}}}
