@@ -195,8 +195,6 @@ typical word processor."
       (setq org-refile-allow-creating-parent-nodes 'confirm)
 
 
-
-
       ;; 加密文章
       ;; "http://coldnew.github.io/blog/2013/07/13_5b094.html"
       ;; org-mode 設定
@@ -343,7 +341,7 @@ typical word processor."
       ;;    `sudo USE="cjk" emerge texlive-xetex` on Gentoo Linux
       ;; }}
 
-      (add-to-list 'org-latex-classes '("my-article" "\\documentclass[10pt,a4paper]{article}
+      (add-to-list 'org-latex-classes '("article" "\\documentclass[10pt,a4paper]{article}
                                         [NO-DEFAULT-PACKAGES]
                                         \\usepackage{graphicx}
                                         \\usepackage{xcolor}
@@ -371,8 +369,8 @@ typical word processor."
                                                       urlcolor=blue,
                                                       menucolor=blue]{hyperref}
                                         \\usepackage{fontspec,xunicode,xltxtra}
-                                        \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}  
-                                        \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}  
+                                        \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
+                                        \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
                                         \\setmonofont{Bitstream Vera Sans Mono}  
                                         \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
                                         \\newfontinstance\\MONO{\\fontnamemono}
@@ -416,6 +414,16 @@ typical word processor."
               "xelatex -interaction nonstopmode -output-directory %o %f"
               "xelatex -interaction nonstopmode -output-directory %o %f"
               "rm -fr %b.out %b.log %b.tex auto"))
+      
+      ;; PDFs visited in Org-mode are opened in Evince 
+      ;; (and other file extensions are handled according to the defaults)
+      (add-hook 'org-mode-hook
+       '(lambda ()
+           (setq org-file-apps
+                '((auto-mode . emacs)
+                 ("\\.mm\\'" . default)
+                 ("\\.x?html?\\'" . default)
+                 ("\\.pdf\\'" . "zathura %s")))))
 
       (setq org-latex-listings t)
       ;; Options for \lset command（reference to listing Manual)
@@ -450,7 +458,7 @@ typical word processor."
       ;; 导出Beamer的设置
       ;; allow for export=>beamer by placing #+LaTeX_CLASS: beamer in org files
       ;;-----------------------------------------------------------------------------
-      (add-to-list 'org-export-latex-classes
+      (add-to-list 'org-latex-classes
                    ;; beamer class, for presentations
                    '("beamer"
                               "\\documentclass[11pt,professionalfonts]{beamer}
