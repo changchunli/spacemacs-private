@@ -89,6 +89,7 @@ values."
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      racket
+     ess
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      zilongshanren
