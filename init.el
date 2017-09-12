@@ -89,7 +89,9 @@ values."
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      racket
-     ess
+     haskell
+     (ess :variables
+          ess-enable-smart-equals t)
      (c-c++ :variables
             c-c++-default-mode-for-headers 'c++-mode)
      zilongshanren
@@ -123,6 +125,7 @@ values."
                     helm-themes helm-swoop helm-spacemacs-help smeargle
                     ido-vertical-mode flx-ido company-quickhelp counsel-projectile
                     window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
+                    ess-R-object-popup
                     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -493,6 +496,10 @@ layers configuration."
   (spacemacs/set-leader-keys "otm" 'zilongshanren/toggle-major-mode)
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
+  
+  (add-hook 'ess-mode-hook
+            (lambda ()
+              (ess-toggle-underscore nil)))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/7749
   (defun spacemacs/ivy-persp-switch-project (arg)
