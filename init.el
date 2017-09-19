@@ -31,8 +31,9 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     ivy
+     ;; ivy
      better-defaults
+     helm
      ranger
      colors
      prodigy
@@ -52,7 +53,7 @@ values."
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
      github
-     ; diff-h1
+     ;; diff-h1
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (auto-completion :variables auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
@@ -73,7 +74,7 @@ values."
      notmuch
      yaml
      react
-     ; yasnippet
+     ;; yasnippet
      tmux
      themes-megapack
      (python :variables
@@ -105,27 +106,28 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(sicp)
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(org)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
-   '(magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
-                    evil-args evil-ediff evil-exchange evil-unimpaired
-                    evil-indent-plus volatile-highlights smartparens
-                    spaceline holy-mode skewer-mode rainbow-delimiters
-                    highlight-indentation vi-tilde-fringe eyebrowse
-                    org-bullets smooth-scrolling org-repo-todo org-download org-timer
-                    livid-mode git-gutter git-gutter-fringe  evil-escape
-                    leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-                    ac-ispell ace-jump-mode auto-complete auto-dictionary
-                    clang-format define-word google-translate disaster epic
-                    fancy-battery org-present orgit orglue spacemacs-theme
-                    helm-flyspell flyspell-correct-helm clean-aindent-mode
-                    helm-c-yasnippet ace-jump-helm-line helm-make magithub
-                    helm-themes helm-swoop helm-spacemacs-help smeargle
-                    ido-vertical-mode flx-ido company-quickhelp counsel-projectile
-                    window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-                    ess-R-object-popup
+   '(
+                    ;; magit-gh-pulls magit-gitflow org-projectile evil-mc realgud
+                    ;; evil-args evil-ediff evil-exchange evil-unimpaired
+                    ;; evil-indent-plus volatile-highlights smartparens
+                    ;; spaceline holy-mode skewer-mode rainbow-delimiters
+                    ;; highlight-indentation vi-tilde-fringe eyebrowse
+                    ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
+                    ;; livid-mode git-gutter git-gutter-fringe  evil-escape
+                    ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+                    ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
+                    ;; clang-format define-word google-translate disaster epic
+                    ;; fancy-battery org-present orgit orglue spacemacs-theme
+                    ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
+                    ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
+                    ;; helm-themes helm-swoop helm-spacemacs-help smeargle
+                    ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
+                    ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
+                    ess-R-object-popup org-mac-link
                     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -163,7 +165,7 @@ values."
    ;; with `:variables' keyword (similar to layers). Check the editing styles
    ;; section of the documentation for details on available variables.
    ;; (default 'vim)
-   dotspacemacs-editing-style 'emacs
+   dotspacemacs-editing-style 'vim
    ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
    ;; Specify the startup banner. Default value is `official', it displays

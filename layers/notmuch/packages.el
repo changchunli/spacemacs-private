@@ -72,7 +72,33 @@
         wid-edit
         persp-mode
         notmuch-labeler
+        notmuch-unread
         ))
+
+;;
+;; Sensible default settings
+;;
+
+;; colors of tags and unread messages
+(setq notmuch/notmuch-tag-face-color-default "#3f7f5f")
+(setq notmuch/notmuch-search-unread-face-color-default "#4f97d7")
+
+;; position of quoted messages
+(setq notmuch/message-cite-reply-position-default 'above)
+(setq notmuch/address-lookup-bin-default "notmuch-addrlookup")
+
+;; after a message is sent, kill the buffer
+(setq message-kill-buffer-on-exit t)
+
+;; add the from address when sending messages
+(setq mail-specify-envelope-from t)
+(setq message-sendmail-envelope-from 'header)
+(setq mail-envelope-from 'header)
+
+;; identities
+(setq notmuch/gnus-alias-identities-default ())
+(setq notmuch/gnus-alias-identity-rules-default ())
+
 
 (defun notmuch/post-init-org-mime ()
   (use-package org-mime
@@ -188,17 +214,17 @@
               (setq notmuch/gnus-alias-identities
                     '(("home" nil
                        "Somebody Someone <somebody@someone.com>" ;; Sender address
-                       nil                                       ;; Organization header
-                       nil                                       ;; Extra headers
-                       nil                                       ;; Extra body text
+                       nil ;; Organization header
+                       nil ;; Extra headers
+                       nil ;; Extra body text
                        "~/.signature")))
 
               (setq gnus-alias-identity-alist
-                    '(("personal" nil                      ;; does not refer to any other identity
+                    '(("personal" nil ;; does not refer to any other identity
                        "Changchun Li <changchunli93@gmail.com>" ;; sender address
-                       nil                                 ;; organization header
-                       nil                                 ;; extra headers
-                       nil                                 ;; extra body text
+                       nil ;; organization header
+                       nil ;; extra headers
+                       nil ;; extra body text
                        ;;"~/.signature"
                        )
                       ("work" nil
@@ -208,6 +234,36 @@
                        nil
                        ;;"~/.signature.work"
                        )))
+
+              ;; (setq notmuch/gnus-alias-identity-rules)
+              ;;       '(("work" ("any" "john.doe@\\(example\\.com\\|help\\.example.com\\)"
+              ;;           both) "work"))
+
+              (setq notmuch/gnus-alias-identity-rules
+                    '(("work" ("any" "changchunli93@\\(gmail\\.com\\)"
+                        both) "work")))
+
+              (if (not (boundp 'notmuch/gnus-alias-identities))
+                  (setq notmuch/gnus-alias-identities notmuch/gnus-alias-identities-default))
+
+              (if notmuch/gnus-alias-identities
+                  (progn
+                    ;; Define identities
+                    (setq gnus-alias-identity-alist notmuch/gnus-alias-identities)
+
+                    ;; Use first identity by default
+                    (setq gnus-alias-default-identity (car (car notmuch/gnus-alias-identities)))
+
+                    ;; Define rules to match identities
+                    (if notmuch/gnus-alias-identity-rules
+                        (setq gnus-alias-identity-rules notmuch/gnus-alias-identity-rules))))
+
+              ;; message starts above reply
+              (if (not (boundp 'notmuch/message-cite-reply-position))
+                  (setq notmuch/message-cite-reply-position notmuch/message-cite-reply-position-default))
+
+              (if notmuch/message-cite-reply-position
+                  (setq message-cite-reply-position notmuch/message-cite-reply-position))
 
               ;; Use "work" identity by default
               (setq gnus-alias-default-identity "work")
@@ -337,24 +393,24 @@
               (defun my-notmuch-show (thread-id &optional elide-toggle parent-buffer query-context buffer-name)
                 "Run \"notmuch show\" with the given thread ID and display results.
 
-ELIDE-TOGGLE, if non-nil, inverts the default elide behavior.
+                 ELIDE-TOGGLE, if non-nil, inverts the default elide behavior.
 
-The optional PARENT-BUFFER is the notmuch-search buffer from
-which this notmuch-show command was executed, (so that the
-next thread from that buffer can be show when done with this
-one).
+                 The optional PARENT-BUFFER is the notmuch-search buffer from
+                 which this notmuch-show command was executed, (so that the
+                 next thread from that buffer can be show when done with this
+                 one).
 
-The optional QUERY-CONTEXT is a notmuch search term. Only
-messages from the thread matching this search term are shown if
-non-nil.
+                 The optional QUERY-CONTEXT is a notmuch search term. Only
+                 messages from the thread matching this search term are shown if
+                 non-nil.
 
-The optional BUFFER-NAME provides the name of the buffer in
-which the message thread is shown. If it is nil (which occurs
-when the command is called interactively) the argument to the
-function is used.
+                 The optional BUFFER-NAME provides the name of the buffer in
+                 which the message thread is shown. If it is nil (which occurs
+                 when the command is called interactively) the argument to the
+                 function is used.
 
-Returns the buffer containing the messages, or NIL if no messages
-matched."
+                 Returns the buffer containing the messages, or NIL if no messages
+                 matched."
                 (interactive "sNotmuch show: \nP")
                 (let (
                       ;; (buffer-name "*counsel-notmuch-show*")
