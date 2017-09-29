@@ -107,6 +107,9 @@
     )
   )
 
+(defun notmuch/post-init-company ()
+  (use-package company))
+
 (defun notmuch/post-init-company-mode ()
   (spacemacs|add-company-backends
     :backends (company-capf notmuch-company company-yasnippet)
@@ -114,8 +117,16 @@
     )
   )
 
+(defun notmuch/post-init-yasnippet ()
+  (use-package yasnippet))
+
 (defun notmuch/post-init-yasnippet-mode ())
 
+(defun notmuch/post-init-helm-notmuch ()
+  (use-package helm-notmuch))
+
+(defun notmuch/post-init-notmuch-unread ()
+  (use-package notmuch-unread))
 
 (defun notmuch/post-init-persp-mode ()
   ;; do not save erc buffers
@@ -135,7 +146,7 @@
         (persp-add-buffer (current-buffer) (persp-get-by-name "@Notmuch")))
       (add-hook 'notmuch-tree-mode-hook #'spacemacs-layouts/add-notmuch-buffer-to-persp)
       (add-hook 'notmuch-search-mode-hook #'spacemacs-layouts/add-notmuch-buffer-to-persp)
-      (add-hook 'notmuch-hello-mode-hook #'spacemacs-layouts/add-notmuch-buffer-to-persp)
+      (add-hook 'notmuch-hello-mode-hook #'spahuifucemacs-layouts/add-notmuch-buffer-to-persp)
       (add-hook 'notmuch-show-mode-hook #'spacemacs-layouts/add-notmuch-buffer-to-persp)
       (add-hook 'notmuch-message-mode-hook #'spacemacs-layouts/add-notmuch-buffer-to-persp)
       (call-interactively 'notmuch)
@@ -269,7 +280,7 @@
               (setq gnus-alias-default-identity "work")
               )))
 
-(defun notmuch/ini-org-notmuch ()
+(defun notmuch/post-init-org-notmuch ()
   (use-package org-notmuch))
 
 (defun notmuch/post-init-org ()
