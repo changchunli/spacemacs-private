@@ -92,6 +92,68 @@
             org-export-kill-product-buffer-when-displayed t
             org-tags-column 80
             org-support-shift-select t)
+;; from https://github.com/markus1189/org-pdfview/blob/master/org-pdfview.el
+
+      (if (fboundp 'org-link-set-parameters)
+          (org-link-set-parameters "pdfview"
+                                   :follow #'org-pdfview-open
+                                   :complete #'org-pdfview-complete-link
+                                   :store #'org-pdfview-store-link)
+          (org-add-link-type "pdfview" 'org-pdfview-open)
+          (add-hook 'org-store-link-functions 'org-pdfview-store-link))
+
+
+      (defun zilongshanren-org/org-pdfview-open (link)
+        "Open LINK in pdf-view-mode."
+        (cond ((string-match "\\(.*\\)::\\([0-9]*\\)\\+\\+\\([[0-9]\\.*[0-9]*\\)"  link)
+               (let* ((path (match-string 1 link))
+                      (page (string-to-number (match-string 2 link)))
+                      (height (string-to-number (match-string 3 link))))
+                 (org-open-file path 1)
+                 (pdf-view-goto-page page)
+                 (image-set-window-vscroll
+                   (round (/ (* height (cdr (pdf-view-image-size))) (frame-char-height))))))
+              ((string-match "\\(.*\\)::\\([0-9]+\\)$"  link)
+               (let* ((path (match-string 1 link))
+                      (page (string-to-number (match-string 2 link))))
+                 (org-open-file path 1)
+                 (pdf-view-goto-page page)))
+              (t
+                (org-open-file link 1))
+              ))
+
+      (defun zilongshanren-org/org-pdfview-store-link ()
+        "Store a link to a pdfview buffer."
+        (when (eq major-mode 'pdf-view-mode)
+          ;; This buffer is in pdf-view-mode
+          (let* ((path buffer-file-name)
+                 (page (pdf-view-current-page))
+                 (link (concat "pdfview:" path "::" (number-to-string page))))
+            (org-store-link-props
+              :type "pdfview"
+              :link link
+              :description path))))
+
+      (defun zilongshanren-org/org-pdfview-export (link description format)
+        "Export the pdfview LINK with DESCRIPTION for FORMAT from Org files."
+        (let* ((path (when (string-match "\\(.+\\)::.+" link)
+                       (match-string 1 link)))
+               (desc (or description link)))
+          (when (stringp path)
+            (setq path (org-link-escape (expand-file-name path)))
+            (cond
+              ((eq format 'html) (format "<a href=\"%s\">%s</a>" path desc))
+              ((eq format 'latex) (format "\\href{%s}{%s}" path desc))
+              ((eq format 'ascii) (format "%s (%s)" desc path))
+              (t path)))))
+
+      (defun zilongshanren-org/org-pdfview-complete-link (&optional arg)
+        "Use the existing file name completion for file.
+        Links to get the file name, then ask the user for the page number
+        and append it."
+        (concat (replace-regexp-in-string "^file:" "pdfview:" (org-file-complete-link arg))
+                "::"
+                (read-from-minibuffer "Page:" "1")))
 
 ;;; from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
 
@@ -281,6 +343,19 @@ typical word processor."
       (add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
 
       (setq org-tags-match-list-sublevels nil)
+      
+      ;; (with-eval-after-load 'org-docview
+      ;;   (defun org-docview-open (link)
+      ;;     (string-match "\\(.*?\\)\\(?:::\\([0-9]+\\)\\)?$" link)
+      ;;     (let ((path (match-string 1 link))
+      ;;           (page (and (match-beginning 2)
+      ;;                      (string-to-number (match-string 2 link)))))
+            ;; Let Org mode open the file (in-emacs = 1) to ensure
+            ;; org-link-frame-setup is respected.
+      ;;       (org-open-file path 1)
+      ;;       (unless (derived-mode-p 'doc-view-mode)
+      ;;         (doc-view-mode))
+      ;;       (when page (doc-view-goto-page page)))))
 
       (add-hook 'org-mode-hook '(lambda ()
                                   ;; keybinding for editing source code blocks

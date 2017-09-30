@@ -39,6 +39,7 @@ values."
      prodigy
      search-engine
      graphviz
+     pdf-tools
      (syntax-checking :variables syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
      (spell-checking :variables spell-checking-enable-by-default nil)
@@ -70,7 +71,10 @@ values."
             latex-build-command "XeLaTeX")
      deft
      markdown
-     (org :variables org-want-todo-bindings t)
+     (org :variables
+          org-want-todo-bindings t
+          org-enable-github-support t
+          org-enable-reveal-js-support t)
      gpu
      notmuch
      yaml
@@ -500,6 +504,9 @@ layers configuration."
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
   
+  ;;; org-mode default open file function
+  (add-to-list 'org-file-apps '("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
+
   (add-hook 'ess-mode-hook
             (lambda ()
               (ess-toggle-underscore nil)))
