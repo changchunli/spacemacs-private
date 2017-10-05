@@ -32,19 +32,31 @@ values."
    dotspacemacs-configuration-layers
    '(
      ;; ivy
+     bibtex
+     nginx
+     twitter
+     asciidoc
+     elfeed
+     speed-reading
+     plantuml
      better-defaults
      helm
      ranger
-     colors
+     (colors :variables
+             colors-colorize-identifiers 'all
+             colors-enable-nyan-cat-progress-bar t)
      prodigy
      search-engine
+     sql nim ipython-notebook
      graphviz
      pdf-tools
-     (syntax-checking :variables syntax-checking-enable-by-default nil
+     (syntax-checking :variables
+                      syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
      (spell-checking :variables spell-checking-enable-by-default nil)
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     (spacemacs-layouts :variables layouts-enable-autosave nil
+     (spacemacs-layouts :variables
+                        layouts-enable-autosave nil
                         layouts-autosave-delay 300)
      (git :variables
           git-magit-status-fullscreen t
@@ -54,54 +66,91 @@ values."
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
      github
+     gnus
+     version-control
+     semantic
+     deft
      ;; diff-h1
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
-     (auto-completion :variables 
+     (auto-completion :variables
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
+                      auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
                       :disabled-for org markdown)
-     (osx :variables osx-dictionary-dictionary-choice "Simplified Chinese - English"
+     (osx :variables
+          osx-dictionary-dictionary-choice "Simplified Chinese - English"
           osx-command-as 'super)
-     restclient
+     (restclient :variables restclient-use-org t)
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
-     (shell :variables shell-default-shell 'eshell)
+     (shell :variables
+            shell-default-shell 'ansi-term
+            shell-default-position 'bottom
+            shell-default-height 30
+            shell-default-term-shell "/bin/zsh")
      shell-scripts
-     ;; docker
+     docker
+     ansible
+     puppet
+     evil-commentary
+     (evil-snipe :variables
+                 evil-snipe-enable-alternate-f-and-t-behaviors t)
+     fasd finance floobits xkcd autohotkey csv nlinum
      (latex :variables
+            latex-enable-auto-fill t
             latex-build-command "XeLaTeX")
-     deft
-     markdown
+     deft erc chrome d emoji evernote
+     (markdown :variables markdown-live-preview-engine 'vmd)
      (org :variables
           org-want-todo-bindings t
           org-enable-github-support t
           org-enable-reveal-js-support t)
      gpu
-     notmuch
+     ;; notmuch
      yaml
      react
      ;; yasnippet
      tmux
-     themes-megapack
+     themes-megapack vim-empty-lines spotify pandoc vagrant
      (python :variables
+             python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
-     ;; (ruby :variables ruby-version-manager 'chruby)
-     ;; ruby-on-rails
+     (ruby :variables
+           ruby-version-manager 'rvm)
+     ruby-on-rails
+     (rust :variables
+           rust-enable-rustfmt-on-save t)
      lua
      html
-     javascript
+     (javascript :variables javascript-disable-tern-port-files t)
      (typescript :variables
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
-     racket
-     haskell
+     ;; sml
+     major-modes
+     go racket scheme purescript common-lisp dash jabber cscope rcirc games php vimscript geolocation idris
+     (haskell :variables
+              haskell-enable-ghci-ng-support t
+              haskell-enable-shm-support t
+              haskell-enable-hindent-style "andrew-gibiansky")
+     java
+     scala
+     swift
      (ess :variables
           ess-enable-smart-equals t)
      (c-c++ :variables
+            c-c++-enable-clang-support t
             c-c++-default-mode-for-headers 'c++-mode)
-     zilongshanren
-     version-control
+     (elm :variables
+          elm-reactor-port "3000"
+          elm-reactor-address "0.0.0.0")
+     (typography :variables typography-enable-typographic-editing nil)
+     elixir zilongshanren evil-cleverparens imenu-list slack systemd command-log
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx nil
               chinese-enable-youdao-dict t)
@@ -111,7 +160,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(sicp)
-   dotspacemacs-additional-packages '(org)
+   dotspacemacs-additional-packages '(org wolfram linum-relative wolfram-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -132,7 +181,7 @@ values."
                     ;; helm-themes helm-swoop helm-spacemacs-help smeargle
                     ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
                     ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-                    ess-R-object-popup org-mac-link
+                    ess-R-object-popup org-mac-link wolfram-mode
                     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -388,7 +437,7 @@ values."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
-  ;;解决org表格里面中英文对齐的问题
+  ;; 解决org表格里面中英文对齐的问题
   (when (configuration-layer/layer-usedp 'chinese)
     (when (and (spacemacs/system-is-mac) window-system)
       (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)))
@@ -407,7 +456,7 @@ layers configuration."
 
   ;; force horizontal split window
   (setq split-width-threshold 120)
-  (linum-relative-on)
+  ;; (linum-relative-on)
 
   (spacemacs|add-company-backends :modes text-mode)
 
@@ -430,39 +479,39 @@ layers configuration."
   
   ;; texlive path configure
   (defun TeXlive (year)
-   "Use TeXlive with the given year (given as string), nil if no TeXlive."
-   (interactive
-    (let* ((year
-            (directory-files "/usr/local/texlive/" nil "\\`[0-9]+\\'")))
-     (setq year
-      (completing-read (format "Year to use (default %s): "
-                        (car (last year)))
-       (cons "none" year)
-       nil t nil nil (car (last year))))
-     (list (unless (string= year "none") year))))
-   (let ((path (getenv "PATH")))
-    (while (string-match "/usr/local/texlive/[0-9]+/bin/x86_64-linux:" path)
-     (setq path (replace-match "" t t path)))
-    (when year
-     (setq path (format "/usr/local/texlive/%s/bin/x86_64-linux:%s"
-                 year path)))
-    (setenv "PATH" path)))
+    "Use TeXlive with the given year (given as string), nil if no TeXlive."
+    (interactive
+     (let* ((year
+             (directory-files "/usr/local/texlive/" nil "\\`[0-9]+\\'")))
+       (setq year
+             (completing-read (format "Year to use (default %s): "
+                                      (car (last year)))
+                              (cons "none" year)
+                              nil t nil nil (car (last year))))
+       (list (unless (string= year "none") year))))
+    (let ((path (getenv "PATH")))
+      (while (string-match "/usr/local/texlive/[0-9]+/bin/x86_64-linux:" path)
+        (setq path (replace-match "" t t path)))
+      (when year
+        (setq path (format "/usr/local/texlive/%s/bin/x86_64-linux:%s"
+                           year path)))
+      (setenv "PATH" path)))
 
   (TeXlive 2017)
   (setq exec-path (append exec-path
-                   '("/usr/local/texlive/2017/bin/x86_64-linux/")))
+                          '("/usr/local/texlive/2017/bin/x86_64-linux/")))
   
   ;; set TeX-view-program-list
   ;; use TeX-view-program-list-builtin, which is in auctex
   ;; (setq TeX-view-program-list
-        ;; '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
-        ;; ("Skim" "displayline -b -g %n %o %b")
-        ;; ("Zathura" "zathura-sync.sh %n:1:%b %o")))
+  ;; '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+  ;; ("Skim" "displayline -b -g %n %o %b")
+  ;; ("Zathura" "zathura-sync.sh %n:1:%b %o")))
   
   ;; set pdf viewer on OSX and Linux
   (cond
-    ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
-    ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
+   ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
+   ((spacemacs/system-is-linux) (setq TeX-view-program-selection '((output-pdf "Zathura")))))
 
   ;; enable PDF-LaTeX synchronization
   ;; press SPC m v to highlight line in PDF
@@ -504,8 +553,14 @@ layers configuration."
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
   
-  ;;; org-mode default open file function
-  (add-to-list 'org-file-apps '("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
+  ;; org-mode default open file function
+  ;; (add-to-list 'org-file-apps '("\\.pdf\\" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
+  ;; (setq org-file-apps '(("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link)))))
+  ;; PDFs visited in Org-mode are opened in Evince (and not in the default choice) https://stackoverflow.com/a/8836108/789593
+  (add-hook 'org-mode-hook
+            '(lambda ()
+               (delete '("\\.pdf\\'" . default) org-file-apps)
+               (add-to-list 'org-file-apps '("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))))
 
   (add-hook 'ess-mode-hook
             (lambda ()
