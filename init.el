@@ -32,7 +32,9 @@ values."
    dotspacemacs-configuration-layers
    '(
      ;; ivy
-     olivetti
+     (olivetti :variables
+               olivetti-body-width 0.6
+               olivetti-hide-mode t)
      bibtex
      nginx
      twitter
