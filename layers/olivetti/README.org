@@ -1,0 +1,46 @@
+#+TITLE: olivetti layer
+
+# The maximum height of the logo should be 200 pixels.
+[[img/olivetti.png]]
+
+# TOC links should be GitHub style anchors.
+* Table of Contents                                        :TOC_4_gh:noexport:
+- [[#description][Description]]
+  - [[#features][Features:]]
+- [[#install][Install]]
+  - [[#customize][Customize]]
+- [[#key-bindings][Key bindings]]
+
+* Description
+This layer adds support for something.
+
+** Features:
+  - Alternative to =spacemacs-centered-buffer-mode=
+
+* Install
+To use this configuration layer, add it to your =~/.spacemacs=. You will need to
+add =olivetti= to the existing =dotspacemacs-configuration-layers= list in this
+file.
+
+** Customize
+Olivetti provides additional options to customize its appearance:
+
+#+BEGIN_SRC emacs-lisp
+(setq-default dotspacemacs-configuration-layers
+              '(olivetti
+                :variables
+                olivetti-body-width 0.6
+                olivetti-hide-mode-line t))
+#+END_SRC
+
+* Key bindings
+
+| Key Binding | Description    |
+|-------------+----------------|
+| SPC T o     | Enable Olivetti|
+
+# Use GitHub URLs if you wish to link a Spacemacs documentation file or its heading.
+# Examples:
+# [[https://github.com/syl20bnr/spacemacs/blob/master/doc/VIMUSERS.org#sessions]]
+# [[https://github.com/syl20bnr/spacemacs/blob/master/layers/%2Bfun/emoji/README.org][Link to Emoji layer README.org]]
+# If space-doc-mode is enabled, Spacemacs will open a local copy of the linked file.
