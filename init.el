@@ -32,6 +32,7 @@ values."
    dotspacemacs-configuration-layers
    '(
      ;; ivy
+     olivetti
      bibtex
      nginx
      twitter
