@@ -46,9 +46,9 @@
 
 (defun zilongshanren-org/post-init-org-pomodoro ()
   (progn
-    (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕️ Have a break!" t)))
+    (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕️Have a break!" t)))
     (add-hook 'org-pomodoro-short-break-finished-hook '(lambda () (zilongshanren/growl-notification "Short Break" "🐝 Ready to Go?" t)))
-    (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (zilongshanren/growl-notification "Long Break" " 💪 Ready to Go?" t)))
+    (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (zilongshanren/growl-notification "Long Break" "💪 Ready to Go?" t)))
     ))
 
 ;;In order to export pdf to support Chinese, I should install Latex at here: https://www.tug.org/mactex/
@@ -71,8 +71,8 @@
       (setq org-refile-use-outline-path 'file)
       (setq org-outline-path-complete-in-steps nil)
       (setq org-refile-targets
-            '((nil :maxlevel . 4)
-              (org-agenda-files :maxlevel . 4)))
+            '((nil :maxlevel . 5)
+              (org-agenda-files :maxlevel . 5)))
       ;; config stuck project
       (setq org-stuck-projects
             '("TODO={.+}/-DONE" nil nil "SCHEDULED:\\|DEADLINE:"))
@@ -92,15 +92,15 @@
             org-export-kill-product-buffer-when-displayed t
             org-tags-column 80
             org-support-shift-select t)
-;; from https://github.com/markus1189/org-pdfview/blob/master/org-pdfview.el
+      ;; from https://github.com/markus1189/org-pdfview/blob/master/org-pdfview.el
 
       (if (fboundp 'org-link-set-parameters)
           (org-link-set-parameters "pdfview"
                                    :follow #'org-pdfview-open
                                    :complete #'org-pdfview-complete-link
                                    :store #'org-pdfview-store-link)
-          (org-add-link-type "pdfview" 'org-pdfview-open)
-          (add-hook 'org-store-link-functions 'org-pdfview-store-link))
+        (org-add-link-type "pdfview" 'org-pdfview-open)
+        (add-hook 'org-store-link-functions 'org-pdfview-store-link))
 
 
       (defun zilongshanren-org/org-pdfview-open (link)
@@ -112,14 +112,14 @@
                  (org-open-file path 1)
                  (pdf-view-goto-page page)
                  (image-set-window-vscroll
-                   (round (/ (* height (cdr (pdf-view-image-size))) (frame-char-height))))))
+                  (round (/ (* height (cdr (pdf-view-image-size))) (frame-char-height))))))
               ((string-match "\\(.*\\)::\\([0-9]+\\)$"  link)
                (let* ((path (match-string 1 link))
                       (page (string-to-number (match-string 2 link))))
                  (org-open-file path 1)
                  (pdf-view-goto-page page)))
               (t
-                (org-open-file link 1))
+               (org-open-file link 1))
               ))
 
       (defun zilongshanren-org/org-pdfview-store-link ()
@@ -130,9 +130,9 @@
                  (page (pdf-view-current-page))
                  (link (concat "pdfview:" path "::" (number-to-string page))))
             (org-store-link-props
-              :type "pdfview"
-              :link link
-              :description path))))
+             :type "pdfview"
+             :link link
+             :description path))))
 
       (defun zilongshanren-org/org-pdfview-export (link description format)
         "Export the pdfview LINK with DESCRIPTION for FORMAT from Org files."
@@ -142,10 +142,10 @@
           (when (stringp path)
             (setq path (org-link-escape (expand-file-name path)))
             (cond
-              ((eq format 'html) (format "<a href=\"%s\">%s</a>" path desc))
-              ((eq format 'latex) (format "\\href{%s}{%s}" path desc))
-              ((eq format 'ascii) (format "%s (%s)" desc path))
-              (t path)))))
+             ((eq format 'html) (format "<a href=\"%s\">%s</a>" path desc))
+             ((eq format 'latex) (format "\\href{%s}{%s}" path desc))
+             ((eq format 'ascii) (format "%s (%s)" desc path))
+             (t path)))))
 
       (defun zilongshanren-org/org-pdfview-complete-link (&optional arg)
         "Use the existing file name completion for file.
@@ -224,7 +224,7 @@ typical word processor."
       (setq org-refile-use-cache nil)
 
       ;; Targets include this file and any file contributing to the agenda - up to 5 levels deep
-      (setq org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
+      ;; (setq org-refile-targets '((nil :maxlevel . 5) (org-agenda-files :maxlevel . 5)))
 
       (defadvice org-refile (after sanityinc/save-all-after-refile activate)
         "Save all org buffers after each refile operation."
@@ -317,7 +317,7 @@ typical word processor."
           (org-remove-empty-drawer-at "LOGBOOK" (point))))
 
       (with-eval-after-load 'org-clock
-                  (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
+        (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
 
 
 
@@ -350,8 +350,8 @@ typical word processor."
       ;;     (let ((path (match-string 1 link))
       ;;           (page (and (match-beginning 2)
       ;;                      (string-to-number (match-string 2 link)))))
-            ;; Let Org mode open the file (in-emacs = 1) to ensure
-            ;; org-link-frame-setup is respected.
+      ;; Let Org mode open the file (in-emacs = 1) to ensure
+      ;; org-link-frame-setup is respected.
       ;;       (org-open-file path 1)
       ;;       (unless (derived-mode-p 'doc-view-mode)
       ;;         (doc-view-mode))
@@ -515,24 +515,24 @@ typical word processor."
       ;; Options for \lset command（reference to listing Manual)
       (setq org-latex-listings-options
             '(
-              ("basicstyle" "\\color{foreground}\\small\\mono")           ; 源代码字体样式
+              ("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
               ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
               ("identifierstyle" "\\color{doc}\\small\\mono")
-              ("commentstyle" "\\color{comment}\\small\\itshape")         ; 批注样式
-              ("stringstyle" "\\color{string}\\small")                    ; 字符串样式
-              ("showstringspaces" "false")                                ; 字符串空格显示
-              ("numbers" "left")                                          ; 行号显示
-              ("numberstyle" "\\color{preprocess}")                       ; 行号样式
-              ("stepnumber" "1")                                          ; 行号递增
-              ("backgroundcolor" "\\color{background}")                   ; 代码框背景色
-              ("tabsize" "4")                                             ; TAB等效空格数
-              ("captionpos" "t")                                          ; 标题位置 top or buttom(t|b)
-              ("breaklines" "true")                                       ; 自动断行
-              ("breakatwhitespace" "true")                                ; 只在空格分行
-              ("showspaces" "false")                                      ; 显示空格
-              ("columns" "flexible")                                      ; 列样式
-              ("frame" "single")                                          ; 代码框：阴影盒
-              ("frameround" "tttt")                                       ; 代码框： 圆角
+              ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
+              ("stringstyle" "\\color{string}\\small")            ; 字符串样式
+              ("showstringspaces" "false")              ; 字符串空格显示
+              ("numbers" "left")                        ; 行号显示
+              ("numberstyle" "\\color{preprocess}")     ; 行号样式
+              ("stepnumber" "1")                        ; 行号递增
+              ("backgroundcolor" "\\color{background}") ; 代码框背景色
+              ("tabsize" "4")                           ; TAB等效空格数
+              ("captionpos" "t")           ; 标题位置 top or buttom(t|b)
+              ("breaklines" "true")        ; 自动断行
+              ("breakatwhitespace" "true") ; 只在空格分行
+              ("showspaces" "false")       ; 显示空格
+              ("columns" "flexible")       ; 列样式
+              ("frame" "single")           ; 代码框：阴影盒
+              ("frameround" "tttt")        ; 代码框： 圆角
               ("framesep" "0pt")
               ("framerule" "8pt")
               ("rulecolor" "\\color{background}")
@@ -547,7 +547,7 @@ typical word processor."
       (add-to-list 'org-latex-classes
                    ;; beamer class, for presentations
                    '("beamer"
-                              "\\documentclass[11pt,professionalfonts]{beamer}
+                     "\\documentclass[11pt,professionalfonts]{beamer}
                               \\mode
                               \\usetheme{{{{Warsaw}}}}
                               %\\usecolortheme{{{{beamercolortheme}}}}
@@ -569,11 +569,11 @@ typical word processor."
                               \\usepackage{listings}
                               \\institute{{{{beamerinstitute}}}}
                               \\subject{{{{beamersubject}}}}"
-                    ("\\section{%s}" . "\\section*{%s}")
-                    ("\\begin{frame}[fragile]\\frametitle{%s}"
-                     "\\end{frame}"
-                     "\\begin{frame}[fragile]\\frametitle{%s}"
-                     "\\end{frame}")))
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}"
+                      "\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}")))
 
       (setq ps-paper-type 'a4
             ps-font-size 16.0
@@ -634,6 +634,7 @@ unwanted space when exporting org-mode to html."
       (setq org-agenda-file-gtd (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
       (setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
+      (setq org-agenda-file-private-note (expand-file-name "privnotes.org" org-agenda-dir))
       (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
@@ -644,11 +645,11 @@ unwanted space when exporting org-mode to html."
         (add-to-list 'org-agenda-after-show-hook 'org-show-entry)
         )
       ;; the %i would copy the selected text into the template
-      ;;http://www.howardism.org/Technical/Emacs/journaling-org.html
-      ;;add multi-file journal
+      ;; http://www.howardism.org/Technical/Emacs/journaling-org.html
+      ;; add multi-file journal
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
-               "* TODO [#B] %?\n  %i\n"
+               "* TODO [#B] %?\n  %i\n %U"
                :empty-lines 1)
               ("n" "notes" entry (file+headline org-agenda-file-note "Quick notes")
                "* %?\n  %i\n %U"
@@ -659,6 +660,9 @@ unwanted space when exporting org-mode to html."
               ("s" "Code Snippet" entry
                (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+              ("p" "Private Notes"
+               entry (file org-agenda-file-private-note)
+               "* %^{topic} %T \n%i%?\n")
               ("w" "work" entry (file+headline org-agenda-file-gtd "Papers")
                "* TODO [#A] %?\n  %i\n %U"
                :empty-lines 1)
@@ -674,7 +678,7 @@ unwanted space when exporting org-mode to html."
                :empty-lines 1)))
 
       ;;; Agenda views
-
+      ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
       (setq-default org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3))
 
 
@@ -770,6 +774,11 @@ unwanted space when exporting org-mode to html."
                 ("p" . "项目安排")
                 ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"papers\"")
                 ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"changchunli\"")
+                ("D" "Daily Action List"
+                 ((agenda "" ((org-agenda-ndays 1)
+                              (org-agenda-sorting-strategy
+                               (quote ((agenda time-up priority-down tag-up))))
+                              (org-deadline-warning-days 0)))))
                 ("W" "Weekly Review"
                  ((stuck "") ;; review stuck projects as designated by org-stuck-projects
                   (tags-todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
