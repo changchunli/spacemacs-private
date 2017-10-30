@@ -103,7 +103,7 @@ values."
      docker
      ansible
      puppet
-     evil-commentary
+     ;; evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
      fasd finance floobits xkcd autohotkey csv nlinum

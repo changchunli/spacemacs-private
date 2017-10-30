@@ -21,6 +21,10 @@
     (blog-admin :location (recipe
                            :fetcher github
                            :repo "codefalling/blog-admin"))
+    ;; org-fstree
+    ;; org-cliplink
+    ;; writeroom-mode
+    ;; grad-mac-link
     ;; org-tree-slide
     ;; ox-reveal
     ;; worf
@@ -46,7 +50,7 @@
 
 (defun zilongshanren-org/post-init-org-pomodoro ()
   (progn
-    (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕️Have a break!" t)))
+    (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕ Have a break!" t)))
     (add-hook 'org-pomodoro-short-break-finished-hook '(lambda () (zilongshanren/growl-notification "Short Break" "🐝 Ready to Go?" t)))
     (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (zilongshanren/growl-notification "Long Break" "💪 Ready to Go?" t)))
     ))
@@ -68,6 +72,13 @@
       (add-to-list 'org-modules 'org-habit)
       (require 'org-habit)
 
+      ;; Targets start with the file name - allows creating level 1 tasks
+      ;;(setq org-refile-use-outline-path (quote file))
+      ;; (setq org-refile-use-outline-path t)
+      ;; (setq org-outline-path-complete-in-steps nil)
+
+      ;; Allow refile to create parent tasks with confirmation
+      (setq org-refile-allow-creating-parent-nodes 'confirm)
       (setq org-refile-use-outline-path 'file)
       (setq org-outline-path-complete-in-steps nil)
       (setq org-refile-targets
@@ -86,7 +97,7 @@
             org-archive-mark-done nil
             org-hide-emphasis-markers t
             org-catch-invisible-edits 'show
-            ;; org-export-coding-system 'utf-8
+            org-export-coding-system 'utf-8
             org-fast-tag-selection-single-key 'expert
             org-html-validation-link nil
             org-export-kill-product-buffer-when-displayed t
@@ -183,10 +194,19 @@
             (unless (file-exists-p org-ditaa-jar-path)
               (sanityinc/grab-ditaa url jar-name)))))
 
+      (with-eval-after-load 'ob-plantuml
+        (unless (and (boundp 'org-plantuml-jar-path)
+                     (file-exists-p org-plantuml-jar-path))
+          (let ((jar-name "plantuml.jar")
+                (url "http://jaist.dl.sourceforge.net/project/plantuml/plantuml.jar"))
+            (setq org-plantuml-jar-path (expand-file-name jar-name (file-name-directory user-init-file)))
+            (unless (file-exists-p org-plantuml-jar-path)
+              (sanityinc/grab-ditaa url jar-name)))))
+
       (define-minor-mode prose-mode
         "Set up a buffer for prose editing.
 This enables or modifies a number of settings so that the
-experience of editing prose is a little more like that of a
+experience of editing prose is a little more like (setq org-pomodoro-keep-killed-pomodoro-time t)that of a
 typical word processor."
         nil " Prose" nil
         (if prose-mode
@@ -248,14 +268,6 @@ typical word processor."
         (let ((org-refile-target-verify-function))
           (org-agenda-refile goto rfloc no-update)))
 
-      ;; Targets start with the file name - allows creating level 1 tasks
-      ;;(setq org-refile-use-outline-path (quote file))
-      (setq org-refile-use-outline-path t)
-      (setq org-outline-path-complete-in-steps nil)
-
-      ;; Allow refile to create parent tasks with confirmation
-      (setq org-refile-allow-creating-parent-nodes 'confirm)
-
 
       ;; 加密文章
       ;; "http://coldnew.github.io/blog/2013/07/13_5b094.html"
@@ -279,7 +291,7 @@ typical word processor."
       ;; (add-to-list 'auto-mode-alist '("\.org\\'" . org-mode))
 
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "|" "DONE(d!/!)")
+            (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "APPT(a)" "|" "DONE(d!/!)")
                     (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
                     (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)" 
                               "HOLD(h)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
@@ -303,6 +315,8 @@ typical word processor."
       (setq org-clock-in-switch-to-state "STARTED")
       ;; Save clock data and notes in the LOGBOOK drawer
       (setq org-clock-into-drawer t)
+      ;; Save state changes in the LOGBOOK drawer
+      (setq org-log-into-drawer t)
       ;; Removes clocked tasks with 0:00 duration
       (setq org-clock-out-remove-zero-time-clocks t) ;; Show the clocked-in task - if any - in the header line
       ;; Show clock sums as hours and minutes, not "n days" etc.
@@ -341,6 +355,19 @@ typical word processor."
       (add-hook 'org-clock-in-hook 'sanityinc/show-org-clock-in-header-line)
       (add-hook 'org-clock-out-hook 'sanityinc/hide-org-clock-from-header-line)
       (add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
+
+      ;; (with-eval-after-load 'org-clock
+      ;;    (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
+      ;;    (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+
+
+      ;; (when (and *is-a-mac* (file-directory-p "/Applications/org-clock-statusbar.app"))
+      ;;   (add-hook 'org-clock-in-hook
+      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
+      ;;                                 (concat "tell application \"org-clock-statusbar\" to clock in \"" org-clock-current-task "\""))))
+      ;;   (add-hook 'org-clock-out-hook
+      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
+      ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
 
       (setq org-tags-match-list-sublevels nil)
       
@@ -638,6 +665,7 @@ unwanted space when exporting org-mode to html."
       (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
+      (setq org-pomodoro-keep-killed-pomodoro-time t)
       (with-eval-after-load 'org-agenda
         (define-key org-agenda-mode-map (kbd "P") 'org-pomodoro)
         (spacemacs/set-leader-keys-for-major-mode 'org-agenda-mode
@@ -650,34 +678,45 @@ unwanted space when exporting org-mode to html."
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
                "* TODO [#B] %?\n  %i\n %U"
+               :clock-resume t
                :empty-lines 1)
-              ("n" "notes" entry (file+headline org-agenda-file-note "Quick notes")
-               "* %?\n  %i\n %U"
+              ("n" "Notes" entry (file+headline org-agenda-file-note "Quick notes")
+               "* %? :NOTE:\n  %i\n %U"
+               :clock-resume t
                :empty-lines 1)
               ("b" "Blog Ideas" entry (file+headline org-agenda-file-note "Blog Ideas")
                "* TODO [#B] %?\n  %i\n %U"
+               :clock-resume t
+               :empty-lines 1)
+              ("p" "Paper Ideas" entry (file+headline org-agenda-file-note "Paper Ideas")
+               "* TODO [#A] %?\n  %i\n %U"
+               :clock-resume t
                :empty-lines 1)
               ("s" "Code Snippet" entry
                (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-              ("p" "Private Notes"
+              ("P" "Private Notes"
                entry (file org-agenda-file-private-note)
                "* %^{topic} %T \n%i%?\n")
-              ("w" "work" entry (file+headline org-agenda-file-gtd "Papers")
+              ("w" "Work" entry (file+headline org-agenda-file-gtd "Papers")
                "* TODO [#A] %?\n  %i\n %U"
+               :clock-resume t
                :empty-lines 1)
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
+               :clock-resume t
                :empty-lines 1)
-              ("l" "links" entry (file+headline org-agenda-file-note "Quick notes")
+              ("l" "Links" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n  %i\n %a \n %U"
+               :clock-resume t
                :empty-lines 1)
               ("j" "Journal Entry"
                entry (file+datetree org-agenda-file-journal)
                "* %?"
+               :clock-resume t
                :empty-lines 1)))
 
-      ;;; Agenda views
+;;; Agenda views
       ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
       (setq-default org-agenda-clockreport-parameter-plist '(:link t :maxlevel 3))
 
