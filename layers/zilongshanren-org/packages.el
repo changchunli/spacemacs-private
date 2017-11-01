@@ -692,11 +692,9 @@ unwanted space when exporting org-mode to html."
                "* TODO [#A] %?\n  %i\n %U"
                :clock-resume t
                :empty-lines 1)
-              ("s" "Code Snippet" entry
-               (file org-agenda-file-code-snippet)
+              ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-              ("P" "Private Notes"
-               entry (file org-agenda-file-private-note)
+              ("P" "Private Notes" entry (file org-agenda-file-private-note)
                "* %^{topic} %T \n%i%?\n")
               ("w" "Work" entry (file+headline org-agenda-file-gtd "Papers")
                "* TODO [#A] %?\n  %i\n %U"
@@ -710,8 +708,7 @@ unwanted space when exporting org-mode to html."
                "* TODO [#C] %?\n  %i\n %a \n %U"
                :clock-resume t
                :empty-lines 1)
-              ("j" "Journal Entry"
-               entry (file+datetree org-agenda-file-journal)
+              ("j" "Journal" entry (file+datetree org-agenda-file-journal)
                "* %?"
                :clock-resume t
                :empty-lines 1)))

@@ -35,13 +35,7 @@ values."
      (olivetti :variables
                olivetti-body-width 0.6
                olivetti-hide-mode t)
-     bibtex
-     nginx
-     twitter
-     asciidoc
-     elfeed
-     speed-reading
-     plantuml
+     bibtex nginx twitter asciidoc elfeed speed-reading plantuml
      better-defaults
      helm
      ranger
@@ -55,9 +49,8 @@ values."
              colors-enable-nyan-cat-progress-bar t)
      prodigy
      search-engine
-     sql nim ipython-notebook
+     sql nim ipython-notebook pdf-tools
      graphviz
-     pdf-tools
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
@@ -73,11 +66,7 @@ values."
           magit-revert-buffers 'silent
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
-     github
-     gnus
-     version-control
-     semantic
-     deft
+     github gnus version-control semantic
      ;; diff-h1
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (auto-completion :variables
@@ -99,18 +88,17 @@ values."
             shell-default-position 'bottom
             shell-default-height 30
             shell-default-term-shell "/bin/zsh")
-     shell-scripts
-     docker
-     ansible
-     puppet
+     shell-scripts docker ansible puppet
      ;; evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
      fasd finance floobits xkcd autohotkey csv nlinum
      (latex :variables
             latex-enable-auto-fill t
-            latex-build-command "XeLaTeX")
-     deft erc chrome d emoji evernote
+            ;; latex-build-command "XeLaTeX"
+            )
+     deft
+     erc chrome d emoji evernote
      (markdown :variables markdown-live-preview-engine 'vmd)
      (org :variables
           org-want-todo-bindings t
@@ -121,8 +109,9 @@ values."
      yaml
      react
      ;; yasnippet
-     tmux
-     themes-megapack vim-empty-lines spotify pandoc vagrant
+     tmux themes-megapack
+     ;; vim-empty-lines ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p
+     spotify pandoc vagrant
      (python :variables
              python-enable-yapf-format-on-save t
              python-test-runner '(nose pytest))
@@ -140,15 +129,12 @@ values."
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
      ;; sml
-     major-modes
-     go racket scheme purescript common-lisp dash jabber cscope rcirc games php vimscript geolocation idris
+     major-modes go racket scheme purescript common-lisp dash jabber cscope rcirc games php vimscript geolocation idris
      (haskell :variables
               haskell-enable-ghci-ng-support t
               haskell-enable-shm-support t
               haskell-enable-hindent-style "andrew-gibiansky")
-     java
-     scala
-     swift
+     java scala swift
      (ess :variables
           ess-enable-smart-equals t)
      (c-c++ :variables
@@ -158,7 +144,8 @@ values."
           elm-reactor-port "3000"
           elm-reactor-address "0.0.0.0")
      (typography :variables typography-enable-typographic-editing nil)
-     elixir zilongshanren evil-cleverparens imenu-list slack systemd command-log
+     elixir evil-cleverparens imenu-list slack systemd command-log
+     zilongshanren
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx nil
               chinese-enable-youdao-dict t)
@@ -168,7 +155,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(sicp)
-   dotspacemacs-additional-packages '(org wolfram linum-relative wolfram-mode)
+   dotspacemacs-additional-packages '(sicp wolfram linum-relative wolfram-mode)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages

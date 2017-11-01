@@ -10,10 +10,10 @@
 (setq-default
  org-agenda-dir "~/org-notes"
  deft-dir "~/org-notes"
- blog-admin-dir "~/zilongshanren.com")
+ blog-admin-dir "~/william.com")
 
 ;;load sensitive data
-;; or (like spacemacs init.el)put the above variable into it ,then the own value separated from public config
+;; or (like spacemacs init.el) put the above variable into it, then the own value separated from public config
 ;; .emacs.secrets.el for example:
 ;; (setq-default
 ;;  org-agenda-dir "~/Dropbox/Apps/emacs/gtd"
