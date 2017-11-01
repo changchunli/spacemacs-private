@@ -61,12 +61,14 @@ values."
                         layouts-autosave-delay 300)
      (git :variables
           git-magit-status-fullscreen t
+          magit-diff-refine-hunk 'all
           magit-push-always-verify nil
           magit-save-repository-buffers 'dontask
           magit-revert-buffers 'silent
           magit-refs-show-commit-count 'all
           magit-revision-show-gravatars nil)
-     github gnus version-control semantic
+     github gnus semantic
+     (version-control :variables version-control-global-margin t)
      ;; diff-h1
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (auto-completion :variables
@@ -74,6 +76,7 @@ values."
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-complete-with-key-sequence nil
                       auto-completion-enable-help-tooltip t
+                      auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
@@ -89,7 +92,7 @@ values."
             shell-default-height 30
             shell-default-term-shell "/bin/zsh")
      shell-scripts docker ansible puppet
-     ;; evil-commentary
+     evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
      fasd finance floobits xkcd autohotkey csv nlinum
@@ -108,9 +111,14 @@ values."
      ;; notmuch
      yaml
      react
+     spacemacs-evil spacemacs-language
      ;; yasnippet
      tmux themes-megapack
-     ;; vim-empty-lines ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p
+     ;; if use .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el,
+     ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
+     ;; change .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el to
+     ;; https://github.com/hchbaw/vim-empty-lines-mode/blob/thb/vim-empty-lines-mode.el
+     vim-empty-lines
      spotify pandoc vagrant
      (python :variables
              python-enable-yapf-format-on-save t
@@ -134,7 +142,11 @@ values."
               haskell-enable-ghci-ng-support t
               haskell-enable-shm-support t
               haskell-enable-hindent-style "andrew-gibiansky")
-     java scala swift
+     java swift
+     (scala :variables
+            scala-auto-insert-asterisk-in-comments t
+            scala-auto-start-ensime nil
+            scala-enable-eldoc-mode nil)
      (ess :variables
           ess-enable-smart-equals t)
      (c-c++ :variables
