@@ -108,7 +108,9 @@ values."
           org-enable-github-support t
           org-enable-reveal-js-support t)
      gpu
-     ;; notmuch
+     notmuch
+     groovy
+     kotlin
      yaml
      react
      spacemacs-evil spacemacs-language
@@ -421,10 +423,10 @@ values."
    ))
 
 (defun dotspacemacs/user-init ()
-  ;; (setq configuration-layer--elpa-archives
-  ;;       '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
-  ;;         ("org-cn"   . "https://elpa.emacs-china.org/org/")
-  ;;         ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
+  (setq configuration-layer-elpa-archives
+        '(("melpa-cn" . "https://elpa.emacs-china.org/melpa/")
+          ("org-cn"   . "https://elpa.emacs-china.org/org/")
+          ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
 
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   ;; (setq tramp-mode nil)
@@ -573,7 +575,7 @@ layers configuration."
             (lambda ()
               (ess-toggle-underscore nil)))
 
-  )
+)
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
