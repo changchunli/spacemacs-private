@@ -447,7 +447,8 @@ typical word processor."
                                         \\usepackage{bm}
                                         \\usepackage{amsfonts}
                                         %% \\usepackage{CJK}
-                                        \\usepackage{graphicx}
+                                        \\usepackage{graphicx,epsfig,psfig,epsf}
+                                        \\usepackage[dvipdfmx]{graphics}
                                         \\usepackage{amsmath}
                                         \\usepackage{amssymb}
                                         \\usepackage{subfigure}
@@ -457,26 +458,46 @@ typical word processor."
                                         \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
                                         \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
                                         %% \\usepackage{hyperref} % 文献引用的宏包
-                                        \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
-                                        \\usepackage{color} % 可以产生有颜色的符号
+                                        %% \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
+                                        \\usepackage{color, xcolor} % 可以产生有颜色的符号
                                         \\usepackage{units} % 用于美化单位及分式
                                         \\usepackage{tabularx} % 用于灵活地控制表格的生成
                                         \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
-                                        \\usepackage{xcolor}
+                                        %% \\usepackage{xcolor}
+                                        \\usepackage{array}
+                                        \\usepackage{cite}
                                         \\usepackage{xeCJK}
                                         \\usepackage{lmodern}
                                         \\usepackage{verbatim}
                                         \\usepackage{fixltx2e}
                                         \\usepackage{longtable}
+                                        \\usepackage{multirow}
                                         \\usepackage{float}
                                         \\usepackage{tikz}
                                         \\usepackage{wrapfig}
                                         \\usepackage{soul}
                                         \\usepackage{textcomp}
                                         \\usepackage{listings}
+                                        \\lstloadlanguages{C,C++,matlab,mathematica,python,R} %程序清单关键字宏包
+                                        \\lstset{language=C,tabsize=4, keepspaces=true,
+                                            breakindent=22pt,
+                                            numbers=left,stepnumber=1,numberstyle=\\tiny,
+                                            basicstyle=\\footnotesize,
+                                            showspaces=false,
+                                            flexiblecolumns=true,
+                                            breaklines=true, breakautoindent=true,breakindent=4em,
+                                            escapeinside={\/\*@}{@\*\/}
+                                        }
                                         \\usepackage{geometry}
                                         \\usepackage{algorithm}
                                         \\usepackage{algorithmic}
+                                        \\usepackage{algorithmicx}
+                                        \\usepackage[noend]{algpseudocode}
+                                        \\usepackage[linesnumbered,boxed]{algorithm2e}
+                                        \\DeclareMathOperator*{\\argmin}{argmin}
+                                        \\DeclareMathOperator*{\\argmax}{argmax}
+                                        \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
+                                        \\renewcommand{\\algorithmicensure}{\\textbf{Output:}}
                                         \\usepackage{marvosym}
                                         \\usepackage{wasysym}
                                         \\usepackage{latexsym}

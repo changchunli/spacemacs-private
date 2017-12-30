@@ -132,6 +132,7 @@ values."
            rust-enable-rustfmt-on-save t)
      lua
      html
+     major-modes
      (javascript :variables javascript-disable-tern-port-files t)
      (typescript :variables
                  typescript-fmt-on-save nil
