@@ -447,8 +447,9 @@ typical word processor."
                                         \\usepackage{bm}
                                         \\usepackage{amsfonts}
                                         %% \\usepackage{CJK}
-                                        \\usepackage{graphicx,epsfig,psfig,epsf}
-                                        \\usepackage[dvipdfmx]{graphics}
+                                        \\usepackage{epsfig,epsf}
+                                        \\usepackage[dvips][graphicx]
+                                        \\usepackage[dvips]{graphics}
                                         \\usepackage{amsmath}
                                         \\usepackage{amssymb}
                                         \\usepackage{subfigure}
@@ -490,10 +491,10 @@ typical word processor."
                                         }
                                         \\usepackage{geometry}
                                         \\usepackage{algorithm}
-                                        \\usepackage{algorithmic}
+                                        %% \\usepackage{algorithmic}
                                         \\usepackage{algorithmicx}
                                         \\usepackage[noend]{algpseudocode}
-                                        \\usepackage[linesnumbered,boxed]{algorithm2e}
+                                        %% \\usepackage[linesnumbered,boxed]{algorithm2e}
                                         \\DeclareMathOperator*{\\argmin}{argmin}
                                         \\DeclareMathOperator*{\\argmax}{argmax}
                                         \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
