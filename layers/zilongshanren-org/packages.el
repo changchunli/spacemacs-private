@@ -448,7 +448,7 @@ typical word processor."
                                         \\usepackage{amsfonts}
                                         %% \\usepackage{CJK}
                                         \\usepackage{epsfig,epsf}
-                                        \\usepackage[dvips][graphicx]
+                                        \\usepackage[dvips]{graphicx}
                                         \\usepackage[dvips]{graphics}
                                         \\usepackage{amsmath}
                                         \\usepackage{amssymb}
