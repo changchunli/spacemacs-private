@@ -451,6 +451,19 @@ typical word processor."
                                         \\usepackage[dvips]{graphicx}
                                         \\usepackage[dvips]{graphics}
                                         \\usepackage{amsmath}
+                                        \\theoremstyle{plain}
+                                        \\newtheorem{thm}{Theorem}[section]
+                                        \\newtheorem{lem}[thm]{Lemma}
+                                        \\newtheorem{axm}[thm]{Axiom}
+                                        \\newtheorem{prop}[thm]{Proposition}
+                                        \\newtheorem*{cor}{Corollary}
+                                        \\theoremstyle{definition}
+                                        \\newtheorem{defn}{Definition}[section]
+                                        \\newtheorem{conj}{Conjecture}[section]
+                                        \\newtheorem{exmp}{Example}[section]
+                                        \\theoremstyle{remark}
+                                        \\newtheorem\*{rem}{Remark}
+                                        \\newtheorem\*{note}{Note}
                                         \\usepackage{amssymb}
                                         \\usepackage{subfigure}
                                         \\usepackage{indentfirst}
