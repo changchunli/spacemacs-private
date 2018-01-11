@@ -35,7 +35,10 @@ values."
      (olivetti :variables
                olivetti-body-width 0.6
                olivetti-hide-mode t)
-     bibtex nginx twitter asciidoc elfeed speed-reading plantuml
+     bibtex nginx twitter asciidoc elfeed speed-reading 
+     (plantuml :variables
+               plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
+               org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
      better-defaults
      helm
      ranger
@@ -47,10 +50,9 @@ values."
      (colors :variables
              colors-colorize-identifiers 'all
              colors-enable-nyan-cat-progress-bar t)
-     prodigy
-     search-engine
-     sql nim ipython-notebook pdf-tools
-     graphviz
+     prodigy search-engine
+     (sql :variables sql-capitalize-keywords t)
+     nim ipython-notebook pdf-tools graphviz asm perl6
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
@@ -70,11 +72,13 @@ values."
      github gnus semantic
      (version-control :variables version-control-global-margin t)
      ;; diff-h1
+     salt
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-complete-with-key-sequence nil
+                      auto-completion-complete-with-key-sequence-delay 0.0
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-sort-by-usage t
@@ -85,19 +89,24 @@ values."
           osx-dictionary-dictionary-choice "Simplified Chinese - English"
           osx-command-as 'super)
      (restclient :variables restclient-use-org t)
+     restructuredtext selectric octave
      (gtags :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
      (shell :variables
+            shell-enable-smart-eshell t
             shell-default-shell 'ansi-term
             shell-default-position 'bottom
             shell-default-height 30
+            shell-default-full-span nil
             shell-default-term-shell "/bin/zsh")
-     shell-scripts docker ansible puppet
+     shell-scripts docker ansible puppet rebox
      evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
      fasd finance floobits xkcd autohotkey csv nlinum
      (latex :variables
             latex-enable-auto-fill t
+            latex-enable-magic nil
+            latex-enable-folding t
             ;; latex-build-command "XeLaTeX"
             )
      deft
@@ -106,7 +115,9 @@ values."
      (org :variables
           org-want-todo-bindings t
           org-enable-github-support t
-          org-enable-reveal-js-support t)
+          org-enable-bootstrap-support t
+          org-enable-reveal-js-support t
+          org-enable-hugo-support t)
      gpu
      notmuch
      groovy
@@ -120,16 +131,20 @@ values."
      ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
      ;; change .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el to
      ;; https://github.com/hchbaw/vim-empty-lines-mode/blob/thb/vim-empty-lines-mode.el
+     ;; NOTE: this bug has been fixed.
      vim-empty-lines
-     spotify pandoc vagrant
+     spotify pandoc vagrant sphinx parinfer erlang protobuf 
      (python :variables
              python-enable-yapf-format-on-save t
+             python-sort-imports-on-save t
              python-test-runner '(nose pytest))
      (ruby :variables
+           ruby-enable-enh-ruby-mode t
            ruby-version-manager 'rvm)
      ruby-on-rails
      (rust :variables
            rust-enable-rustfmt-on-save t)
+     windows-scripts agda jr
      lua
      html
      major-modes
@@ -139,13 +154,24 @@ values."
                  typescript-fmt-tool 'typescript-formatter)
      emacs-lisp
      (clojure :variables clojure-enable-fancify-symbols t)
-     ;; sml
-     major-modes go racket scheme purescript common-lisp dash jabber cscope rcirc games php vimscript geolocation idris
+     sml pass
+     (go :variables 
+         go-use-gometalinter t
+         gofmt-command "goimports"
+         go-tab-width 4
+         go-use-gocheck-for-testing t
+         go-use-test-args "-race -timeout 10s")
+     major-modes racket scheme purescript common-lisp dash
+     jabber cscope rcirc games php vimscript geolocation idris
+     coq django
+     (terraform :variables terraform-auto-format-on-save t)
      (haskell :variables
               haskell-enable-ghci-ng-support t
               haskell-enable-shm-support t
+              haskell-completion-backend 'dante
               haskell-enable-hindent-style "andrew-gibiansky")
-     java swift
+     (java :variables java-backend 'meghanada)
+     swift
      (scala :variables
             scala-auto-insert-asterisk-in-comments t
             scala-auto-start-ensime nil
@@ -154,12 +180,17 @@ values."
           ess-enable-smart-equals t)
      (c-c++ :variables
             c-c++-enable-clang-support t
+            c-c++-enable-clang-format-on-save t
+            c-c++-enable-rtags-support t
             c-c++-default-mode-for-headers 'c++-mode)
      (elm :variables
+          elm-sort-imports-on-save t
+          elm-format-on-save t
           elm-reactor-port "3000"
           elm-reactor-address "0.0.0.0")
      (typography :variables typography-enable-typographic-editing nil)
-     elixir evil-cleverparens imenu-list slack systemd command-log
+     (elixir :variables flycheck-elixir-credo-strict t) 
+     imenu-list slack systemd command-log faust
      zilongshanren
      (chinese :packages youdao-dictionary fcitx
               :variables chinese-enable-fcitx nil

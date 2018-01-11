@@ -506,7 +506,7 @@ typical word processor."
                                         \\usepackage{algorithm}
                                         %% \\usepackage{algorithmic}
                                         \\usepackage{algorithmicx}
-                                        \\usepackage[noend]{algpseudocode}
+                                        \\usepackage{algpseudocode}
                                         %% \\usepackage[linesnumbered,boxed]{algorithm2e}
                                         \\DeclareMathOperator*{\\argmin}{argmin}
                                         \\DeclareMathOperator*{\\argmax}{argmax}
