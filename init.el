@@ -35,7 +35,7 @@ values."
      (olivetti :variables
                olivetti-body-width 0.6
                olivetti-hide-mode t)
-     bibtex nginx twitter asciidoc elfeed speed-reading 
+     bibtex nginx twitter asciidoc elfeed speed-reading
      (plantuml :variables
                plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
                org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
@@ -201,7 +201,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(sicp)
-   dotspacemacs-additional-packages '(sicp wolfram linum-relative wolfram-mode)
+   dotspacemacs-additional-packages '(sicp wolfram linum-relative yasnippet-snippets)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -222,7 +222,7 @@ values."
                     ;; helm-themes helm-swoop helm-spacemacs-help smeargle
                     ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
                     ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-                    ess-R-object-popup org-mac-link wolfram-mode
+                    ess-R-object-popup org-mac-link wolfram-mode textmate-to-yas.el
                     )
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
@@ -452,7 +452,8 @@ values."
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
    dotspacemacs-whitespace-cleanup 'changed
-   ))
+   )
+)
 
 (defun dotspacemacs/user-init ()
   (setq configuration-layer-elpa-archives
@@ -472,7 +473,7 @@ values."
   (setq warning-minimum-level :error)
   ;; hack for remove purpose mode
   (setq purpose-mode nil)
-  )
+)
 
 (defun dotspacemacs/user-config ()
   "Configuration function.
@@ -517,6 +518,8 @@ layers configuration."
 
   (add-to-list 'auto-mode-alist
                '("Capstanfile\\'" . yaml-mode))
+
+  (push "~/.spacemacs.d/yasmate/snippets" yas-snippet-dirs)
   
   ;; texlive path configure
   (defun TeXlive (year)
