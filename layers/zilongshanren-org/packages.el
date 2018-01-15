@@ -464,6 +464,7 @@ typical word processor."
                                         \\theoremstyle{remark}
                                         \\newtheorem\*{rem}{Remark}
                                         \\newtheorem\*{note}{Note}
+                                        \\usapackage{enumerate}
                                         \\usepackage{amssymb}
                                         \\usepackage{subfigure}
                                         \\usepackage{indentfirst}
@@ -522,6 +523,8 @@ typical word processor."
                                         \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
                                                       linkcolor=blue,
                                                       urlcolor=blue,
+                                                      anchorcolor=blue,
+                                                      citecolor=green,
                                                       menucolor=blue]{hyperref}
                                         \\usepackage{fontspec,xunicode,xltxtra}
                                         %% \\usepackage{chngcntr}

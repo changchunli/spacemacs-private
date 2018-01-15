@@ -201,7 +201,7 @@ values."
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    ;; dotspacemacs-additional-packages '(sicp)
-   dotspacemacs-additional-packages '(sicp wolfram linum-relative yasnippet-snippets)
+   dotspacemacs-additional-packages '(sicp wolfram linum-relative)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    dotspacemacs-excluded-packages
@@ -519,7 +519,7 @@ layers configuration."
   (add-to-list 'auto-mode-alist
                '("Capstanfile\\'" . yaml-mode))
 
-  (push "~/.spacemacs.d/yasmate/snippets" yas-snippet-dirs)
+  (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/yasmate/snippets")
   
   ;; texlive path configure
   (defun TeXlive (year)
