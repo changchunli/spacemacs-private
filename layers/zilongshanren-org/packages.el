@@ -402,6 +402,20 @@ typical word processor."
                                         \\usepackage{rotating}
                                         \\usepackage[normalem]{ulem}
                                         \\usepackage{amsmath}
+                                        \\usepackage{amsthm}
+                                        %% \\newtheorem{Definition}{\\hspace{2em}定义}[chapter]
+                                        %% \\newtheorem{theorem}{\\hspace{2em}定理}[chapter]
+                                        %% \\newtheorem{lemma}{\\hspace{2em}引理}[chapter]
+                                        %% \\newtheorem{Proof}{证明}[chapter]
+                                        \\newtheoremstyle{mystyle}{3pt}{3pt}{\\kaishu}{0cm}{\\heiti2}{}{1em}{}  %% Theorem style
+                                        \\theoremstyle{mystyle}
+                                        \\newtheorem{definition}{\\hspace{2em}定义}[chapter]  %% 没有章, 只有节, 把上面的[chapter]改成[section]
+                                        \\newtheorem{theorem}[definition]{\\hspace{2em}定理}
+                                        \\newtheorem{axiom}[definition]{\\hspace{2em}公理}
+                                        \\newtheorem{lemma}[definition]{\\hspace{2em}引理}
+                                        \\newtheorem{proposition}[definition]{\\hspace{2em}命题}
+                                        \\newtheorem{corollary}[definition]{\\hspace{2em}推论}
+                                        \\newtheorem{remark}{\\hspace{2em}注}[chapter]
                                         \\usepackage{textcomp}
                                         \\usepackage{marvosym}
                                         \\usepackage{wasysym}
@@ -451,6 +465,7 @@ typical word processor."
                                         \\usepackage[dvips]{graphicx}
                                         \\usepackage[dvips]{graphics}
                                         \\usepackage{amsmath}
+                                        \\usepackage{amsthm}
                                         \\theoremstyle{plain}
                                         \\newtheorem{thm}{Theorem}[section]
                                         \\newtheorem{lem}[thm]{Lemma}
@@ -464,7 +479,8 @@ typical word processor."
                                         \\theoremstyle{remark}
                                         \\newtheorem\*{rem}{Remark}
                                         \\newtheorem\*{note}{Note}
-                                        \\usapackage{enumerate}
+                                        \\usepackage{enumerate}
+                                        \\usepackage{paralist}
                                         \\usepackage{amssymb}
                                         \\usepackage{subfigure}
                                         \\usepackage{indentfirst}
