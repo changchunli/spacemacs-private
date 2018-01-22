@@ -497,6 +497,9 @@ layers configuration."
 
   (fset 'evil-visual-update-x-selection 'ignore)
 
+  ;;(with-eval-after-load 'helm
+  ;;  (setq helm-display-function 'helm-default-display-buffer))
+
   ;; force horizontal split window
   (setq split-width-threshold 120)
   ;; (linum-relative-on)
