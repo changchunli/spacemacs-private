@@ -178,10 +178,13 @@ values."
             scala-enable-eldoc-mode nil)
      (ess :variables
           ess-enable-smart-equals t)
+     cmake
      (c-c++ :variables
             c-c++-enable-clang-support t
             c-c++-enable-clang-format-on-save t
             c-c++-enable-rtags-support t
+            c-c++-enable-google-style t
+            c-c++-enable-google-newline t
             c-c++-default-mode-for-headers 'c++-mode)
      (elm :variables
           elm-sort-imports-on-save t
