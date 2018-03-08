@@ -16,7 +16,7 @@ This function should only modify configuration layer settings."
 
    ;; Lazy installation of layers (i.e. layers are installed only when a file
    ;; with a supported type is opened). Possible values are `all', `unused'
-   ;; and `nil'. `unused' wmelpaill lazy install only unused layers (i.e. layers
+   ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
    ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
    ;; lazy install any layer that support lazy installation even the layers
    ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
@@ -43,6 +43,7 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;; ivy
+     smex
      keyboard-layout
      (olivetti :variables
                olivetti-body-width 0.6
@@ -51,7 +52,9 @@ This function should only modify configuration layer settings."
      (plantuml :variables
                plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
                org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
-     better-defaults
+     (better-defaults :variables
+                      better-defaults-move-to-beginning-of-code-first t
+                      better-defaults-move-to-end-of-code-first nil)
      helm
      ranger
      ;; neotree
@@ -111,7 +114,8 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-full-span nil
             shell-default-term-shell "/bin/zsh")
-     shell-scripts docker ansible puppet rebox
+     shell-scripts docker ansible puppet 
+     (rebox :variables rebox-enable-in-text-mode t)
      evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
@@ -271,7 +275,7 @@ It should only modify the values of Spacemacs settings."
   ;; This setq-default sexp is an exhaustive list of all the supported
   ;; spacemacs settings.
   (setq-default
-   ;; If non nil ELPA repositories are contacted via HTTPS whenever it's
+   ;; If non-nil ELPA repositories are contacted via HTTPS whenever it's
    ;; possible. Set it to nil if you have no way to use HTTPS in your
    ;; environment, otherwise it is strongly recommended to let it set to t.
    ;; This variable has no effect if Emacs is launched with the parameter
@@ -298,7 +302,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-verify-spacelpa-archives nil
 
-   ;; If non nil then spacemacs will check for updates at startup
+   ;; If non-nil then spacemacs will check for updates at startup
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
@@ -306,7 +310,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
-   ;; to `emacs-version'.
+   ;; to `emacs-version'. (default 'emacs-version)
    dotspacemacs-elpa-subdirectory nil
 
    ;; One of `vim', `emacs' or `hybrid'.
@@ -317,7 +321,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'vim)
    dotspacemacs-editing-style 'vim
 
-   ;; If non nil output loading progress in `*Messages*' buffer. (default nil)
+   ;; If non-nil output loading progress in `*Messages*' buffer. (default nil)
    dotspacemacs-verbose-loading nil
 
    ;; Specify the startup banner. Default value is `official', it displays
@@ -331,7 +335,7 @@ It should only modify the values of Spacemacs settings."
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
    ;; Possible values for list-type are:
-   ;; `recents' `bookmarks' `projects' `agenda' `todos'."
+   ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
@@ -348,7 +352,7 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-initial-scratch-message nil
 
    ;; List of themes, the first of the list is loaded when spacemacs starts.
-   ;; Press <SPC> T n to cycle to the next theme in the list (works great
+   ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(dracula
                          spacemacs-dark
@@ -366,7 +370,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
 
-   ;; If non nil the cursor color matches the state color in GUI Emacs.
+   ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
    dotspacemacs-colorize-cursor-according-to-state t
 
@@ -381,7 +385,7 @@ It should only modify the values of Spacemacs settings."
    ;; The leader key (default "SPC")
    dotspacemacs-leader-key "SPC"
 
-   ;; The key used for Emacs commands (M-x) (after pressing on the leader key).
+   ;; The key used for Emacs commands `M-x' (after pressing on the leader key).
    ;; (default "SPC")
    dotspacemacs-emacs-command-key "SPC"
 
@@ -403,12 +407,12 @@ It should only modify the values of Spacemacs settings."
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
    ;; Setting it to a non-nil value, allows for separate commands under `C-i'
-   ;; and `TAB' or `C-m' and `RET'.
+   ;; and TAB or `C-m' and `RET'.
    ;; In the terminal, these pairs are generally indistinguishable, so this only
    ;; works in the GUI. (default nil)
    dotspacemacs-distinguish-gui-tab nil
 
-   ;; If non nil `Y' is remapped to `y$' in Evil states. (default nil)
+   ;; If non-nil `Y' is remapped to `y$' in Evil states. (default nil)
    dotspacemacs-remap-Y-to-y$ t
 
    ;; If non-nil, the shift mappings `<' and `>' retain visual state if used
@@ -419,18 +423,18 @@ It should only modify the values of Spacemacs settings."
    ;; (default nil)
    dotspacemacs-visual-line-move-text t
 
-   ;; If non nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
+   ;; If non-nil, inverse the meaning of `g' in `:substitute' Evil ex-command.
    ;; (default nil)
    dotspacemacs-ex-substitute-global nil
 
    ;; Name of the default layout (default "Default")
    dotspacemacs-default-layout-name "Default"
 
-   ;; If non nil the default layout name is displayed in the mode-line.
+   ;; If non-nil the default layout name is displayed in the mode-line.
    ;; (default nil)
    dotspacemacs-display-default-layout nil
 
-   ;; If non nil then the last auto saved layouts are resume automatically upon
+   ;; If non-nil then the last auto saved layouts are resumed automatically upon
    ;; start. (default nil)
    dotspacemacs-auto-resume-layouts nil
 
@@ -452,10 +456,10 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
 
-   ;; If non nil, `helm' will try to minimize the space it uses. (default nil)
+   ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
    dotspacemacs-helm-resize nil
 
-   ;; if non nil, the helm header is hidden when there is only one source.
+   ;; if non-nil, the helm header is hidden when there is only one source.
    ;; (default nil)
    dotspacemacs-helm-no-header nil
 
@@ -469,7 +473,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'always)
    dotspacemacs-helm-use-fuzzy 'always
 
-   ;; If non nil the paste micro-state is enabled. When enabled pressing `p`
+   ;; If non-nil the paste micro-state is enabled. When enabled pressing `p`
    ;; several times cycle between the kill ring content. (default nil)
    ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
    ;; `p' several times cycles through the elements in the `kill-ring'.
@@ -488,25 +492,25 @@ It should only modify the values of Spacemacs settings."
 
    ;; Control where `switch-to-buffer' displays the buffer. If nil,
    ;; `switch-to-buffer' displays the buffer in the current window even if
-   ;; another same-purpose window is available. If non nil, `switch-to-buffer'
+   ;; another same-purpose window is available. If non-nil, `switch-to-buffer'
    ;; displays the buffer in a same-purpose window even if the buffer can be
    ;; displayed in the current window. (default nil)
    dotspacemacs-switch-to-buffer-prefers-purpose nil
 
-   ;; If non nil a progress bar is displayed when spacemacs is loading. This
+   ;; If non-nil a progress bar is displayed when spacemacs is loading. This
    ;; may increase the boot time on some systems and emacs builds, set it to
    ;; nil to boost the loading time. (default t)
    dotspacemacs-loading-progress-bar t
 
-   ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
+   ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
    dotspacemacs-fullscreen-at-startup nil
 
-   ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
+   ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
    dotspacemacs-fullscreen-use-non-native nil
 
-   ;; If non nil the frame is maximized when Emacs starts up.
+   ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
    dotspacemacs-maximized-at-startup t
@@ -521,23 +525,25 @@ It should only modify the values of Spacemacs settings."
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
    dotspacemacs-inactive-transparency 90
 
-   ;; If non nil show the titles of transient states. (default t)
+   ;; If non-nil show the titles of transient states. (default t)
    dotspacemacs-show-transient-state-title t
 
-   ;; If non nil show the color guide hint for transient state keys. (default t)
+   ;; If non-nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
 
-   ;; If non nil unicode symbols are displayed in the mode line. (default t)
+   ;; If non-nil unicode symbols are displayed in the mode line. (default t)
    dotspacemacs-mode-line-unicode-symbols t
 
-   ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
+   ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
    dotspacemacs-smooth-scrolling nil
 
    ;; Control line numbers activation.
-   ;; If non nil line numbers are turned on in all `prog-mode' and `text-mode'
+   ;; If non-nil line numbers are turned on in all `prog-mode' and `text-mode'
    ;; derivatives. If set to `relative', also turns on relative line numbers.
+   ;; If set to `t' or `relative' line numbers are turned on in all `prog-mode' and
+   ;; `text-mode' derivatives. If set to `relative', line numbers are relative.
    ;; This variable can also be set to a property list for finer control:
    ;; '(:relative nil
    ;;   :disabled-for-modes dired-mode
@@ -561,7 +567,7 @@ It should only modify the values of Spacemacs settings."
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
 
-   ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
+   ;; If non-nil `smartparens-strict-mode' will be enabled in programming modes.
    ;; (default nil)
    dotspacemacs-smartparens-strict-mode nil
 
@@ -575,7 +581,10 @@ It should only modify the values of Spacemacs settings."
    ;; emphasis the current one). (default 'all)
    dotspacemacs-highlight-delimiters 'all
 
-   ;; If non nil, advise quit functions to keep server open when quitting.
+   ;; If non-nil, start an Emacs server if one is not already running.
+   dotspacemacs-enable-server t
+
+   ;; If non-nil, advise quit functions to keep server open when quitting.
    ;; (default nil)
    dotspacemacs-persistent-server nil
 
@@ -627,7 +636,6 @@ It should only modify the values of Spacemacs settings."
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
    dotspacemacs-pretty-docs nil))
-
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
