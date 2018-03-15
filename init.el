@@ -114,7 +114,7 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-full-span nil
             shell-default-term-shell "/bin/zsh")
-     shell-scripts docker ansible puppet 
+     shell-scripts docker ansible puppet
      (rebox :variables rebox-enable-in-text-mode t)
      evil-commentary
      (evil-snipe :variables
@@ -355,6 +355,7 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(dracula
+                         jazz
                          spacemacs-dark
                          solarized-dark
                          solarized-light
@@ -715,7 +716,7 @@ before packages are loaded."
                '("Capstanfile\\'" . yaml-mode))
 
   (add-to-list 'yas-snippet-dirs "~/.spacemacs.d/yasmate/snippets")
-  
+
   ;; texlive path configure
   (defun TeXlive (year)
     "Use TeXlive with the given year (given as string), nil if no TeXlive."
@@ -739,14 +740,14 @@ before packages are loaded."
   (TeXlive 2017)
   (setq exec-path (append exec-path
                           '("/usr/local/texlive/2017/bin/x86_64-linux/")))
-  
+
   ;; set TeX-view-program-list
   ;; use TeX-view-program-list-builtin, which is in auctex
   ;; (setq TeX-view-program-list
   ;; '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
   ;; ("Skim" "displayline -b -g %n %o %b")
   ;; ("Zathura" "zathura-sync.sh %n:1:%b %o")))
-  
+
   ;; set pdf viewer on OSX and Linux
   (cond
    ((spacemacs/system-is-mac) (setq TeX-view-program-selection '((output-pdf "Skim"))))
@@ -791,7 +792,7 @@ before packages are loaded."
   (spacemacs/set-leader-keys "otm" 'zilongshanren/toggle-major-mode)
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
-  
+
   ;; org-mode default open file function
   ;; (add-to-list 'org-file-apps '("\\.pdf\\" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
   ;; (setq org-file-apps '(("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link)))))
@@ -805,10 +806,54 @@ before packages are loaded."
             (lambda ()
               (ess-toggle-underscore nil)))
 
+  ;; Draw box with IBM single line box characters. - activate with C-x d
+  ;;
+  ;; Press Esc to exit.
+  ;;
+  ;; Essentially treats the left hand on a QWERTY layout
+  ;; as the box (i.e. QWE,ASD,ZXC)
+  ;; Horizontal and vertical lines are on R -> horz and V -> vert
+  ;; All other keys are available so you can move and
+  ;; space as required.  The bindings are active until you hit Esc.
+  ;;
+  ;; Full bindings here.
+  ;; q -> top left     ┌
+  ;; w -> top          ┬
+  ;; e -> top right    ┐
+  ;; a -> left         ├
+  ;; s -> center       ┼
+  ;; d -> right        ┤
+  ;; z -> bottom left  └
+  ;; x -> bottom       ┴
+  ;; c -> bottom right ┘
+  ;; r -> horizontal   ─
+  ;; v -> vertical     │
+
+  ;; You can use Artist mode for things like this too, this is just yet another way. I built it for me.
+
+  ;;; Code:
+
+  ;; (global-set-key (kbd "C-x d")
+  ;;                 (defhydra hydra-draw-box (:color pink)
+  ;;                   "Draw box with IBM single line box characters (ESC to Quit)."
+  ;;                   ("ESC" nil :color blue) ;; Esc to exit.
+  ;;                   ("q" (lambda () (interactive) (insert "┌")) "top left ┌")
+  ;;                   ("w" (lambda () (interactive) (insert "┬")) "top ┬")
+  ;;                   ("e" (lambda () (interactive) (insert "┐")) "top right ┐")
+  ;;                   ("a" (lambda () (interactive) (insert "├")) "left ├")
+  ;;                   ("s" (lambda () (interactive) (insert "┼")) "center ┼")
+  ;;                   ("d" (lambda () (interactive) (insert "┤")) "right ┤")
+  ;;                   ("z" (lambda () (interactive) (insert "└")) "bottom left └")
+  ;;                   ("x" (lambda () (interactive) (insert "┴")) "bottom ┴")
+  ;;                   ("c" (lambda () (interactive) (insert "┘")) "bottom right ┘")
+  ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
+  ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
+
   )
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
