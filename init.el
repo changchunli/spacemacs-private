@@ -93,12 +93,15 @@ This function should only modify configuration layer settings."
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
                       auto-completion-complete-with-key-sequence nil
-                      auto-completion-complete-with-key-sequence-delay 0.0
+                      auto-completion-complete-with-key-sequence-delay 0.1
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
-                      auto-completion-private-snippets-directory "~/.spacemacs.d/snippets"
+                      ;; auto-completion-private-snippets-directory
+                      ;; "~/.spacemacs.d/snippets"
+                      auto-completion-private-snippets-directory nil
+                      spacemacs-default-company-backends '(compan-files compan-capf)
                       :disabled-for org markdown)
      (osx :variables
           osx-dictionary-dictionary-choice "Simplified Chinese - English"
@@ -134,7 +137,13 @@ This function should only modify configuration layer settings."
           org-enable-github-support t
           org-enable-bootstrap-support t
           org-enable-reveal-js-support t
-          org-enable-hugo-support t)
+          org-enable-hugo-support t
+          org-journal-dir "~/org/journal/"
+          ;; org-journal-file-format "%Y-%m-%d"
+          org-journal-date-prefix "#+TITLE: "
+          org-journal-date-format "%A, %B %d %Y"
+          org-journal-time-prefix "* "
+          org-journal-time-format "")
      gpu
      notmuch
      groovy
@@ -153,6 +162,7 @@ This function should only modify configuration layer settings."
      spotify pandoc vagrant sphinx parinfer erlang protobuf
      (python :variables
              python-enable-yapf-format-on-save t
+             python-fill-column 80
              python-sort-imports-on-save t
              python-test-runner '(nose pytest))
      (ruby :variables
@@ -538,7 +548,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
-   dotspacemacs-smooth-scrolling nil
+   dotspacemacs-smooth-scrolling t
 
    ;; Control line numbers activation.
    ;; If non-nil line numbers are turned on in all `prog-mode' and `text-mode'
@@ -564,6 +574,7 @@ It should only modify the values of Spacemacs settings."
                                          pdf-view-mode
                                          text-mode
                                          :size-limit-kb 1000)
+
    ;; Code folding method. Possible values are `evil' and `origami'.
    ;; (default 'evil)
    dotspacemacs-folding-method 'origami
