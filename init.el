@@ -55,7 +55,7 @@ This function should only modify configuration layer settings."
                       ;; auto-completion-private-snippets-directory
                       ;; "~/.spacemacs.d/snippets"
                       auto-completion-private-snippets-directory nil
-                      spacemacs-default-company-backends '(company-files company-capf)
+                      ;; spacemacs-default-company-backends '(company-files company-capf)
                       :disabled-for org markdown)
      (better-defaults :variables
                       better-defaults-move-to-beginning-of-code-first t
@@ -133,7 +133,7 @@ This function should only modify configuration layer settings."
             latex-enable-auto-fill t
             latex-enable-magic nil
             latex-enable-folding t)
-     lua major-modes
+     lsp lua major-modes
      (markdown :variables markdown-live-preview-engine 'vmd)
      ;; neotree
      nginx nim nlinum notmuch octave
@@ -262,7 +262,7 @@ This function should only modify configuration layer settings."
      ;; helm-themes helm-swoop helm-spacemacs-help smeargle
      ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
      ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-     ess-R-object-popup org-mac-link wolfram-mode textmate-to-yas.el)
+     ess-R-object-popup org-mac-link textmate-to-yas.el)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -710,6 +710,12 @@ before packages are loaded."
   ;; (linum-relative-on)
 
   (spacemacs|add-company-backends :modes text-mode)
+  (spacemacs//python-setup-anaconda-company)
+  (custom-set-faces
+   '(company-tooltip-common
+     ((t (:inherit company-tooltip :weight bold :underline nil))))
+   '(company-tooltip-common-selection
+     ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
 
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
@@ -844,7 +850,7 @@ before packages are loaded."
 
   ;; You can use Artist mode for things like this too, this is just yet another way. I built it for me.
 
-  ;;; Code:
+;;; Code:
 
   ;; (global-set-key (kbd "C-x d")
   ;;                 (defhydra hydra-draw-box (:color pink)
