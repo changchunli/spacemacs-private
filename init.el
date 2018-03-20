@@ -53,10 +53,8 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
-                      ;; auto-completion-private-snippets-directory
-                      ;; "~/.spacemacs.d/snippets"
                       auto-completion-private-snippets-directory nil
-                      ;; spacemacs-default-company-backends '(company-files company-capf)
+                      spacemacs-default-company-backends '(company-files company-capf)
                       :disabled-for org markdown)
      (better-defaults :variables
                       better-defaults-move-to-beginning-of-code-first t
@@ -263,7 +261,7 @@ This function should only modify configuration layer settings."
      ;; helm-themes helm-swoop helm-spacemacs-help smeargle
      ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
      ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-     ess-R-object-popup org-mac-link textmate-to-yas.el)
+     ess-R-object-popup org-mac-link)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
