@@ -42,8 +42,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     agda
-     ansible asciidoc asm autohotkey
+     agda ansible asciidoc asm autohotkey
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
@@ -239,12 +238,9 @@ This function should only modify configuration layer settings."
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    ;; dotspacemacs-additional-packages '(sicp)
-
    ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
-   ;;                                    linum-relative llvm-mode sicp vline wolfram)
-
+   ;; linum-relative llvm-mode sicp vline wolfram)
    dotspacemacs-additional-packages '(linum-relative sicp wolfram)
-
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
