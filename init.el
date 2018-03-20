@@ -261,7 +261,7 @@ This function should only modify configuration layer settings."
      ;; helm-themes helm-swoop helm-spacemacs-help smeargle
      ;; ido-vertical-mode flx-ido company-quickhelp counsel-projectile
      ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-     )
+     org-mac-link)
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
