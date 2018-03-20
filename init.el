@@ -42,6 +42,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     zilongshanren
      agda ansible asciidoc asm autohotkey
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
@@ -226,9 +227,7 @@ This function should only modify configuration layer settings."
      ;; NOTE: this bug has been fixed.
      vim-empty-lines vimscript
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     windows-scripts xkcd yaml
-     ;; yasnippet
-     zilongshanren)
+     windows-scripts xkcd yaml)
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
