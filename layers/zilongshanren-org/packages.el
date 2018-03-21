@@ -680,7 +680,7 @@ typical word processor."
          (ocaml . nil)
          (octave . t)
          (ruby . t)
-         (sh . t)
+         (shell . t)
          (screen . nil)
          ;; (,(if (locate-library "ob-sh") 'sh 'shell) . t)
          (sql . nil)
