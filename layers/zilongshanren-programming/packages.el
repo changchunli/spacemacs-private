@@ -175,13 +175,14 @@
   (progn
     (set-face-background 'secondary-selection "gray")
     (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
-    (mapc #'(lambda (hook) (remove-hook hook 'spacemacs/load-yasnippet)) '(prog-mode-hook
-                                                                      org-mode-hook
-                                                                      markdown-mode-hook))
 
-    (spacemacs/add-to-hooks 'zilongshanren/load-yasnippet '(prog-mode-hook
-                                                            markdown-mode-hook
-                                                            org-mode-hook))
+    ;; (mapc #'(lambda (hook) (remove-hook hook 'spacemacs/load-yasnippet)) '(prog-mode-hook
+    ;;                                                                    org-mode-hook
+    ;;                                                                    markdown-mode-hook))
+    ;; (spacemacs/add-to-hooks 'zilongshanren/load-yasnippet '(prog-mode-hook
+    ;;                                                         markdown-mode-hook
+    ;;                                                         org-mode-hook))
+
     ))
 
 (defun zilongshanren-programming/post-init-racket-mode ()

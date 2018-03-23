@@ -661,6 +661,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
           ("org-cn"   . "https://elpa.emacs-china.org/org/")
           ("gnu-cn"   . "https://elpa.emacs-china.org/gnu/")))
 
+  ;; (setq debug-on-error t)
+
   ;; https://github.com/syl20bnr/spacemacs/issues/2705
   ;; (setq tramp-mode nil)
   (setq tramp-ssh-controlmaster-options
