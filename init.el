@@ -77,8 +77,7 @@ This function should only modify configuration layer settings."
      (colors :variables
              colors-colorize-identifiers 'all
              colors-enable-nyan-cat-progress-bar t)
-     common-lisp command-log coq cscope csv d dash deft
-     ;; diff-h1
+     common-lisp command-log coq cscope csharp csv d dash deft
      django docker elfeed
      (elm :variables
           elm-sort-imports-on-save t
@@ -145,6 +144,7 @@ This function should only modify configuration layer settings."
           org-enable-bootstrap-support t
           org-enable-reveal-js-support t
           org-enable-hugo-support t
+          org-enable-org-journal-support t
           org-journal-dir "~/org/journal/"
           ;; org-journal-file-format "%Y-%m-%d"
           org-journal-date-prefix "#+TITLE: "
@@ -156,7 +156,13 @@ This function should only modify configuration layer settings."
      (osx :variables
           osx-dictionary-dictionary-choice "Simplified Chinese - English"
           osx-use-option-as-meta t
-          osx-command-as 'super)
+          osx-command-as 'super
+          osx-option-as 'meta
+          osx-control-as 'control
+          osx-function-as 'none
+          osx-right-command-as 'left
+          osx-right-option-as 'none
+          osx-right-control-as 'left)
      pandoc parinfer pass pdf-tools perl6 php
      (plantuml :variables
                plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
@@ -213,11 +219,15 @@ This function should only modify configuration layer settings."
                treemacs-use-collapsed-directories 3)
      twitter
      (typescript :variables
+                 tide-tsserver-executable "~/.config/yarn/global/node_modules/.bin/tsserver"
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
      (typography :variables typography-enable-typographic-editing nil)
      vagrant
-     (version-control :variables version-control-global-margin t)
+     (version-control :variables
+                      version-control-global-margin t
+                      version-control-diff-tool 'diff-hl
+                      version-control-diff-side 'left)
      ;; if use .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el,
      ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
      ;; change .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el to
