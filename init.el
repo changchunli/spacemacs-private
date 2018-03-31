@@ -125,7 +125,9 @@ This function should only modify configuration layer settings."
      jabber
      (java :variables java-backend 'meghanada)
      (javascript :variables javascript-disable-tern-port-files t)
-     jr keyboard-layout kotlin
+     jr 
+     ;; keyboard-layout 
+     kotlin
      (latex :variables
             ;; latex-build-command "XeLaTeX"
             latex-enable-auto-fill t
