@@ -109,7 +109,12 @@ This function should only modify configuration layer settings."
          gofmt-command "goimports"
          go-tab-width 4
          go-use-gocheck-for-testing t
-         go-use-test-args "-race -timeout 10s")
+         go-use-test-args "-test.v -failfast -count=1 -race -timeout 10s"
+         godoc-at-point-function 'godoc-gogetdoc
+         flycheck-gometalinter-vendor t
+         flycheck-gometalinter-fast t
+         flycheck-gometalinter-disable-linters '("goconst")
+         flycheck-gometalinter-deadline "10s")
      gpu graphviz groovy
      (gtags :variables gtags-enable-by-default t
             :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
@@ -174,6 +179,7 @@ This function should only modify configuration layer settings."
              python-enable-yapf-format-on-save t
              python-fill-column 80
              python-sort-imports-on-save t
+             ;; python-shell-completion-native-enable nil
              python-test-runner '(nose pytest))
      racket ranger rcirc react
      (rebox :variables rebox-enable-in-text-mode t)
@@ -184,7 +190,8 @@ This function should only modify configuration layer settings."
            ruby-version-manager 'rvm)
      ruby-on-rails
      (rust :variables
-           rust-enable-rustfmt-on-save t)
+           rust-enable-rustfmt-on-save t
+           rust-format-on-save t)
      salt
      (scala :variables
             scala-auto-insert-asterisk-in-comments t
@@ -228,7 +235,7 @@ This function should only modify configuration layer settings."
      vagrant
      (version-control :variables
                       version-control-global-margin t
-                      version-control-diff-tool 'diff-hl
+                      version-control-diff-tool 'git-gutter
                       version-control-diff-side 'left)
      ;; if use .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el,
      ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
