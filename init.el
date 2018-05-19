@@ -53,6 +53,7 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-company-help-tooltip t
                       auto-completion-enable-sort-by-usage t
                       auto-completion-enable-snippets-in-popup t
+                      auto-completion-idle-delay 0.2
                       auto-completion-private-snippets-directory nil
                       ;; spacemacs-default-company-backends '(company-files company-capf)
                       :disabled-for org markdown)
@@ -130,11 +131,11 @@ This function should only modify configuration layer settings."
      jabber
      (java :variables java-backend 'meghanada)
      (javascript :variables javascript-disable-tern-port-files t)
-     jr 
-     ;; keyboard-layout 
+     jr
+     ;; keyboard-layout
      kotlin
      (latex :variables
-            ;; latex-build-command "XeLaTeX"
+            latex-build-command "LaTeX"
             latex-enable-auto-fill t
             latex-enable-magic nil
             latex-enable-folding t)
@@ -176,6 +177,7 @@ This function should only modify configuration layer settings."
                org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
      prodigy protobuf puppet purescript
      (python :variables
+             python-backend 'anaconda
              python-enable-yapf-format-on-save t
              python-fill-column 80
              python-sort-imports-on-save t
@@ -219,7 +221,7 @@ This function should only modify configuration layer settings."
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
-     systemd
+     systemd tern
      (terraform :variables terraform-auto-format-on-save t)
      themes-megapack tmux
      (treemacs :variables
@@ -730,7 +732,11 @@ before packages are loaded."
   ;; (linum-relative-on)
 
   (spacemacs|add-company-backends :modes text-mode)
-  (spacemacs//python-setup-anaconda-company)
+
+  ;; Issue #10366 (Python completion broken for the first Python buffer you
+  ;; visit), this issue might be fixed.
+  ;; (spacemacs//python-setup-anaconda-company)
+
   (custom-set-faces
    '(company-tooltip-common
      ((t (:inherit company-tooltip :weight bold :underline nil))))
