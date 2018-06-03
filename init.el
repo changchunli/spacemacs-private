@@ -153,14 +153,14 @@ This function should only modify configuration layer settings."
           org-enable-reveal-js-support t
           org-enable-hugo-support t
           org-enable-org-journal-support t
-          org-journal-dir "~/org/journal/"
+          org-journal-dir "~/org-notes/journal/"
           org-journal-file-format "%Y-%m-%d"
           org-journal-date-prefix "#+TITLE: "
           org-journal-date-format "%A, %B %d %Y"
           org-journal-time-prefix "* "
           org-journal-time-format ""
           org-bullets-bullet-list '("■" "◆" "▲" "▶")
-          org-projectile-file "~/org/TODOs.org"
+          org-projectile-file "~/org-notes/TODOs.org"
           spaceline-org-clock-p t
           org-startup-indented t
           org-startup-folded t)

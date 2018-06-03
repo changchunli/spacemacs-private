@@ -1,7 +1,7 @@
 ;;; packages.el --- zilong-ui layer packages file for Spacemacs.
 
 ;;
-;; Copyright (c) 2014-2016 zilongshanren
+;; Copyright (c) 2014-2016, 2018 zilongshanren
 ;;
 ;; Author: guanghui <guanghui8827@gmail.com>
 ;; URL: https://github.com/zilongshanren/spacemacs-private
@@ -62,7 +62,7 @@
   (add-hook 'org-mode-hook (lambda () (spacemacs/toggle-line-numbers-off)) 'append)
   (with-eval-after-load 'org
     (progn
-      
+
       (spacemacs|disable-company org-mode)
       (spacemacs/set-leader-keys-for-major-mode 'org-mode
         "," 'org-priority)
@@ -291,9 +291,10 @@ typical word processor."
       ;; (add-to-list 'auto-mode-alist '("\.org\\'" . org-mode))
 
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t)" "STARTED(s)" "NEXT(n)" "APPT(a)" "|" "DONE(d!/!)")
-                    (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
-                    (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)" 
+            (quote ((sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(v)" "STARTED(s!)" "NEXT(n)" "APPT(a)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
+                    (sequence "PROJECT(p)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
+                    (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")
+                    (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)"
                               "HOLD(h)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
             org-todo-repeat-to-state "NEXT")
 
@@ -370,7 +371,7 @@ typical word processor."
       ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
 
       (setq org-tags-match-list-sublevels nil)
-      
+
       ;; (with-eval-after-load 'org-docview
       ;;   (defun org-docview-open (link)
       ;;     (string-match "\\(.*?\\)\\(?:::\\([0-9]+\\)\\)?$" link)
@@ -548,7 +549,7 @@ typical word processor."
                                         %% \\counterwithout{equation}{section}
                                         %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
                                         %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
-                                        %% \\setmonofont{Bitstream Vera Sans Mono}  
+                                        %% \\setmonofont{Bitstream Vera Sans Mono}
                                         %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
                                         %% \\newfontinstance\\MONO{\\fontnamemono}
                                         %% \\newcommand{\\mono}[1]{{\\MONO #1}}
@@ -591,7 +592,7 @@ typical word processor."
               "xelatex -interaction nonstopmode -output-directory %o %f"
               "xelatex -interaction nonstopmode -output-directory %o %f"
               "rm -fr %b.out %b.log %b.tex auto"))
-      
+
       (setq org-latex-listings t)
       ;; Options for \lset command（reference to listing Manual)
       (setq org-latex-listings-options
@@ -632,7 +633,7 @@ typical word processor."
                               \\mode
                               \\usetheme{{{{Warsaw}}}}
                               %\\usecolortheme{{{{beamercolortheme}}}}
-  
+
                               \\beamertemplateballitem
                               \\setbeameroption{show notes}
                               \\usepackage{graphicx}
@@ -713,6 +714,7 @@ unwanted space when exporting org-mode to html."
       ;; define the refile targets
       (setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
       (setq org-agenda-file-gtd (expand-file-name "gtd.org" org-agenda-dir))
+      (setq org-agenda-file-task (expand-file-name "task.org" org-agenda-dir))
       (setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
       (setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
       (setq org-agenda-file-private-note (expand-file-name "privnotes.org" org-agenda-dir))
@@ -726,6 +728,27 @@ unwanted space when exporting org-mode to html."
           "." 'spacemacs/org-agenda-transient-state/body)
         (add-to-list 'org-agenda-after-show-hook 'org-show-entry)
         )
+
+      ;; ;; Show iCal calendars in the org agenda
+      ;; (when (and *is-a-mac* (require 'org-mac-iCal nil t))
+      ;;   (setq org-agenda-include-diary t
+      ;;         org-agenda-custom-commands
+      ;;         '(("I" "Import diary from iCal" agenda ""
+      ;;            ((org-agenda-mode-hook #'org-mac-iCal)))))
+
+      ;;   (add-hook 'org-agenda-cleanup-fancy-diary-hook
+      ;;             (lambda ()
+      ;;               (goto-char (point-min))
+      ;;               (save-excursion
+      ;;                 (while (re-search-forward "^[a-z]" nil t)
+      ;;                   (goto-char (match-beginning 0))
+      ;;                   (insert "0:00-24:00 ")))
+      ;;               (while (re-search-forward "^ [a-z]" nil t)
+      ;;                 (goto-char (match-beginning 0))
+      ;;                 (save-excursion
+      ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
+      ;;                 (insert (match-string 0))))))
+
       ;; the %i would copy the selected text into the template
       ;; http://www.howardism.org/Technical/Emacs/journaling-org.html
       ;; add multi-file journal
@@ -779,7 +802,7 @@ unwanted space when exporting org-mode to html."
 
         (setq org-agenda-compact-blocks t
               org-agenda-sticky t
-              ;; org-agenda-start-on-weekday nil
+              org-agenda-start-on-weekday nil
               org-agenda-span 'day
               org-agenda-include-diary nil
               org-agenda-sorting-strategy
