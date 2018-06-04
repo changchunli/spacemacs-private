@@ -379,9 +379,9 @@ typical word processor."
       ;; a list of active projects.
 
       (setq org-tag-alist
-            (quote (sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
-                             ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i"))
-                   (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l))))
+            (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
+                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i"))
+                    (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
