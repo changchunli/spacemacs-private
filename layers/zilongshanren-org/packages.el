@@ -50,14 +50,18 @@
 
 (defun zilongshanren-org/post-init-org-pomodoro ()
   (progn
-    (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕ Have a break!" t)))
-    (add-hook 'org-pomodoro-short-break-finished-hook '(lambda () (zilongshanren/growl-notification "Short Break" "🐝 Ready to Go?" t)))
-    (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (zilongshanren/growl-notification "Long Break" "💪 Ready to Go?" t)))
+    (add-hook 'org-pomodoro-finished-hook
+              '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕ Have a break!" t)))
+    (add-hook 'org-pomodoro-short-break-finished-hook
+              '(lambda () (zilongshanren/growl-notification "Short Break" "🐝 Ready to Go?" t)))
+    (add-hook 'org-pomodoro-long-break-finished-hook
+              '(lambda () (zilongshanren/growl-notification "Long Break" "💪 Ready to Go?" t)))
     ))
 
-;;In order to export pdf to support Chinese, I should install Latex at here: https://www.tug.org/mactex/
+;; In order to export pdf to support Chinese, I should install Latex at here:
+;; https://www.tug.org/mactex/
 ;; http://freizl.github.io/posts/2012-04-06-export-orgmode-file-in-Chinese.html
-;;http://stackoverflow.com/questions/21005885/export-org-mode-code-block-and-result-with-different-styles
+;; http://stackoverflow.com/questions/21005885/export-org-mode-code-block-and-result-with-different-styles
 (defun zilongshanren-org/post-init-org ()
   (add-hook 'org-mode-hook (lambda () (spacemacs/toggle-line-numbers-off)) 'append)
   (with-eval-after-load 'org
@@ -73,7 +77,7 @@
       (require 'org-habit)
 
       ;; Targets start with the file name - allows creating level 1 tasks
-      ;;(setq org-refile-use-outline-path (quote file))
+      ;; (setq org-refile-use-outline-path (quote file))
       ;; (setq org-refile-use-outline-path t)
       ;; (setq org-outline-path-complete-in-steps nil)
 
@@ -82,16 +86,38 @@
       (setq org-refile-use-outline-path 'file)
       (setq org-outline-path-complete-in-steps nil)
       (setq org-refile-targets
-            '((nil :maxlevel . 5)
-              (org-agenda-files :maxlevel . 5)))
+            (quote ((nil :maxlevel . 5)
+                    (org-agenda-files :maxlevel . 5))))
       ;; config stuck project
       (setq org-stuck-projects
-            '("TODO={.+}/-DONE" nil nil "SCHEDULED:\\|DEADLINE:"))
+            (quote ("TODO={.+}/-DONE" nil nil "SCHEDULED:\\|DEADLINE:")))
 
       (setq org-agenda-inhibit-startup t) ;; ~50x speedup
       (setq org-agenda-span 'day)
       (setq org-agenda-use-tag-inheritance nil) ;; 3-4x speedup
       (setq org-agenda-window-setup 'current-window)
+      (setq org-agenda-include-diary nil)
+      (setq org-agenda-ndays 7)
+      (setq org-timeline-show-empty-dates t)
+      (setq org-insert-mode-line-in-empty-file t)
+      (setq org-agenda-repeating-timestamp-show-all nil
+            org-agenda-restore-windows-after-quit t
+            org-agenda-show-all-dates t
+            org-agenda-skip-deadline-if-done t
+            org-agenda-skip-scheduled-if-done t
+            org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up)))
+            org-agenda-start-on-weekday nil
+            org-agenda-todo-ignore-deadlines t
+            org-agenda-todo-ignore-scheduled t
+            org-agenda-todo-ignore-with-date t
+            org-agenda-window-setup (quote other-window)
+            org-deadline-warning-days 7
+            org-export-html-style "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyles.css\">"
+            org-log-done (quote (done))
+            org-reverse-note-order nil
+            org-time-stamp-rounding-minutes 5
+            org-use-fast-todo-selection t
+            org-use-tag-inheritance nil)
       (setq org-log-done t
             org-edit-timestamp-down-means-later t
             org-archive-mark-done nil
@@ -190,7 +216,8 @@
                      (file-exists-p org-ditaa-jar-path))
           (let ((jar-name "ditaa.jar")
                 (url "http://jaist.dl.sourceforge.net/project/ditaa/ditaa/0.9/ditaa0_9.zip"))
-            (setq org-ditaa-jar-path (expand-file-name jar-name (file-name-directory user-init-file)))
+            (setq org-ditaa-jar-path
+                  (expand-file-name jar-name (file-name-directory user-init-file)))
             (unless (file-exists-p org-ditaa-jar-path)
               (sanityinc/grab-ditaa url jar-name)))))
 
@@ -199,14 +226,16 @@
                      (file-exists-p org-plantuml-jar-path))
           (let ((jar-name "plantuml.jar")
                 (url "http://jaist.dl.sourceforge.net/project/plantuml/plantuml.jar"))
-            (setq org-plantuml-jar-path (expand-file-name jar-name (file-name-directory user-init-file)))
+            (setq org-plantuml-jar-path
+                  (expand-file-name jar-name (file-name-directory user-init-file)))
             (unless (file-exists-p org-plantuml-jar-path)
               (sanityinc/grab-ditaa url jar-name)))))
 
       (define-minor-mode prose-mode
         "Set up a buffer for prose editing.
 This enables or modifies a number of settings so that the
-experience of editing prose is a little more like (setq org-pomodoro-keep-killed-pomodoro-time t)that of a
+experience of editing prose is a little more like
+(setq org-pomodoro-keep-killed-pomodoro-time t)that of a
 typical word processor."
         nil " Prose" nil
         (if prose-mode
@@ -290,9 +319,35 @@ typical word processor."
 
       ;; (add-to-list 'auto-mode-alist '("\.org\\'" . org-mode))
 
+      ;; The tags are used as follows:
+      ;; TODO
+      ;; The item is ready to be done at the earliest opportunity or at the date
+      ;; (and maybe time) indicated in the SCHEDULED tag.
+      ;; Some tasks are given a DEADLINE date which is useful for scheduling the
+      ;; tasks during my daily planning.
+      ;; STARTED
+      ;; I should use this tag when I start on a task, but if I clock in to a
+      ;; TODO item, I don't really need this task.
+      ;; WAITING
+      ;; I did some work on this task but I am waiting for a response. If I use
+      ;; this task I schedule the task into the future as a reminder to follow
+      ;; up with some notes in the body of the task.
+      ;; APPT
+      ;; Used to tag an activity that can only be done at the specified time and
+      ;; date, instead of tasks that can be completed at any time.
+      ;; DONE
+      ;; The task is completed.
+      ;; CANCELLED
+      ;; I decided not to do this task but have left the task on file with this status.
+      ;; DEFERRED
+      ;; Used to identify a task that will not be activated just yet. The reason
+      ;; will be included in the task notes.
+
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(v)" "STARTED(s!)" "NEXT(n)" "APPT(a)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
-                    (sequence "PROJECT(p)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
+            (quote ((sequence "TODO(t!)" "STARTED(s!)" "WAITING(w)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
+                              "|" "DONE(d@/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
+                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "|" "DONE(d@/!)" "DELEGATED(e!)")
+                    (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
                     (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")
                     (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)"
                               "HOLD(h)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
@@ -301,6 +356,32 @@ typical word processor."
       (setq org-todo-keyword-faces
             (quote (("NEXT" :inherit warning)
                     ("PROJECT" :inherit font-lock-string-face))))
+
+      ;; Here are brief description of these contexts.
+      ;; Office
+      ;; Work that takes place in my office in North Sydney.
+      ;; Home
+      ;; Activites that take place at home or in my personal time. For example I
+      ;; might have a task "Deliver package to Bill" in the "Home" context.
+      ;; Computer
+      ;; Tasks that require use of the home computer.
+      ;; Reading
+      ;; Books, magazines and other reading material for my breakfast reading or
+      ;; commute reading.
+      ;; DVD
+      ;; Films to watch in the comfort of my home entertainment room.
+      ;; Lunchtime
+      ;; Errands and other activities I do in my lunch break at North Sydney.
+      ;; This also includes activites I may do before or after work, for
+      ;; example, buying something at a shop.
+      ;; Project
+      ;; I use this tag to identify the heading of a project in order to display
+      ;; a list of active projects.
+
+      (setq org-tag-alist
+            (quote (sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
+                             ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i"))
+                   (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -319,7 +400,9 @@ typical word processor."
       ;; Save state changes in the LOGBOOK drawer
       (setq org-log-into-drawer t)
       ;; Removes clocked tasks with 0:00 duration
-      (setq org-clock-out-remove-zero-time-clocks t) ;; Show the clocked-in task - if any - in the header line
+      (setq org-clock-out-remove-zero-time-clocks t)
+      ;; Show the clocked-in task - if any - in the header line
+      (setq org-tags-match-list-sublevels nil)
       ;; Show clock sums as hours and minutes, not "n days" etc.
       (setq org-time-clocksum-format
             '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
@@ -370,7 +453,6 @@ typical word processor."
       ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
       ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
 
-      (setq org-tags-match-list-sublevels nil)
 
       ;; (with-eval-after-load 'org-docview
       ;;   (defun org-docview-open (link)
@@ -392,59 +474,59 @@ typical word processor."
                                                  'zilongshanren/org-insert-src-block)))
       (require 'ox-publish)
       (add-to-list 'org-latex-classes '("ctexart" "\\documentclass[11pt]{ctexart}
-                                        [NO-DEFAULT-PACKAGES]
-                                        \\usepackage[utf8]{inputenc}
-                                        \\usepackage[T1]{fontenc}
-                                        \\usepackage{fixltx2e}
-                                        \\usepackage{graphicx}
-                                        \\usepackage{longtable}
-                                        \\usepackage{float}
-                                        \\usepackage{wrapfig}
-                                        \\usepackage{rotating}
-                                        \\usepackage[normalem]{ulem}
-                                        \\usepackage{amsmath}
-                                        \\usepackage{amsthm}
-                                        %% \\newtheorem{Definition}{\\hspace{2em}定义}[chapter]
-                                        %% \\newtheorem{theorem}{\\hspace{2em}定理}[chapter]
-                                        %% \\newtheorem{lemma}{\\hspace{2em}引理}[chapter]
-                                        %% \\newtheorem{Proof}{证明}[chapter]
-                                        \\newtheoremstyle{mystyle}{3pt}{3pt}{\\kaishu}{0cm}{\\heiti2}{}{1em}{}  %% Theorem style
-                                        \\theoremstyle{mystyle}
-                                        \\newtheorem{definition}{\\hspace{2em}定义}[chapter]  %% 没有章, 只有节, 把上面的[chapter]改成[section]
-                                        \\newtheorem{theorem}[definition]{\\hspace{2em}定理}
-                                        \\newtheorem{axiom}[definition]{\\hspace{2em}公理}
-                                        \\newtheorem{lemma}[definition]{\\hspace{2em}引理}
-                                        \\newtheorem{proposition}[definition]{\\hspace{2em}命题}
-                                        \\newtheorem{corollary}[definition]{\\hspace{2em}推论}
-                                        \\newtheorem{remark}{\\hspace{2em}注}[chapter]
-                                        \\usepackage{textcomp}
-                                        \\usepackage{marvosym}
-                                        \\usepackage{wasysym}
-                                        \\usepackage{amssymb}
-                                        \\usepackage{booktabs}
-                                        \\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}
-                                        \\tolerance=1000
-                                        \\usepackage{listings}
-                                        \\usepackage{xcolor}
-                                        \\lstset{
-                                        %行号
-                                        numbers=left,
-                                        %背景框
-                                        framexleftmargin=10mm,
-                                        frame=none,
-                                        %背景色
-                                        %backgroundcolor=\\color[rgb]{1,1,0.76},
-                                        backgroundcolor=\\color[RGB]{245,245,244},
-                                        %样式
-                                        keywordstyle=\\bf\\color{blue},
-                                        identifierstyle=\\bf,
-                                        numberstyle=\\color[RGB]{0,192,192},
-                                        commentstyle=\\it\\color[RGB]{0,96,96},
-                                        stringstyle=\\rmfamily\\slshape\\color[RGB]{128,0,0},
-                                        %显示空格
-                                        showstringspaces=false
-                                        }
-                                        "
+      [NO-DEFAULT-PACKAGES]
+      \\usepackage[utf8]{inputenc}
+      \\usepackage[T1]{fontenc}
+      \\usepackage{fixltx2e}
+      \\usepackage{graphicx}
+      \\usepackage{longtable}
+      \\usepackage{float}
+      \\usepackage{wrapfig}
+      \\usepackage{rotating}
+      \\usepackage[normalem]{ulem}
+      \\usepackage{amsmath}
+      \\usepackage{amsthm}
+      %% \\newtheorem{Definition}{\\hspace{2em}定义}[chapter]
+      %% \\newtheorem{theorem}{\\hspace{2em}定理}[chapter]
+      %% \\newtheorem{lemma}{\\hspace{2em}引理}[chapter]
+      %% \\newtheorem{Proof}{证明}[chapter]
+      \\newtheoremstyle{mystyle}{3pt}{3pt}{\\kaishu}{0cm}{\\heiti2}{}{1em}{}  %% Theorem style
+      \\theoremstyle{mystyle}
+      \\newtheorem{definition}{\\hspace{2em}定义}[chapter]  %% 没有章, 只有节, 把上面的[chapter]改成[section]
+      \\newtheorem{theorem}[definition]{\\hspace{2em}定理}
+      \\newtheorem{axiom}[definition]{\\hspace{2em}公理}
+      \\newtheorem{lemma}[definition]{\\hspace{2em}引理}
+      \\newtheorem{proposition}[definition]{\\hspace{2em}命题}
+      \\newtheorem{corollary}[definition]{\\hspace{2em}推论}
+      \\newtheorem{remark}{\\hspace{2em}注}[chapter]
+      \\usepackage{textcomp}
+      \\usepackage{marvosym}
+      \\usepackage{wasysym}
+      \\usepackage{amssymb}
+      \\usepackage{booktabs}
+      \\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}
+      \\tolerance=1000
+      \\usepackage{listings}
+      \\usepackage{xcolor}
+      \\lstset{
+      %行号
+      numbers=left,
+      %背景框
+      framexleftmargin=10mm,
+      frame=none,
+      %背景色
+      %backgroundcolor=\\color[rgb]{1,1,0.76},
+      backgroundcolor=\\color[RGB]{245,245,244},
+      %样式
+      keywordstyle=\\bf\\color{blue},
+      identifierstyle=\\bf,
+      numberstyle=\\color[RGB]{0,192,192},
+      commentstyle=\\it\\color[RGB]{0,96,96},
+      stringstyle=\\rmfamily\\slshape\\color[RGB]{128,0,0},
+      %显示空格
+      showstringspaces=false
+      }
+      "
                                         ("\\section{%s}" . "\\section*{%s}")
                                         ("\\subsection{%s}" . "\\subsection*{%s}")
                                         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -459,126 +541,126 @@ typical word processor."
       ;; }}
 
       (add-to-list 'org-latex-classes '("article" "\\documentclass[12pt,a4paper,german,normalheadings]{article}
-                                        \\usepackage{bm}
-                                        \\usepackage{amsfonts}
-                                        %% \\usepackage{CJK}
-                                        \\usepackage{epsfig,epsf}
-                                        \\usepackage[dvips]{graphicx}
-                                        \\usepackage[dvips]{graphics}
-                                        \\usepackage{amsmath}
-                                        \\usepackage{amsthm}
-                                        \\theoremstyle{plain}
-                                        \\newtheorem{thm}{Theorem}[section]
-                                        \\newtheorem{lem}[thm]{Lemma}
-                                        \\newtheorem{axm}[thm]{Axiom}
-                                        \\newtheorem{prop}[thm]{Proposition}
-                                        \\newtheorem*{cor}{Corollary}
-                                        \\theoremstyle{definition}
-                                        \\newtheorem{defn}{Definition}[section]
-                                        \\newtheorem{conj}{Conjecture}[section]
-                                        \\newtheorem{exmp}{Example}[section]
-                                        \\theoremstyle{remark}
-                                        \\newtheorem\*{rem}{Remark}
-                                        \\newtheorem\*{note}{Note}
-                                        \\usepackage{enumerate}
-                                        \\usepackage{paralist}
-                                        \\usepackage{amssymb}
-                                        \\usepackage{subfigure}
-                                        \\usepackage{indentfirst}
-                                        \\usepackage{multicol}    % 正文双栏
-                                        %% \\usepackage{picins}      % 图片嵌入段落宏包 比如照片 % Something will have error
-                                        \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
-                                        \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
-                                        %% \\usepackage{hyperref} % 文献引用的宏包
-                                        %% \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
-                                        \\usepackage{color, xcolor} % 可以产生有颜色的符号
-                                        \\usepackage{units} % 用于美化单位及分式
-                                        \\usepackage{tabularx} % 用于灵活地控制表格的生成
-                                        \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
-                                        %% \\usepackage{xcolor}
-                                        \\usepackage{array}
-                                        \\usepackage{cite}
-                                        \\usepackage{xeCJK}
-                                        \\usepackage{lmodern}
-                                        \\usepackage{verbatim}
-                                        \\usepackage{fixltx2e}
-                                        \\usepackage{longtable}
-                                        \\usepackage{multirow}
-                                        \\usepackage{float}
-                                        \\usepackage{tikz}
-                                        \\usepackage{wrapfig}
-                                        \\usepackage{soul}
-                                        \\usepackage{textcomp}
-                                        \\usepackage{listings}
-                                        \\lstloadlanguages{C,C++,matlab,mathematica,python,R} %程序清单关键字宏包
-                                        \\lstset{language=C,tabsize=4, keepspaces=true,
-                                            breakindent=22pt,
-                                            numbers=left,stepnumber=1,numberstyle=\\tiny,
-                                            basicstyle=\\footnotesize,
-                                            showspaces=false,
-                                            flexiblecolumns=true,
-                                            breaklines=true, breakautoindent=true,breakindent=4em,
-                                            escapeinside={\/\*@}{@\*\/}
-                                        }
-                                        \\usepackage{geometry}
-                                        \\usepackage{algorithm}
-                                        %% \\usepackage{algorithmic}
-                                        \\usepackage{algorithmicx}
-                                        \\usepackage{algpseudocode}
-                                        %% \\usepackage[linesnumbered,boxed]{algorithm2e}
-                                        \\DeclareMathOperator*{\\argmin}{argmin}
-                                        \\DeclareMathOperator*{\\argmax}{argmax}
-                                        \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
-                                        \\renewcommand{\\algorithmicensure}{\\textbf{Output:}}
-                                        \\usepackage{marvosym}
-                                        \\usepackage{wasysym}
-                                        \\usepackage{latexsym}
-                                        \\usepackage{natbib}
-                                        \\usepackage{fancyhdr}
-                                        \\usepackage{fancyvrb}
-                                        \\usepackage{fancybox}
-                                        \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
-                                                      linkcolor=blue,
-                                                      urlcolor=blue,
-                                                      anchorcolor=blue,
-                                                      citecolor=green,
-                                                      menucolor=blue]{hyperref}
-                                        \\usepackage{fontspec,xunicode,xltxtra}
-                                        %% \\usepackage{chngcntr}
-                                        %% \\counterwithout{equation}{chapter}
-                                        %% \\counterwithout{equation}{section}
-                                        %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
-                                        %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
-                                        %% \\setmonofont{Bitstream Vera Sans Mono}
-                                        %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
-                                        %% \\newfontinstance\\MONO{\\fontnamemono}
-                                        %% \\newcommand{\\mono}[1]{{\\MONO #1}}
-                                        %% \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
-                                        %% \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
-                                        \\hypersetup{unicode=true}
-                                        \\geometry{a4paper, textwidth=6.5in, textheight=10in,
-                                        marginparsep=7pt, marginparwidth=.6in}
-                                        \\definecolor{foreground}{RGB}{220,220,204}%浅灰
-                                        \\definecolor{background}{RGB}{62,62,62}%浅黑
-                                        \\definecolor{preprocess}{RGB}{250,187,249}%浅紫
-                                        \\definecolor{var}{RGB}{239,224,174}%浅肉色
-                                        \\definecolor{string}{RGB}{154,150,230}%浅紫色
-                                        \\definecolor{type}{RGB}{225,225,116}%浅黄
-                                        \\definecolor{function}{RGB}{140,206,211}%浅天蓝
-                                        \\definecolor{keyword}{RGB}{239,224,174}%浅肉色
-                                        \\definecolor{comment}{RGB}{180,98,4}%深褐色
-                                        \\definecolor{doc}{RGB}{175,215,175}%浅铅绿
-                                        \\definecolor{comdil}{RGB}{111,128,111}%深灰
-                                        \\definecolor{constant}{RGB}{220,162,170}%粉红
-                                        \\definecolor{buildin}{RGB}{127,159,127}%深铅绿
-                                        \\punctstyle{kaiming}
-                                        \\title{}
-                                        \\fancyfoot[C]{\\bfseries\\thepage}
-                                        \\chead{\\MakeUppercase\\sectionmark}
-                                        \\pagestyle{fancy}
-                                        \\tolerance=1000
-                                        [NO-DEFAULT-PACKAGES]
-                                        [NO-PACKAGES]"
+      \\usepackage{bm}
+      \\usepackage{amsfonts}
+      %% \\usepackage{CJK}
+      \\usepackage{epsfig,epsf}
+      \\usepackage[dvips]{graphicx}
+      \\usepackage[dvips]{graphics}
+      \\usepackage{amsmath}
+      \\usepackage{amsthm}
+      \\theoremstyle{plain}
+      \\newtheorem{thm}{Theorem}[section]
+      \\newtheorem{lem}[thm]{Lemma}
+      \\newtheorem{axm}[thm]{Axiom}
+      \\newtheorem{prop}[thm]{Proposition}
+      \\newtheorem*{cor}{Corollary}
+      \\theoremstyle{definition}
+      \\newtheorem{defn}{Definition}[section]
+      \\newtheorem{conj}{Conjecture}[section]
+      \\newtheorem{exmp}{Example}[section]
+      \\theoremstyle{remark}
+      \\newtheorem\*{rem}{Remark}
+      \\newtheorem\*{note}{Note}
+      \\usepackage{enumerate}
+      \\usepackage{paralist}
+      \\usepackage{amssymb}
+      \\usepackage{subfigure}
+      \\usepackage{indentfirst}
+      \\usepackage{multicol}    % 正文双栏
+      %% \\usepackage{picins}      % 图片嵌入段落宏包 比如照片 % Something will have error
+      \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
+      \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
+      %% \\usepackage{hyperref} % 文献引用的宏包
+      %% \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
+      \\usepackage{color, xcolor} % 可以产生有颜色的符号
+      \\usepackage{units} % 用于美化单位及分式
+      \\usepackage{tabularx} % 用于灵活地控制表格的生成
+      \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
+      %% \\usepackage{xcolor}
+      \\usepackage{array}
+      \\usepackage{cite}
+      \\usepackage{xeCJK}
+      \\usepackage{lmodern}
+      \\usepackage{verbatim}
+      \\usepackage{fixltx2e}
+      \\usepackage{longtable}
+      \\usepackage{multirow}
+      \\usepackage{float}
+      \\usepackage{tikz}
+      \\usepackage{wrapfig}
+      \\usepackage{soul}
+      \\usepackage{textcomp}
+      \\usepackage{listings}
+      \\lstloadlanguages{C,C++,matlab,mathematica,python,R} %程序清单关键字宏包
+      \\lstset{language=C,tabsize=4, keepspaces=true,
+      breakindent=22pt,
+      numbers=left,stepnumber=1,numberstyle=\\tiny,
+      basicstyle=\\footnotesize,
+      showspaces=false,
+      flexiblecolumns=true,
+      breaklines=true, breakautoindent=true,breakindent=4em,
+      escapeinside={\/\*@}{@\*\/}
+      }
+      \\usepackage{geometry}
+      \\usepackage{algorithm}
+      %% \\usepackage{algorithmic}
+      \\usepackage{algorithmicx}
+      \\usepackage{algpseudocode}
+      %% \\usepackage[linesnumbered,boxed]{algorithm2e}
+      \\DeclareMathOperator*{\\argmin}{argmin}
+      \\DeclareMathOperator*{\\argmax}{argmax}
+      \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
+      \\renewcommand{\\algorithmicensure}{\\textbf{Output:}}
+      \\usepackage{marvosym}
+      \\usepackage{wasysym}
+      \\usepackage{latexsym}
+      \\usepackage{natbib}
+      \\usepackage{fancyhdr}
+      \\usepackage{fancyvrb}
+      \\usepackage{fancybox}
+      \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
+                   linkcolor=blue,
+                   urlcolor=blue,
+                   anchorcolor=blue,
+                   citecolor=green,
+                   menucolor=blue]{hyperref}
+      \\usepackage{fontspec,xunicode,xltxtra}
+      %% \\usepackage{chngcntr}
+      %% \\counterwithout{equation}{chapter}
+      %% \\counterwithout{equation}{section}
+      %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
+      %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
+      %% \\setmonofont{Bitstream Vera Sans Mono}
+      %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
+      %% \\newfontinstance\\MONO{\\fontnamemono}
+      %% \\newcommand{\\mono}[1]{{\\MONO #1}}
+      %% \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
+      %% \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
+      \\hypersetup{unicode=true}
+      \\geometry{a4paper, textwidth=6.5in, textheight=10in,
+      marginparsep=7pt, marginparwidth=.6in}
+      \\definecolor{foreground}{RGB}{220,220,204}%浅灰
+      \\definecolor{background}{RGB}{62,62,62}%浅黑
+      \\definecolor{preprocess}{RGB}{250,187,249}%浅紫
+      \\definecolor{var}{RGB}{239,224,174}%浅肉色
+      \\definecolor{string}{RGB}{154,150,230}%浅紫色
+      \\definecolor{type}{RGB}{225,225,116}%浅黄
+      \\definecolor{function}{RGB}{140,206,211}%浅天蓝
+      \\definecolor{keyword}{RGB}{239,224,174}%浅肉色
+      \\definecolor{comment}{RGB}{180,98,4}%深褐色
+      \\definecolor{doc}{RGB}{175,215,175}%浅铅绿
+      \\definecolor{comdil}{RGB}{111,128,111}%深灰
+      \\definecolor{constant}{RGB}{220,162,170}%粉红
+      \\definecolor{buildin}{RGB}{127,159,127}%深铅绿
+      \\punctstyle{kaiming}
+      \\title{}
+      \\fancyfoot[C]{\\bfseries\\thepage}
+      \\chead{\\MakeUppercase\\sectionmark}
+      \\pagestyle{fancy}
+      \\tolerance=1000
+      [NO-DEFAULT-PACKAGES]
+      [NO-PACKAGES]"
                                         ("\\section{%s}" . "\\section*{%s}")
                                         ("\\subsection{%s}" . "\\subsection*{%s}")
                                         ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
@@ -630,27 +712,27 @@ typical word processor."
                    ;; beamer class, for presentations
                    '("beamer"
                      "\\documentclass[11pt,professionalfonts]{beamer}
-                              \\mode
-                              \\usetheme{{{{Warsaw}}}}
-                              %\\usecolortheme{{{{beamercolortheme}}}}
+      \\mode
+      \\usetheme{{{{Warsaw}}}}
+      %\\usecolortheme{{{{beamercolortheme}}}}
 
-                              \\beamertemplateballitem
-                              \\setbeameroption{show notes}
-                              \\usepackage{graphicx}
-                              \\usepackage{tikz}
-                              \\usepackage{xcolor}
-                              \\usepackage{xeCJK}
-                              \\usepackage{amsmath}
-                              \\usepackage{lmodern}
-                              \\usepackage{fontspec,xunicode,xltxtra}
-                              \\usepackage{polyglossia}
-                              %% \\setmainfont{Times New Roman}
-                              %% \\setCJKmainfont{DejaVu Sans YuanTi}
-                              %% \\setCJKmonofont{DejaVu Sans YuanTi Mono}
-                              \\usepackage{verbatim}
-                              \\usepackage{listings}
-                              \\institute{{{{beamerinstitute}}}}
-                              \\subject{{{{beamersubject}}}}"
+      \\beamertemplateballitem
+      \\setbeameroption{show notes}
+      \\usepackage{graphicx}
+      \\usepackage{tikz}
+      \\usepackage{xcolor}
+      \\usepackage{xeCJK}
+      \\usepackage{amsmath}
+      \\usepackage{lmodern}
+      \\usepackage{fontspec,xunicode,xltxtra}
+      \\usepackage{polyglossia}
+      %% \\setmainfont{Times New Roman}
+      %% \\setCJKmainfont{DejaVu Sans YuanTi}
+      %% \\setCJKmonofont{DejaVu Sans YuanTi Mono}
+      \\usepackage{verbatim}
+      \\usepackage{listings}
+      \\institute{{{{beamerinstitute}}}}
+      \\subject{{{{beamersubject}}}}"
                      ("\\section{%s}" . "\\section*{%s}")
                      ("\\begin{frame}[fragile]\\frametitle{%s}"
                       "\\end{frame}"
@@ -683,6 +765,9 @@ typical word processor."
          (ruby . t)
          (shell . t)
          (screen . nil)
+         (scala . t)
+         (clojure . t)
+         (css . t)
          ;; (,(if (locate-library "ob-sh") 'sh 'shell) . t)
          (sql . nil)
          (sqlite . t)
@@ -702,7 +787,7 @@ typical word processor."
       (defadvice org-html-paragraph (before org-html-paragraph-advice
                                             (paragraph contents info) activate)
         "Join consecutive Chinese lines into a single long line without
-unwanted space when exporting org-mode to html."
+      unwanted space when exporting org-mode to html."
         (let* ((origin-contents (ad-get-arg 1))
                (fix-regexp "[[:multibyte:]]")
                (fixed-contents
@@ -718,6 +803,8 @@ unwanted space when exporting org-mode to html."
       (setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
       (setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
       (setq org-agenda-file-private-note (expand-file-name "privnotes.org" org-agenda-dir))
+      (setq org-agenda-file-birthday (expand-file-name "birthday.org" org-agenda-dir))
+      (setq org-agenda-file-trash (expand-file-name "trash.org" org-agenda-dir))
       (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
@@ -761,18 +848,30 @@ unwanted space when exporting org-mode to html."
                "* %? :NOTE:\n  %i\n %U"
                :clock-resume t
                :empty-lines 1)
-              ("b" "Blog Ideas" entry (file+headline org-agenda-file-note "Blog Ideas")
-               "* TODO [#B] %?\n  %i\n %U"
+              ("T" "Tasks" entry (file+headline org-agenda-file-task "Tasks")
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("p" "Paper Ideas" entry (file+headline org-agenda-file-note "Paper Ideas")
-               "* TODO [#A] %?\n  %i\n %U"
+              ("C" "Calendar" entry (file+headline org-agenda-file-task "Tasks")
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               :clock-resume t
+               :empty-lines 1)
+              ("I" "Ideas" entry (file+headline org-agenda-file-task "Ideas")
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               :clock-resume t
+               :empty-lines 1)
+              ("b" "Blog Ideas" entry (file+headline org-agenda-file-task "Blog Ideas")
+               "** TODO [#B] %?\n  %i\n %U"
+               :clock-resume t
+               :empty-lines 1)
+              ("p" "Paper Ideas" entry (file+headline org-agenda-file-task "Paper Ideas")
+               "** TODO [#A] %?\n  %i\n %U"
                :clock-resume t
                :empty-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Notes" entry (file org-agenda-file-private-note)
-               "* %^{topic} %T \n%i%?\n")
+               "* %^{Topic} %T \n%i%?\n")
               ("w" "Work" entry (file+headline org-agenda-file-gtd "Papers")
                "* TODO [#A] %?\n  %i\n %U"
                :clock-resume t
@@ -812,7 +911,7 @@ unwanted space when exporting org-mode to html."
                 (search category-up))
               org-agenda-window-setup 'current-window
               org-agenda-custom-commands
-              `(("N" "Notes" tags "NOTE"
+              '(("N" "Notes" tags "NOTE"
                  ((org-agenda-overriding-header "Notes")
                   (org-tags-match-list-sublevels t)))
                 ("g" "GTD"
@@ -877,25 +976,132 @@ unwanted space when exporting org-mode to html."
                   ;;            ((org-agenda-overriding-header "All other TODOs")
                   ;;             (org-match-list-sublevels t)))
                   ))
-                ;;An entry without a cookie is treated just like priority ' B '.
-                ;;So when create new task, they are default 重要且紧急
-                ("w" . "任务安排")
-                ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
-                ("wb" "重要且不紧急的任务" tags-todo "-Weekly-Monthly-Daily+PRIORITY=\"B\"")
-                ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
+
                 ("b" "Blog" tags-todo "BLOG")
-                ("p" . "项目安排")
-                ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"papers\"")
-                ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"changchunli\"")
+
+                ("c" "Weekly schedule" agenda ""
+                 ((org-agenda-span 7) ;; agenda will start in week view
+                  (org-agenda-repeating-timestamp-show-all t) ;; ensures that repeating events appear on all relevant dates
+                  (org-agenda-skip-function '(org-agenda-skip-entry-if 'deadline 'scheduled))))
+                ("C" "Calendar" agenda ""
+                 ((org-agenda-span 7)
+                  (org-agenda-start-on-weekday 0)
+                  (org-agenda-time-grid nil)
+                  (org-agenda-repeating-timestamp-show-all t)
+                  (org-agenda-entry-types '(:timestamp :sexp))))
+
+                ("d" "Upcoming deadlines" agenda ""
+                 ((org-agenda-time-grid nil)
+                  (org-deadline-warning-days 60)
+                  ;; a slower way to do the same thing
+                  ;; (org-agenda-skip-function '(org-agenda-skip-entry-if 'notdeadline))
+                  (org-agenda-span 1)
+                  (org-agenda-entry-types '(:deadline))))
                 ("D" "Daily Action List"
                  ((agenda "" ((org-agenda-ndays 1)
                               (org-agenda-sorting-strategy
                                (quote ((agenda time-up priority-down tag-up))))
                               (org-deadline-warning-days 0)))))
+
+                ;; ("g" . "GTD contexts")
+                ;; ("go" "Office" tags-todo "office")
+                ;; ("gc" "Computer" tags-todo "computer")
+                ;; ("gp" "Phone" tags-todo "phone")
+                ;; ("gh" "Home" tags-todo "home")
+                ;; ("ge" "Errands" tags-todo "errands")
+                ;; ("G" "GTD Block Agenda"
+                ;;  ((tags-todo "office")
+                ;;   (tags-todo "computer")
+                ;;   (tags-todo "phone")
+                ;;   (tags-todo "home")
+                ;;   (tags-todo "errands"))
+                ;;  nil ;; i.e., no local settings
+                ;;  ;; exports block to this file with C-c a e
+                ;;  ("~/next-actions.html"))
+
+                ("H" "Office and Home Lists"
+                 ((agenda)
+                  (tags-todo "OFFICE")
+                  (tags-todo "HOME")
+                  (tags-todo "COMPUTER")
+                  (tags-todo "DVD")
+                  (tags-todo "READING")))
+
+                ;; ("O" "Office block agenda"
+                ;;  ((agenda "" ((org-agenda-span 1)))
+                ;;   ;; limits the agenda display to a single day
+                ;;   (tags-todo "+PRIORITY=\"A\"")
+                ;;   (tags-todo "computer|office|phone")
+                ;;   (tags "project+CATEGORY=\"elephants\"")
+                ;;   (tags "review" ((org-agenda-files '("~/org/circuspeanuts.org"))))
+                ;;   ;; limits the tag search to the file circuspeanuts.org
+                ;;   (todo "WAITING"))
+                ;;  ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
+
+                ("p" . "项目安排")
+                ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"papers\"")
+                ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"changchunli\"")
+
+                ("P" . "Priorities")
+                ("Pa" "A items" tags-todo "+PRIORITY=\"A\"")
+                ("Pb" "B items" tags-todo "+PRIORITY=\"B\"")
+                ("Pc" "C items" tags-todo "+PRIORITY=\"C\"")
+
+                ;; ("P" "Printed agenda"
+                ;;  ((agenda "" ((org-agenda-span 7) ;; overview of appointments
+                ;;               (org-agenda-start-on-weekday nil) ;; calendar begins today
+                ;;               (org-agenda-repeating-timestamp-show-all t)
+                ;;               (org-agenda-entry-types '(:timestamp :sexp))))
+                ;;   (agenda "" ((org-agenda-span 1) ; daily agenda
+                ;;               (org-deadline-warning-days 7) ; 7 day advanced warning for deadlines
+                ;;               (org-agenda-todo-keyword-format "[ ]")
+                ;;               (org-agenda-scheduled-leaders '("" ""))
+                ;;               (org-agenda-prefix-format "%t%s")))
+                ;;   (todo "TODO" ;; todos sorted by context
+                ;;         ((org-agenda-prefix-format "[ ] %T: ")
+                ;;          (org-agenda-sorting-strategy '(tag-up priority-down))
+                ;;          (org-agenda-todo-keyword-format "")
+                ;;          (org-agenda-overriding-header "\nTasks by Context\n------------------\n"))))
+                ;;  ((org-agenda-with-colors nil)
+                ;;   (org-agenda-compact-blocks t)
+                ;;   (org-agenda-remove-tags t)
+                ;;   (ps-number-of-columns 2)
+                ;;   (ps-landscape-mode t))
+                ;;  ("~/agenda.ps"))
+
+                ;; ("Q" . "Custom queries") ;; gives label to "Q"
+                ;; ("Qa" "Archive search" search ""
+                ;;  ((org-agenda-files (file-expand-wildcards "~/archive/*.org"))))
+                ;; ("Qw" "Website search" search ""
+                ;;  ((org-agenda-files (file-expand-wildcards "~/website/*.org"))))
+                ;; ("Qb" "Projects and Archive" search ""
+                ;;  ((org-agenda-text-search-extra-files (file-expand-wildcards "~/archive/*.org"))))
+                ;; ;; searches both projects and archive directories
+                ;; ("QA" "Archive tags search" org-tags-view ""
+                ;;  ((org-agenda-files (file-expand-wildcards "~/archive/*.org"))))
+
+                ;; An entry without a cookie is treated just like priority ' B '.
+                ;; So when create new task, they are default 重要且紧急
+                ("w" . "任务安排")
+                ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
+                ("wb" "重要且不紧急的任务" tags-todo "-Weekly-Monthly-Daily+PRIORITY=\"B\"")
+                ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
+
                 ("W" "Weekly Review"
-                 ((stuck "") ;; review stuck projects as designated by org-stuck-projects
-                  (tags-todo "PROJECT") ;; review all projects (assuming you use todo keywords to designate projects)
-                  )))))
+                 (((agenda "" ((org-agenda-span 7))) ; review upcoming deadlines and appointments
+                                        ; type "l" in the agenda to review logged items
+                   (stuck "") ;; review stuck projects as designated by org-stuck-projects
+                   (tags-todo "PROJECT") ;; review all projects (assuming you use
+                   ;; todo keywords to designate projects)
+                   (todo "SOMEDAY")       ; review someday/maybe items
+                   (todo "WAITING")))   ; review waiting items
+                 )
+
+                ("x" "With deadline columns" alltodo ""
+                 ((org-agenda-overriding-columns-format "%20ITEM %DEADLINE")
+                  (org-agenda-view-columns-initially t)))
+                ;; limits agenda view to timestamped items
+                )))
 
 
       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
@@ -903,14 +1109,14 @@ unwanted space when exporting org-mode to html."
 
       (defvar zilongshanren-website-html-preamble
         "<div class='nav'>
-<ul>
-<li><a href='http://zilongshanren.com'>博客</a></li>
-<li><a href='/index.html'>Wiki目录</a></li>
-</ul>
-</div>")
+      <ul>
+      <li><a href='http://zilongshanren.com'>博客</a></li>
+      <li><a href='/index.html'>Wiki目录</a></li>
+      </ul>
+      </div>")
       (defvar zilongshanren-website-html-blog-head
         " <link rel='stylesheet' href='css/site.css' type='text/css'/> \n
-    <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/worg.css\"/>")
+      <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/worg.css\"/>")
       (setq org-publish-project-alist
             `(
               ("blog-notes"
@@ -957,8 +1163,8 @@ unwanted space when exporting org-mode to html."
       ;; hack for org headline toc
       (defun org-html-headline (headline contents info)
         "Transcode a HEADLINE element from Org to HTML.
-CONTENTS holds the contents of the headline.  INFO is a plist
-holding contextual information."
+      CONTENTS holds the contents of the headline.  INFO is a plist
+      holding contextual information."
         (unless (org-element-property :footnote-section-p headline)
           (let* ((numberedp (org-export-numbered-headline-p headline info))
                  (numbers (org-export-get-headline-number headline info))

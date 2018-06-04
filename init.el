@@ -142,7 +142,9 @@ This function should only modify configuration layer settings."
      lsp lua major-modes
      (markdown :variables markdown-live-preview-engine 'vmd)
      ;; neotree
-     nginx nim nlinum notmuch octave
+     nginx nim
+     ;; nlinum
+     notmuch octave
      (olivetti :variables
                olivetti-body-width 0.6
                olivetti-hide-mode t)
@@ -700,10 +702,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-	(setq-default configuration-layer-elpa-archives
-      '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-        ("org-cn"   . "http://elpa.emacs-china.org/org/")
-        ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+  (setq-default configuration-layer-elpa-archives
+                '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+                  ("org-cn"   . "http://elpa.emacs-china.org/org/")
+                  ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
 
   ;; (setq debug-on-error t)
 
