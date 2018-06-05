@@ -90,7 +90,7 @@
                     (org-agenda-files :maxlevel . 5))))
       ;; config stuck project
       (setq org-stuck-projects
-            (quote ("TODO={.+}/-DONE" nil nil "SCHEDULED:\\|DEADLINE:")))
+            '("TODO={.+}/-DONE" nil nil "SCHEDULED:\\|DEADLINE:"))
 
       (setq org-agenda-inhibit-startup t) ;; ~50x speedup
       (setq org-agenda-span 'day)
@@ -380,7 +380,7 @@ typical word processor."
 
       (setq org-tag-alist
             (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
-                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i"))
+                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i") ("NOTES . ?n"))
                     (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
 
 
@@ -448,7 +448,9 @@ typical word processor."
       ;; (when (and *is-a-mac* (file-directory-p "/Applications/org-clock-statusbar.app"))
       ;;   (add-hook 'org-clock-in-hook
       ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
-      ;;                                 (concat "tell application \"org-clock-statusbar\" to clock in \"" org-clock-current-task "\""))))
+      ;;                                 (concat "tell application
+      ;;   \"org-clock-statusbar\" to clock in \"" org-clock-current-task
+      ;;   "\""))))
       ;;   (add-hook 'org-clock-out-hook
       ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
       ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
@@ -460,8 +462,8 @@ typical word processor."
       ;;     (let ((path (match-string 1 link))
       ;;           (page (and (match-beginning 2)
       ;;                      (string-to-number (match-string 2 link)))))
-      ;; Let Org mode open the file (in-emacs = 1) to ensure
-      ;; org-link-frame-setup is respected.
+      ;; ;; Let Org mode open the file (in-emacs = 1) to ensure
+      ;; ;; org-link-frame-setup is respected.
       ;;       (org-open-file path 1)
       ;;       (unless (derived-mode-p 'doc-view-mode)
       ;;         (doc-view-mode))
@@ -472,6 +474,7 @@ typical word processor."
                                   ;; keybinding for inserting code blocks
                                   (local-set-key (kbd "C-c i s")
                                                  'zilongshanren/org-insert-src-block)))
+
       (require 'ox-publish)
       (add-to-list 'org-latex-classes '("ctexart" "\\documentclass[11pt]{ctexart}
       [NO-DEFAULT-PACKAGES]
@@ -836,6 +839,44 @@ typical word processor."
       ;;                   (re-search-backward "^[0-9]+:[0-9]+-[0-9]+:[0-9]+ " nil t))
       ;;                 (insert (match-string 0))))))
 
+      ;; %[file]     Insert the contents of the file given by file.
+      ;; %(sexp)     Evaluate Elisp sexp and replace with the result.
+      ;; For convenience, %:keyword (see below) placeholders
+      ;; within the expression will be expanded prior to this.
+      ;; The sexp must return a string.
+      ;; %<...>      The result of format-time-string on the ... format specification.
+      ;; %t          Timestamp, date only.
+      ;; %T          Timestamp, with date and time.
+      ;; %u, %U      Like the above, but inactive timestamps.
+      ;; %i          Initial content, the region when capture is called while the
+      ;; region is active.
+      ;; The entire text will be indented like %i itself.
+      ;; %a          Annotation, normally the link created with org-store-link.
+      ;; %A          Like %a, but prompt for the description part.
+      ;; %l          Like %a, but only insert the literal link.
+      ;; %c          Current kill ring head.
+      ;; %x          Content of the X clipboard.
+      ;; %k          Title of the currently clocked task.
+      ;; %K          Link to the currently clocked task.
+      ;; %n          User name (taken from user-full-name).
+      ;; %f          File visited by current buffer when org-capture was called.
+      ;; %F          Full path of the file or directory visited by current buffer.
+      ;; %:keyword   Specific information for certain link types, see below.
+      ;; %^g         Prompt for tags, with completion on tags in target file.
+      ;; %^G         Prompt for tags, with completion all tags in all agenda files.
+      ;; %^t         Like %t, but prompt for date.  Similarly %^T, %^u, %^U.
+      ;; You may define a prompt like %^{Birthday}t.
+      ;; %^C         Interactive selection of which kill or clip to use.
+      ;; %^L         Like %^C, but insert as link.
+      ;; %^{prop}p   Prompt the user for a value for property prop.
+      ;; %^{prompt}  prompt the user for a string and replace this sequence with it.
+      ;; You may specify a default value and a completion table with
+      ;; %^{prompt|default|completion2|completion3...}.
+      ;; The arrow keys access a prompt-specific history.
+      ;; %\1 … %\N Insert the text entered at the Nth %^{prompt}, where N is
+      ;; a number, starting from 1.
+      ;; %?          After completing the template, position cursor here.
+
       ;; the %i would copy the selected text into the template
       ;; http://www.howardism.org/Technical/Emacs/journaling-org.html
       ;; add multi-file journal
@@ -911,7 +952,7 @@ typical word processor."
                 (search category-up))
               org-agenda-window-setup 'current-window
               org-agenda-custom-commands
-              '(("N" "Notes" tags "NOTE"
+              `(("N" "Notes" tags "NOTE"
                  ((org-agenda-overriding-header "Notes")
                   (org-tags-match-list-sublevels t)))
                 ("g" "GTD"
@@ -1093,8 +1134,8 @@ typical word processor."
                    (stuck "") ;; review stuck projects as designated by org-stuck-projects
                    (tags-todo "PROJECT") ;; review all projects (assuming you use
                    ;; todo keywords to designate projects)
-                   (todo "SOMEDAY")       ; review someday/maybe items
-                   (todo "WAITING")))   ; review waiting items
+                   (todo "SOMEDAY")      ; review someday/maybe items
+                   (todo "WAITING")))    ; review waiting items
                  )
 
                 ("x" "With deadline columns" alltodo ""
