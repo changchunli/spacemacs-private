@@ -115,7 +115,6 @@
             org-export-html-style "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyles.css\">"
             org-log-done (quote (done))
             org-reverse-note-order nil
-            org-time-stamp-rounding-minutes 5
             org-use-fast-todo-selection t
             org-use-tag-inheritance nil)
       (setq org-log-done t
