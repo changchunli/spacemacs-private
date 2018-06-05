@@ -881,11 +881,11 @@ typical word processor."
       ;; add multi-file journal
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
-               "* TODO [#B] %?\n  %i\n %U"
+               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
               ("n" "Notes" entry (file+headline org-agenda-file-note "Quick notes")
-               "* %? :NOTE:\n  %i\n %U"
+               "*  %^{Brief Description} :NOTE:\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
               ("T" "Tasks" entry (file+headline org-agenda-file-task "Tasks")
@@ -901,27 +901,27 @@ typical word processor."
                :clock-resume t
                :empty-lines 1)
               ("b" "Blog Ideas" entry (file+headline org-agenda-file-task "Blog Ideas")
-               "** TODO [#B] %?\n  %i\n %U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
               ("p" "Paper Ideas" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %?\n  %i\n %U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
+               :clock-resume t
+               :empty-lines 1)
+              ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Notes" entry (file org-agenda-file-private-note)
-               "* %^{Topic} %T \n%i%?\n")
-              ("w" "Work" entry (file+headline org-agenda-file-gtd "Papers")
-               "* TODO [#A] %?\n  %i\n %U"
-               :clock-resume t
-               :empty-lines 1)
+               "* %^{Topic} %T\n %i%?\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
                :clock-resume t
                :empty-lines 1)
               ("l" "Links" entry (file+headline org-agenda-file-note "Quick notes")
-               "* TODO [#C] %?\n  %i\n %a \n %U"
+               "* TODO [#C] %?\n  %i\n %a\n Added:%U"
                :clock-resume t
                :empty-lines 1)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
@@ -1130,11 +1130,12 @@ typical word processor."
                 ("W" "Weekly Review"
                  (((agenda "" ((org-agenda-span 7))) ; review upcoming deadlines and appointments
                                         ; type "l" in the agenda to review logged items
-                   (stuck "") ;; review stuck projects as designated by org-stuck-projects
+                   ;; review stuck projects as designated by org-stuck-projects
+                   ;; (stuck "")
                    (tags-todo "PROJECT") ;; review all projects (assuming you use
                    ;; todo keywords to designate projects)
-                   (todo "SOMEDAY")      ; review someday/maybe items
-                   (todo "WAITING")))    ; review waiting items
+                   (todo "SOMEDAY")     ;; review someday/maybe items
+                   (todo "WAITING")))   ;; review waiting items
                  )
 
                 ("x" "With deadline columns" alltodo ""
