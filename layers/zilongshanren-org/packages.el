@@ -345,7 +345,7 @@ typical word processor."
       (setq org-todo-keywords
             (quote ((sequence "TODO(t!)" "STARTED(s!)" "WAITING(w)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
                               "|" "DONE(d@/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
-                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "|" "DONE(d@/!)" "DELEGATED(e!)")
+                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "DELEGATED(e!)" "|" "DONE(d@/!)")
                     (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
                     (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")
                     (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)"

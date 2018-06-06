@@ -60,33 +60,35 @@ This function should only modify configuration layer settings."
      (better-defaults :variables
                       better-defaults-move-to-beginning-of-code-first t
                       better-defaults-move-to-end-of-code-first nil)
-     bibtex
+     bibtex bm
      (c-c++ :variables
+            c-c++-enable-auto-newline t
             c-c++-enable-clang-support t
             c-c++-enable-clang-format-on-save t
             c-c++-enable-rtags-support t
             c-c++-enable-google-style t
             c-c++-enable-google-newline t
             c-c++-default-mode-for-headers 'c++-mode)
+     cfengine
      (chinese :packages youdao-dictionary fcitx
               :variables
               chinese-enable-fcitx t
               chinese-enable-youdao-dict t)
      chrome
      (clojure :variables clojure-enable-fancify-symbols t)
-     cmake
+     cmake coffeescript
      (colors :variables
              colors-colorize-identifiers 'all
              colors-enable-nyan-cat-progress-bar t)
-     common-lisp command-log coq cscope csharp csv d dash deft
-     django docker elfeed
+     common-lisp command-log confluence coq crystal cscope csharp csv
+     d dash deft debug django docker elfeed
      (elm :variables
           elm-sort-imports-on-save t
           elm-format-on-save t
           elm-reactor-port "3000"
           elm-reactor-address "0.0.0.0")
      (elixir :variables flycheck-elixir-credo-strict t)
-     emacs-lisp emoji erc erlang
+     emacs-lisp emoji epub erc erlang
      (ess :variables
           ess-enable-smart-equals t
           ess-use-auto-complete t
@@ -95,7 +97,7 @@ This function should only modify configuration layer settings."
      evernote evil-commentary
      (evil-snipe :variables
                  evil-snipe-enable-alternate-f-and-t-behaviors t)
-     factor fasd faust finance floobits games geolocation
+     factor fasd faust finance floobits forth fsharp games geolocation
      (git :variables
           git-magit-status-fullscreen t
           magit-diff-refine-hunk 'all
@@ -131,7 +133,7 @@ This function should only modify configuration layer settings."
      jabber
      (java :variables java-backend 'meghanada)
      (javascript :variables javascript-disable-tern-port-files t)
-     jr
+     jr json
      ;; keyboard-layout
      kotlin
      (latex :variables
@@ -144,7 +146,9 @@ This function should only modify configuration layer settings."
      ;; neotree
      nginx nim
      ;; nlinum
-     notmuch octave
+     node notmuch
+     ;; ocaml
+     octave
      (olivetti :variables
                olivetti-body-width 0.6
                olivetti-hide-mode t)
@@ -176,7 +180,7 @@ This function should only modify configuration layer settings."
           osx-right-command-as 'left
           osx-right-option-as 'none
           osx-right-control-as 'left)
-     pandoc parinfer pass pdf-tools perl6 php
+     pandoc parinfer pass pdf perl6 php
      (plantuml :variables
                plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
                org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
@@ -206,7 +210,7 @@ This function should only modify configuration layer settings."
             scala-indent:use-javadoc-style t
             scala-auto-start-ensime nil
             scala-enable-eldoc-mode nil)
-     scheme search-engine selectric semantic
+     scheme search-engine selectric semantic semantic-web
      (shell :variables
             shell-enable-smart-eshell t
             shell-default-shell 'ansi-term
@@ -226,9 +230,9 @@ This function should only modify configuration layer settings."
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
-     systemd tern
+     systemd templates tern
      (terraform :variables terraform-auto-format-on-save t)
-     themes-megapack tmux
+     themes-megapack theming tmux
      (treemacs :variables
                treemacs-use-follow-mode t
                treemacs-use-filewatch-mode t
@@ -239,6 +243,7 @@ This function should only modify configuration layer settings."
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
      (typography :variables typography-enable-typographic-editing nil)
+     ;; unicode-fonts
      vagrant
      (version-control :variables
                       version-control-global-margin t
@@ -251,7 +256,9 @@ This function should only modify configuration layer settings."
      ;; NOTE: this bug has been fixed.
      vim-empty-lines vimscript
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     windows-scripts xkcd yaml)
+     wakatime web-beautify windows-scripts xclipboard xkcd yaml
+     ;; ycmd
+     )
 
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
