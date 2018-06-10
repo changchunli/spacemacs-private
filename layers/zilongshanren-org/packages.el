@@ -379,7 +379,7 @@ typical word processor."
 
       (setq org-tag-alist
             (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
-                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEAS . ?i") ("NOTES . ?n"))
+                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEA . ?i") ("NOTE . ?n"))
                     (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
 
 
@@ -801,9 +801,9 @@ typical word processor."
       ;; define the refile targets
       (setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
       (setq org-agenda-file-gtd (expand-file-name "gtd.org" org-agenda-dir))
-      (setq org-agenda-file-task (expand-file-name "task.org" org-agenda-dir))
+      (setq org-agenda-file-task (expand-file-name "tasks.org" org-agenda-dir))
       (setq org-agenda-file-journal (expand-file-name "journal.org" org-agenda-dir))
-      (setq org-agenda-file-code-snippet (expand-file-name "snippet.org" org-agenda-dir))
+      (setq org-agenda-file-code-snippet (expand-file-name "snippets.org" org-agenda-dir))
       (setq org-agenda-file-private-note (expand-file-name "privnotes.org" org-agenda-dir))
       (setq org-agenda-file-birthday (expand-file-name "birthday.org" org-agenda-dir))
       (setq org-agenda-file-trash (expand-file-name "trash.org" org-agenda-dir))
@@ -884,27 +884,27 @@ typical word processor."
                "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("n" "Notes" entry (file+headline org-agenda-file-note "Quick notes")
+              ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
                "*  %^{Brief Description} :NOTE:\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("T" "Tasks" entry (file+headline org-agenda-file-task "Tasks")
+              ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("C" "Calendar" entry (file+headline org-agenda-file-task "Tasks")
+              ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("I" "Ideas" entry (file+headline org-agenda-file-task "Ideas")
+              ("I" "Idea" entry (file+headline org-agenda-file-task "Ideas")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("b" "Blog Ideas" entry (file+headline org-agenda-file-task "Blog Ideas")
+              ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
-              ("p" "Paper Ideas" entry (file+headline org-agenda-file-task "Paper Ideas")
+              ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
                "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
                :clock-resume t
                :empty-lines 1)
@@ -914,13 +914,13 @@ typical word processor."
                :empty-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-              ("P" "Private Notes" entry (file org-agenda-file-private-note)
+              ("P" "Private Note" entry (file org-agenda-file-private-note)
                "* %^{Topic} %T\n %i%?\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
                :clock-resume t
                :empty-lines 1)
-              ("l" "Links" entry (file+headline org-agenda-file-note "Quick notes")
+              ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %?\n  %i\n %a\n Added:%U"
                :clock-resume t
                :empty-lines 1)
@@ -1078,7 +1078,7 @@ typical word processor."
                 ;;   (todo "WAITING"))
                 ;;  ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
 
-                ("p" . "项目安排")
+                ("p" . "Projects")
                 ("pw" tags-todo "PROJECT+WORK+CATEGORY=\"papers\"")
                 ("pl" tags-todo "PROJECT+DREAM+CATEGORY=\"changchunli\"")
 
@@ -1122,7 +1122,7 @@ typical word processor."
 
                 ;; An entry without a cookie is treated just like priority ' B '.
                 ;; So when create new task, they are default 重要且紧急
-                ("w" . "任务安排")
+                ("w" . "Works")
                 ("wa" "重要且紧急的任务" tags-todo "+PRIORITY=\"A\"")
                 ("wb" "重要且不紧急的任务" tags-todo "-Weekly-Monthly-Daily+PRIORITY=\"B\"")
                 ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
