@@ -379,7 +379,7 @@ typical word processor."
 
       (setq org-tag-alist
             (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
-                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEA . ?i") ("NOTE . ?n"))
+                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?P"))
                     (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
 
 

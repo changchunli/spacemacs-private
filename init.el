@@ -256,7 +256,8 @@ This function should only modify configuration layer settings."
      ;; NOTE: this bug has been fixed.
      vim-empty-lines vimscript
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     wakatime web-beautify windows-scripts xclipboard xkcd yaml
+     ;; wakatime
+     web-beautify windows-scripts xclipboard xkcd yaml
      ;; ycmd
      )
 
