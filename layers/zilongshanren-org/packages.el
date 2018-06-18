@@ -100,6 +100,7 @@
       (setq org-agenda-ndays 7)
       (setq org-timeline-show-empty-dates t)
       (setq org-insert-mode-line-in-empty-file t)
+      (setq org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
       (setq org-agenda-repeating-timestamp-show-all nil
             org-agenda-restore-windows-after-quit t
             org-agenda-show-all-dates t
@@ -132,11 +133,11 @@
 
       (if (fboundp 'org-link-set-parameters)
           (org-link-set-parameters "pdfview"
-                                   :follow #'org-pdfview-open
-                                   :complete #'org-pdfview-complete-link
-                                   :store #'org-pdfview-store-link)
-        (org-add-link-type "pdfview" 'org-pdfview-open)
-        (add-hook 'org-store-link-functions 'org-pdfview-store-link))
+                                   :follow #'zilongshanren-org/org-pdfview-open
+                                   :complete #'zilongshanren-org/org-pdfview-complete-link
+                                   :store #'zilongshanren-org/org-pdfview-store-link)
+        (org-add-link-type "pdfview" 'zilongshanren-org/org-pdfview-open)
+        (add-hook 'org-store-link-functions 'zilongshanren-org/org-pdfview-store-link))
 
 
       (defun zilongshanren-org/org-pdfview-open (link)
@@ -354,6 +355,16 @@ typical word processor."
 
       (setq org-todo-keyword-faces
             (quote (("NEXT" :inherit warning)
+                    ("TODO" :foreground "medium blue" :weight bold)
+                    ("RECUR" :foreground "cornflowerblue" :weight bold)
+                    ("APPT" :foreground "medium blue" :weight bold)
+                    ("NOTE" :foreground "brown" :weight bold)
+                    ("STARTED" :foreground "dark orange" :weight bold)
+                    ("WAITING" :foreground "red" :weight bold)
+                    ("DELEGATED" :foreground "dark violet" :weight bold)
+                    ("DEFERRED" :foreground "dark blue" :weight bold)
+                    ("SOMEDAY" :foreground "dark blue" :weight bold)
+                    ;; ("PROJECT" :foreground "#088e8e" :weight bold)
                     ("PROJECT" :inherit font-lock-string-face))))
 
       ;; Here are brief description of these contexts.
@@ -378,425 +389,11 @@ typical word processor."
       ;; a list of active projects.
 
       (setq org-tag-alist
-            (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h) ("TRAFFIC" . ?t) (:endgroup . nil)
-                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r) ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?P"))
+            (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h)
+                              ("TRAFFIC" . ?t) (:endgroup . nil)
+                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r)
+                              ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?P"))
                     (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-      ;; Org clock
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-      ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-      (org-clock-persistence-insinuate)
-      (setq org-clock-persist t)
-      (setq org-clock-in-resume t)
-
-      ;; Change task state to STARTED when clocking in
-      (setq org-clock-in-switch-to-state "STARTED")
-      ;; Save clock data and notes in the LOGBOOK drawer
-      (setq org-clock-into-drawer t)
-      ;; Save state changes in the LOGBOOK drawer
-      (setq org-log-into-drawer t)
-      ;; Removes clocked tasks with 0:00 duration
-      (setq org-clock-out-remove-zero-time-clocks t)
-      ;; Show the clocked-in task - if any - in the header line
-      (setq org-tags-match-list-sublevels nil)
-      ;; Show clock sums as hours and minutes, not "n days" etc.
-      (setq org-time-clocksum-format
-            '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
-
-      ;; Remove empty LOGBOOK drawers on clock out
-      (defun sanityinc/remove-empty-drawer-on-clock-out ()
-        (interactive)
-        (save-excursion
-          (beginning-of-line 0)
-          (org-remove-empty-drawer-at "LOGBOOK" (point))))
-
-      (with-eval-after-load 'org-clock
-        (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
-
-
-
-      ;; TODO: warn about inconsistent items, e.g. TODO inside non-PROJECT
-      ;; TODO: nested projects!
-
-
-;;; Archiving
-
-      (setq org-archive-mark-done nil)
-      (setq org-archive-location "%s_archive::* Archive")
-
-
-;;; Show the clocked-in task - if any - in the header line
-      (defun sanityinc/show-org-clock-in-header-line ()
-        (setq-default header-line-format '((" " org-mode-line-string " "))))
-
-      (defun sanityinc/hide-org-clock-from-header-line ()
-        (setq-default header-line-format nil))
-
-      (add-hook 'org-clock-in-hook 'sanityinc/show-org-clock-in-header-line)
-      (add-hook 'org-clock-out-hook 'sanityinc/hide-org-clock-from-header-line)
-      (add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
-
-      ;; (with-eval-after-load 'org-clock
-      ;;    (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
-      ;;    (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
-
-
-      ;; (when (and *is-a-mac* (file-directory-p "/Applications/org-clock-statusbar.app"))
-      ;;   (add-hook 'org-clock-in-hook
-      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
-      ;;                                 (concat "tell application
-      ;;   \"org-clock-statusbar\" to clock in \"" org-clock-current-task
-      ;;   "\""))))
-      ;;   (add-hook 'org-clock-out-hook
-      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
-      ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
-
-
-      ;; (with-eval-after-load 'org-docview
-      ;;   (defun org-docview-open (link)
-      ;;     (string-match "\\(.*?\\)\\(?:::\\([0-9]+\\)\\)?$" link)
-      ;;     (let ((path (match-string 1 link))
-      ;;           (page (and (match-beginning 2)
-      ;;                      (string-to-number (match-string 2 link)))))
-      ;; ;; Let Org mode open the file (in-emacs = 1) to ensure
-      ;; ;; org-link-frame-setup is respected.
-      ;;       (org-open-file path 1)
-      ;;       (unless (derived-mode-p 'doc-view-mode)
-      ;;         (doc-view-mode))
-      ;;       (when page (doc-view-goto-page page)))))
-
-      (add-hook 'org-mode-hook '(lambda ()
-                                  ;; keybinding for editing source code blocks
-                                  ;; keybinding for inserting code blocks
-                                  (local-set-key (kbd "C-c i s")
-                                                 'zilongshanren/org-insert-src-block)))
-
-      (require 'ox-publish)
-      (add-to-list 'org-latex-classes '("ctexart" "\\documentclass[11pt]{ctexart}
-      [NO-DEFAULT-PACKAGES]
-      \\usepackage[utf8]{inputenc}
-      \\usepackage[T1]{fontenc}
-      \\usepackage{fixltx2e}
-      \\usepackage{graphicx}
-      \\usepackage{longtable}
-      \\usepackage{float}
-      \\usepackage{wrapfig}
-      \\usepackage{rotating}
-      \\usepackage[normalem]{ulem}
-      \\usepackage{amsmath}
-      \\usepackage{amsthm}
-      %% \\newtheorem{Definition}{\\hspace{2em}定义}[chapter]
-      %% \\newtheorem{theorem}{\\hspace{2em}定理}[chapter]
-      %% \\newtheorem{lemma}{\\hspace{2em}引理}[chapter]
-      %% \\newtheorem{Proof}{证明}[chapter]
-      \\newtheoremstyle{mystyle}{3pt}{3pt}{\\kaishu}{0cm}{\\heiti2}{}{1em}{}  %% Theorem style
-      \\theoremstyle{mystyle}
-      \\newtheorem{definition}{\\hspace{2em}定义}[chapter]  %% 没有章, 只有节, 把上面的[chapter]改成[section]
-      \\newtheorem{theorem}[definition]{\\hspace{2em}定理}
-      \\newtheorem{axiom}[definition]{\\hspace{2em}公理}
-      \\newtheorem{lemma}[definition]{\\hspace{2em}引理}
-      \\newtheorem{proposition}[definition]{\\hspace{2em}命题}
-      \\newtheorem{corollary}[definition]{\\hspace{2em}推论}
-      \\newtheorem{remark}{\\hspace{2em}注}[chapter]
-      \\usepackage{textcomp}
-      \\usepackage{marvosym}
-      \\usepackage{wasysym}
-      \\usepackage{amssymb}
-      \\usepackage{booktabs}
-      \\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}
-      \\tolerance=1000
-      \\usepackage{listings}
-      \\usepackage{xcolor}
-      \\lstset{
-      %行号
-      numbers=left,
-      %背景框
-      framexleftmargin=10mm,
-      frame=none,
-      %背景色
-      %backgroundcolor=\\color[rgb]{1,1,0.76},
-      backgroundcolor=\\color[RGB]{245,245,244},
-      %样式
-      keywordstyle=\\bf\\color{blue},
-      identifierstyle=\\bf,
-      numberstyle=\\color[RGB]{0,192,192},
-      commentstyle=\\it\\color[RGB]{0,96,96},
-      stringstyle=\\rmfamily\\slshape\\color[RGB]{128,0,0},
-      %显示空格
-      showstringspaces=false
-      }
-      "
-                                        ("\\section{%s}" . "\\section*{%s}")
-                                        ("\\subsection{%s}" . "\\subsection*{%s}")
-                                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-      ;; {{ export org-mode in Chinese into PDF
-      ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
-      ;; and you need install texlive-xetex on different platforms
-      ;; To install texlive-xetex:
-      ;;    `sudo USE="cjk" emerge texlive-xetex` on Gentoo Linux
-      ;; }}
-
-      (add-to-list 'org-latex-classes '("article" "\\documentclass[12pt,a4paper,german,normalheadings]{article}
-      \\usepackage{bm}
-      \\usepackage{amsfonts}
-      %% \\usepackage{CJK}
-      \\usepackage{epsfig,epsf}
-      \\usepackage[dvips]{graphicx}
-      \\usepackage[dvips]{graphics}
-      \\usepackage{amsmath}
-      \\usepackage{amsthm}
-      \\theoremstyle{plain}
-      \\newtheorem{thm}{Theorem}[section]
-      \\newtheorem{lem}[thm]{Lemma}
-      \\newtheorem{axm}[thm]{Axiom}
-      \\newtheorem{prop}[thm]{Proposition}
-      \\newtheorem*{cor}{Corollary}
-      \\theoremstyle{definition}
-      \\newtheorem{defn}{Definition}[section]
-      \\newtheorem{conj}{Conjecture}[section]
-      \\newtheorem{exmp}{Example}[section]
-      \\theoremstyle{remark}
-      \\newtheorem\*{rem}{Remark}
-      \\newtheorem\*{note}{Note}
-      \\usepackage{enumerate}
-      \\usepackage{paralist}
-      \\usepackage{amssymb}
-      \\usepackage{subfigure}
-      \\usepackage{indentfirst}
-      \\usepackage{multicol}    % 正文双栏
-      %% \\usepackage{picins}      % 图片嵌入段落宏包 比如照片 % Something will have error
-      \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
-      \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
-      %% \\usepackage{hyperref} % 文献引用的宏包
-      %% \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
-      \\usepackage{color, xcolor} % 可以产生有颜色的符号
-      \\usepackage{units} % 用于美化单位及分式
-      \\usepackage{tabularx} % 用于灵活地控制表格的生成
-      \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
-      %% \\usepackage{xcolor}
-      \\usepackage{array}
-      \\usepackage{cite}
-      \\usepackage{xeCJK}
-      \\usepackage{lmodern}
-      \\usepackage{verbatim}
-      \\usepackage{fixltx2e}
-      \\usepackage{longtable}
-      \\usepackage{multirow}
-      \\usepackage{float}
-      \\usepackage{tikz}
-      \\usepackage{wrapfig}
-      \\usepackage{soul}
-      \\usepackage{textcomp}
-      \\usepackage{listings}
-      \\lstloadlanguages{C,C++,matlab,mathematica,python,R} %程序清单关键字宏包
-      \\lstset{language=C,tabsize=4, keepspaces=true,
-      breakindent=22pt,
-      numbers=left,stepnumber=1,numberstyle=\\tiny,
-      basicstyle=\\footnotesize,
-      showspaces=false,
-      flexiblecolumns=true,
-      breaklines=true, breakautoindent=true,breakindent=4em,
-      escapeinside={\/\*@}{@\*\/}
-      }
-      \\usepackage{geometry}
-      \\usepackage{algorithm}
-      %% \\usepackage{algorithmic}
-      \\usepackage{algorithmicx}
-      \\usepackage{algpseudocode}
-      %% \\usepackage[linesnumbered,boxed]{algorithm2e}
-      \\DeclareMathOperator*{\\argmin}{argmin}
-      \\DeclareMathOperator*{\\argmax}{argmax}
-      \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
-      \\renewcommand{\\algorithmicensure}{\\textbf{Output:}}
-      \\usepackage{marvosym}
-      \\usepackage{wasysym}
-      \\usepackage{latexsym}
-      \\usepackage{natbib}
-      \\usepackage{fancyhdr}
-      \\usepackage{fancyvrb}
-      \\usepackage{fancybox}
-      \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
-                   linkcolor=blue,
-                   urlcolor=blue,
-                   anchorcolor=blue,
-                   citecolor=green,
-                   menucolor=blue]{hyperref}
-      \\usepackage{fontspec,xunicode,xltxtra}
-      %% \\usepackage{chngcntr}
-      %% \\counterwithout{equation}{chapter}
-      %% \\counterwithout{equation}{section}
-      %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
-      %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
-      %% \\setmonofont{Bitstream Vera Sans Mono}
-      %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
-      %% \\newfontinstance\\MONO{\\fontnamemono}
-      %% \\newcommand{\\mono}[1]{{\\MONO #1}}
-      %% \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
-      %% \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
-      \\hypersetup{unicode=true}
-      \\geometry{a4paper, textwidth=6.5in, textheight=10in,
-      marginparsep=7pt, marginparwidth=.6in}
-      \\definecolor{foreground}{RGB}{220,220,204}%浅灰
-      \\definecolor{background}{RGB}{62,62,62}%浅黑
-      \\definecolor{preprocess}{RGB}{250,187,249}%浅紫
-      \\definecolor{var}{RGB}{239,224,174}%浅肉色
-      \\definecolor{string}{RGB}{154,150,230}%浅紫色
-      \\definecolor{type}{RGB}{225,225,116}%浅黄
-      \\definecolor{function}{RGB}{140,206,211}%浅天蓝
-      \\definecolor{keyword}{RGB}{239,224,174}%浅肉色
-      \\definecolor{comment}{RGB}{180,98,4}%深褐色
-      \\definecolor{doc}{RGB}{175,215,175}%浅铅绿
-      \\definecolor{comdil}{RGB}{111,128,111}%深灰
-      \\definecolor{constant}{RGB}{220,162,170}%粉红
-      \\definecolor{buildin}{RGB}{127,159,127}%深铅绿
-      \\punctstyle{kaiming}
-      \\title{}
-      \\fancyfoot[C]{\\bfseries\\thepage}
-      \\chead{\\MakeUppercase\\sectionmark}
-      \\pagestyle{fancy}
-      \\tolerance=1000
-      [NO-DEFAULT-PACKAGES]
-      [NO-PACKAGES]"
-                                        ("\\section{%s}" . "\\section*{%s}")
-                                        ("\\subsection{%s}" . "\\subsection*{%s}")
-                                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-                                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
-                                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-      (setq org-latex-default-class "article")
-      (setq org-latex-pdf-process
-            '(
-              "xelatex -interaction nonstopmode -output-directory %o %f"
-              "xelatex -interaction nonstopmode -output-directory %o %f"
-              "xelatex -interaction nonstopmode -output-directory %o %f"
-              "rm -fr %b.out %b.log %b.tex auto"))
-
-      (setq org-latex-listings t)
-      ;; Options for \lset command（reference to listing Manual)
-      (setq org-latex-listings-options
-            '(
-              ("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
-              ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
-              ("identifierstyle" "\\color{doc}\\small\\mono")
-              ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
-              ("stringstyle" "\\color{string}\\small")            ; 字符串样式
-              ("showstringspaces" "false")              ; 字符串空格显示
-              ("numbers" "left")                        ; 行号显示
-              ("numberstyle" "\\color{preprocess}")     ; 行号样式
-              ("stepnumber" "1")                        ; 行号递增
-              ("backgroundcolor" "\\color{background}") ; 代码框背景色
-              ("tabsize" "4")                           ; TAB等效空格数
-              ("captionpos" "t")           ; 标题位置 top or buttom(t|b)
-              ("breaklines" "true")        ; 自动断行
-              ("breakatwhitespace" "true") ; 只在空格分行
-              ("showspaces" "false")       ; 显示空格
-              ("columns" "flexible")       ; 列样式
-              ("frame" "single")           ; 代码框：阴影盒
-              ("frameround" "tttt")        ; 代码框： 圆角
-              ("framesep" "0pt")
-              ("framerule" "8pt")
-              ("rulecolor" "\\color{background}")
-              ("fillcolor" "\\color{white}")
-              ("rulesepcolor" "\\color{comdil}")
-              ("framexleftmargin" "10mm")
-              ))
-
-      ;; 导出Beamer的设置
-      ;; allow for export=>beamer by placing #+LaTeX_CLASS: beamer in org files
-      ;;-----------------------------------------------------------------------------
-      (add-to-list 'org-latex-classes
-                   ;; beamer class, for presentations
-                   '("beamer"
-                     "\\documentclass[11pt,professionalfonts]{beamer}
-      \\mode
-      \\usetheme{{{{Warsaw}}}}
-      %\\usecolortheme{{{{beamercolortheme}}}}
-
-      \\beamertemplateballitem
-      \\setbeameroption{show notes}
-      \\usepackage{graphicx}
-      \\usepackage{tikz}
-      \\usepackage{xcolor}
-      \\usepackage{xeCJK}
-      \\usepackage{amsmath}
-      \\usepackage{lmodern}
-      \\usepackage{fontspec,xunicode,xltxtra}
-      \\usepackage{polyglossia}
-      %% \\setmainfont{Times New Roman}
-      %% \\setCJKmainfont{DejaVu Sans YuanTi}
-      %% \\setCJKmonofont{DejaVu Sans YuanTi Mono}
-      \\usepackage{verbatim}
-      \\usepackage{listings}
-      \\institute{{{{beamerinstitute}}}}
-      \\subject{{{{beamersubject}}}}"
-                     ("\\section{%s}" . "\\section*{%s}")
-                     ("\\begin{frame}[fragile]\\frametitle{%s}"
-                      "\\end{frame}"
-                      "\\begin{frame}[fragile]\\frametitle{%s}"
-                      "\\end{frame}")))
-
-      (setq ps-paper-type 'a4
-            ps-font-size 16.0
-            ps-print-header nil
-            ps-landscape-mode nil)
-
-      ;;reset subtask
-      (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))
-
-      ;; (add-hook 'org-after-todo-state-change-hook 'org-subtask-reset)
-
-      (setq org-plantuml-jar-path
-            (expand-file-name "~/.spacemacs.d/plantuml.jar"))
-      (setq org-ditaa-jar-path "~/.spacemacs.d/ditaa.jar")
-
-      (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((perl . t)
-         ;; (R . t)
-         (gnuplot . t)
-         (haskell . nil)
-         (ledger . t)
-         (ocaml . nil)
-         (octave . t)
-         (ruby . t)
-         (shell . t)
-         (screen . nil)
-         (scala . t)
-         (clojure . t)
-         (css . t)
-         ;; (,(if (locate-library "ob-sh") 'sh 'shell) . t)
-         (sql . nil)
-         (sqlite . t)
-         (dot . t)
-         (js . t)
-         (latex .t)
-         (python . t)
-         (emacs-lisp . t)
-         (matlab . t)
-         (plantuml . t)
-         (C . t)
-         (ditaa . t)))
-
-
-      (require 'ox-md nil t)
-      ;; copy from chinese layer
-      (defadvice org-html-paragraph (before org-html-paragraph-advice
-                                            (paragraph contents info) activate)
-        "Join consecutive Chinese lines into a single long line without
-      unwanted space when exporting org-mode to html."
-        (let* ((origin-contents (ad-get-arg 1))
-               (fix-regexp "[[:multibyte:]]")
-               (fixed-contents
-                (replace-regexp-in-string
-                 (concat
-                  "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
-          (ad-set-arg 1 fixed-contents)))
 
       ;; define the refile targets
       (setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
@@ -881,35 +478,38 @@ typical word processor."
       ;; add multi-file journal
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
-               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
                :clock-resume t
+               :prepend t
                :empty-lines 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
-               "*  %^{Brief Description} :NOTE:\n %?\n %i\n Added:%U"
+               "*  %^{Brief Description} :NOTE:\n %?\n %i\n :CREATED:  %U"
                :clock-resume t
+               :prepend t
                :empty-lines 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
                :clock-resume t
+               :prepend t
                :empty-lines 1)
               ("I" "Idea" entry (file+headline org-agenda-file-task "Ideas")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n Added:%U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
-               "** TODO [#B] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n Added:%U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
@@ -920,8 +520,14 @@ typical word processor."
                "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
                :clock-resume t
                :empty-lines 1)
+              ("p" "Protocol" entry
+               (file+headline "~/Documents/tasks/todo.txt" "Inbox")
+               "* NOTE %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED:  %U\n:URL:      %c\n")
+              ("L" "Protocol Link" entry
+               (file+headline "~/Documents/tasks/todo.txt" "Inbox")
+               "* NOTE %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED:  %U\n:URL:      %c\n")
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
-               "* TODO [#C] %?\n  %i\n %a\n Added:%U"
+               "* TODO [#C] %?\n  %i\n %a\n :CREATED:  %U"
                :clock-resume t
                :empty-lines 1)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
@@ -1128,14 +734,14 @@ typical word processor."
                 ("wc" "不重要且紧急的任务" tags-todo "+PRIORITY=\"C\"")
 
                 ("W" "Weekly Review"
-                 (((agenda "" ((org-agenda-span 7))) ; review upcoming deadlines and appointments
+                 ((agenda "" ((org-agenda-span 7))) ; review upcoming deadlines and appointments
                                         ; type "l" in the agenda to review logged items
-                   ;; review stuck projects as designated by org-stuck-projects
-                   ;; (stuck "")
-                   (tags-todo "PROJECT") ;; review all projects (assuming you use
-                   ;; todo keywords to designate projects)
-                   (todo "SOMEDAY")     ;; review someday/maybe items
-                   (todo "WAITING")))   ;; review waiting items
+                  ;; review stuck projects as designated by org-stuck-projects
+                  ;; (stuck "")
+                  (tags-todo "PROJECT") ;; review all projects (assuming you use
+                  ;; todo keywords to designate projects)
+                  (todo "SOMEDAY")     ;; review someday/maybe items
+                  (todo "WAITING"))   ;; review waiting items
                  )
 
                 ("x" "With deadline columns" alltodo ""
@@ -1143,6 +749,488 @@ typical word processor."
                   (org-agenda-view-columns-initially t)))
                 ;; limits agenda view to timestamped items
                 )))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+      ;; Org clock
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+      ;; Save the running clock and all clock history when exiting Emacs,
+      ;; load it on startup
+      (org-clock-persistence-insinuate)
+      (setq org-clock-persist t)
+      (setq org-clock-in-resume t)
+
+      ;; Change task state to STARTED when clocking in
+      (setq org-clock-in-switch-to-state "STARTED")
+      ;; Save clock data and notes in the LOGBOOK drawer
+      (setq org-clock-into-drawer t)
+      ;; Save state changes in the LOGBOOK drawer
+      (setq org-log-into-drawer t)
+      ;; Removes clocked tasks with 0:00 duration
+      (setq org-clock-out-remove-zero-time-clocks t)
+      ;; Show the clocked-in task - if any - in the header line
+      (setq org-tags-match-list-sublevels nil)
+      ;; Show clock sums as hours and minutes, not "n days" etc.
+      (setq org-time-clocksum-format
+            '(:hours "%d" :require-hours t :minutes ":%02d" :require-minutes t))
+
+      ;; Remove empty LOGBOOK drawers on clock out
+      (defun sanityinc/remove-empty-drawer-on-clock-out ()
+        (interactive)
+        (save-excursion
+          (beginning-of-line 0)
+          (org-remove-empty-drawer-at "LOGBOOK" (point))))
+
+      (with-eval-after-load 'org-clock
+        (add-hook 'org-clock-out-hook 'sanityinc/remove-empty-drawer-on-clock-out 'append))
+
+
+
+      ;; TODO: warn about inconsistent items, e.g. TODO inside non-PROJECT
+      ;; TODO: nested projects!
+
+
+;;; Archiving
+
+      (setq org-archive-mark-done nil)
+      (setq org-archive-location "%s_archive::* Archive")
+      (setq org-archive-save-context-info (quote (time category itags)))
+
+;;; Show the clocked-in task - if any - in the header line
+      (defun sanityinc/show-org-clock-in-header-line ()
+        (setq-default header-line-format '((" " org-mode-line-string " "))))
+
+      (defun sanityinc/hide-org-clock-from-header-line ()
+        (setq-default header-line-format nil))
+
+      (add-hook 'org-clock-in-hook 'sanityinc/show-org-clock-in-header-line)
+      (add-hook 'org-clock-out-hook 'sanityinc/hide-org-clock-from-header-line)
+      (add-hook 'org-clock-cancel-hook 'sanityinc/hide-org-clock-from-header-line)
+
+      ;; (with-eval-after-load 'org-clock
+      ;;    (define-key org-clock-mode-line-map [header-line mouse-2] 'org-clock-goto)
+      ;;    (define-key org-clock-mode-line-map [header-line mouse-1] 'org-clock-menu))
+
+
+      ;; (when (and *is-a-mac* (file-directory-p "/Applications/org-clock-statusbar.app"))
+      ;;   (add-hook 'org-clock-in-hook
+      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
+      ;;                                 (concat "tell application
+      ;;   \"org-clock-statusbar\" to clock in \"" org-clock-current-task
+      ;;   "\""))))
+      ;;   (add-hook 'org-clock-out-hook
+      ;;             (lambda () (call-process "/usr/bin/osascript" nil 0 nil "-e"
+      ;;                                 "tell application \"org-clock-statusbar\" to clock out"))))
+
+
+      ;; (with-eval-after-load 'org-docview
+      ;;   (defun org-docview-open (link)
+      ;;     (string-match "\\(.*?\\)\\(?:::\\([0-9]+\\)\\)?$" link)
+      ;;     (let ((path (match-string 1 link))
+      ;;           (page (and (match-beginning 2)
+      ;;                      (string-to-number (match-string 2 link)))))
+      ;; ;; Let Org mode open the file (in-emacs = 1) to ensure
+      ;; ;; org-link-frame-setup is respected.
+      ;;       (org-open-file path 1)
+      ;;       (unless (derived-mode-p 'doc-view-mode)
+      ;;         (doc-view-mode))
+      ;;       (when page (doc-view-goto-page page)))))
+
+      (add-hook 'org-mode-hook '(lambda ()
+                                  ;; keybinding for editing source code blocks
+                                  ;; keybinding for inserting code blocks
+                                  (local-set-key (kbd "C-c i s")
+                                                 'zilongshanren/org-insert-src-block)))
+
+      (require 'ox-publish)
+      (setq org-export-latex-classes
+            (quote
+             (
+              ;; ("article" "\\documentclass[11pt]{article}"
+              ;;  ("\\section{%s}" . "\\section*{%s}")
+              ;;  ("\\subsection{%s}" . "\\subsection*{%s}")
+              ;;  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+              ;;  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+              ;;  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+
+              ("linalg" "\\documentclass{article}
+\\usepackage{linalgjh}
+[DEFAULT-PACKAGES]
+[EXTRA]
+[PACKAGES]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+              ("report" "\\documentclass[11pt]{report}"
+               ("\\part{%s}" . "\\part*{%s}")
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+              ("book" "\\documentclass[11pt]{book}"
+               ("\\part{%s}" . "\\part*{%s}")
+               ("\\chapter{%s}" . "\\chapter*{%s}")
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+              ;; ("beamer" "\\documentclass{beamer}" org-beamer-sectioning)
+              )))
+      (setq org-latex-default-packages-alist
+            (quote
+             (("T1" "fontenc" t)
+              ("" "fixltx2e" nil)
+              ("" "graphicx" t)
+              ("" "longtable" nil)
+              ("" "float" nil)
+              ("" "wrapfig" nil)
+              ("" "rotating" nil)
+              ("normalem" "ulem" t)
+              ("" "amsmath" t)
+              ("" "textcomp" t)
+              ("" "marvosym" t)
+              ("" "wasysym" t)
+              ("" "amssymb" t)
+              ("" "hyperref" nil)
+              "\\tolerance=1000")))
+
+      (add-to-list 'org-latex-classes '("ctexart" "\\documentclass[11pt]{ctexart}
+      [NO-DEFAULT-PACKAGES]
+      \\usepackage[utf8]{inputenc}
+      \\usepackage[T1]{fontenc}
+      \\usepackage{fixltx2e}
+      \\usepackage{graphicx}
+      \\usepackage{longtable}
+      \\usepackage{float}
+      \\usepackage{wrapfig}
+      \\usepackage{rotating}
+      \\usepackage[normalem]{ulem}
+      \\usepackage{amsmath}
+      \\usepackage{amsthm}
+      %% \\newtheorem{Definition}{\\hspace{2em}定义}[chapter]
+      %% \\newtheorem{theorem}{\\hspace{2em}定理}[chapter]
+      %% \\newtheorem{lemma}{\\hspace{2em}引理}[chapter]
+      %% \\newtheorem{Proof}{证明}[chapter]
+      \\newtheoremstyle{mystyle}{3pt}{3pt}{\\kaishu}{0cm}{\\heiti2}{}{1em}{}  %% Theorem style
+      \\theoremstyle{mystyle}
+      \\newtheorem{definition}{\\hspace{2em}定义}[chapter]  %% 没有章, 只有节, 把上面的[chapter]改成[section]
+      \\newtheorem{theorem}[definition]{\\hspace{2em}定理}
+      \\newtheorem{axiom}[definition]{\\hspace{2em}公理}
+      \\newtheorem{lemma}[definition]{\\hspace{2em}引理}
+      \\newtheorem{proposition}[definition]{\\hspace{2em}命题}
+      \\newtheorem{corollary}[definition]{\\hspace{2em}推论}
+      \\newtheorem{remark}{\\hspace{2em}注}[chapter]
+      \\usepackage{textcomp}
+      \\usepackage{marvosym}
+      \\usepackage{wasysym}
+      \\usepackage{amssymb}
+      \\usepackage{booktabs}
+      \\usepackage[colorlinks,linkcolor=black,anchorcolor=black,citecolor=black]{hyperref}
+      \\tolerance=1000
+      \\usepackage{listings}
+      \\usepackage{xcolor}
+      \\lstset{
+      %行号
+      numbers=left,
+      %背景框
+      framexleftmargin=10mm,
+      frame=none,
+      %背景色
+      %backgroundcolor=\\color[rgb]{1,1,0.76},
+      backgroundcolor=\\color[RGB]{245,245,244},
+      %样式
+      keywordstyle=\\bf\\color{blue},
+      identifierstyle=\\bf,
+      numberstyle=\\color[RGB]{0,192,192},
+      commentstyle=\\it\\color[RGB]{0,96,96},
+      stringstyle=\\rmfamily\\slshape\\color[RGB]{128,0,0},
+      %显示空格
+      showstringspaces=false
+      }
+      "
+                                        ("\\section{%s}" . "\\section*{%s}")
+                                        ("\\subsection{%s}" . "\\subsection*{%s}")
+                                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+      ;; {{ export org-mode in Chinese into PDF
+      ;; @see http://freizl.github.io/posts/tech/2012-04-06-export-orgmode-file-in-Chinese.html
+      ;; and you need install texlive-xetex on different platforms
+      ;; To install texlive-xetex:
+      ;;    `sudo USE="cjk" emerge texlive-xetex` on Gentoo Linux
+      ;; }}
+
+      (add-to-list 'org-latex-classes '("article" "\\documentclass[12pt,a4paper,german,normalheadings]{article}
+      \\usepackage{bm}
+      \\usepackage{amsfonts}
+      %% \\usepackage{CJK}
+      \\usepackage{epsfig,epsf}
+      \\usepackage[dvips]{graphicx}
+      \\usepackage[dvips]{graphics}
+      \\usepackage{amsmath}
+      \\usepackage{amsthm}
+      \\theoremstyle{plain}
+      \\newtheorem{thm}{Theorem}[section]
+      \\newtheorem{lem}[thm]{Lemma}
+      \\newtheorem{axm}[thm]{Axiom}
+      \\newtheorem{prop}[thm]{Proposition}
+      \\newtheorem*{cor}{Corollary}
+      \\theoremstyle{definition}
+      \\newtheorem{defn}{Definition}[section]
+      \\newtheorem{conj}{Conjecture}[section]
+      \\newtheorem{exmp}{Example}[section]
+      \\theoremstyle{remark}
+      \\newtheorem\*{rem}{Remark}
+      \\newtheorem\*{note}{Note}
+      \\usepackage{enumerate}
+      \\usepackage{paralist}
+      \\usepackage{amssymb}
+      \\usepackage{subfigure}
+      \\usepackage{indentfirst}
+      \\usepackage{multicol}    % 正文双栏
+      %% \\usepackage{picins}      % 图片嵌入段落宏包 比如照片 % Something will have error
+      \\usepackage{abstract}    % 2栏文档，一栏摘要及关键字宏包
+      \\usepackage{anysize} % 对于像 book 等双面版式来说，这里的 left 和 right 再奇偶页会互换。
+      %% \\usepackage{hyperref} % 文献引用的宏包
+      %% \\usepackage{listings}\\lstloadlanguages{C,C++,matlab,mathematica} %程序清单关键字宏包
+      \\usepackage{color, xcolor} % 可以产生有颜色的符号
+      \\usepackage{units} % 用于美化单位及分式
+      \\usepackage{tabularx} % 用于灵活地控制表格的生成
+      \\usepackage{mathrsfs} % 用于产生一种数学用的花体字
+      %% \\usepackage{xcolor}
+      \\usepackage{array}
+      \\usepackage{cite}
+      \\usepackage{xeCJK}
+      \\usepackage{lmodern}
+      \\usepackage{verbatim}
+      \\usepackage{fixltx2e}
+      \\usepackage{longtable}
+      \\usepackage{multirow}
+      \\usepackage{float}
+      \\usepackage{tikz}
+      \\usepackage{wrapfig}
+      \\usepackage{soul}
+      \\usepackage{textcomp}
+      \\usepackage{listings}
+      \\lstloadlanguages{C,C++,matlab,mathematica,python,R} %程序清单关键字宏包
+      \\lstset{language=C,tabsize=4, keepspaces=true,
+      breakindent=22pt,
+      numbers=left,stepnumber=1,numberstyle=\\tiny,
+      basicstyle=\\footnotesize,
+      showspaces=false,
+      flexiblecolumns=true,
+      breaklines=true, breakautoindent=true,breakindent=4em,
+      escapeinside={\/\*@}{@\*\/}
+      }
+      \\usepackage{geometry}
+      \\usepackage{algorithm}
+      %% \\usepackage{algorithmic}
+      \\usepackage{algorithmicx}
+      \\usepackage{algpseudocode}
+      %% \\usepackage[linesnumbered,boxed]{algorithm2e}
+      \\DeclareMathOperator*{\\argmin}{argmin}
+      \\DeclareMathOperator*{\\argmax}{argmax}
+      \\renewcommand{\\algorithmicrequire}{\\textbf{Input:}}
+      \\renewcommand{\\algorithmicensure}{\\textbf{Output:}}
+      \\usepackage{marvosym}
+      \\usepackage{wasysym}
+      \\usepackage{latexsym}
+      \\usepackage{natbib}
+      \\usepackage{fancyhdr}
+      \\usepackage{fancyvrb}
+      \\usepackage{fancybox}
+      \\usepackage[xetex,colorlinks=true,CJKbookmarks=true,
+                   linkcolor=blue,
+                   urlcolor=blue,
+                   anchorcolor=blue,
+                   citecolor=green,
+                   menucolor=blue]{hyperref}
+      \\usepackage{fontspec,xunicode,xltxtra}
+      %% \\usepackage{chngcntr}
+      %% \\counterwithout{equation}{chapter}
+      %% \\counterwithout{equation}{section}
+      %% \\setmainfont[BoldFont=Adobe Heiti Std]{Adobe Song Std}
+      %% \\setsansfont[BoldFont=Adobe Heiti Std]{AR PL UKai CN}
+      %% \\setmonofont{Bitstream Vera Sans Mono}
+      %% \\newcommand\\fontnamemono{AR PL UKai CN}%等宽字体
+      %% \\newfontinstance\\MONO{\\fontnamemono}
+      %% \\newcommand{\\mono}[1]{{\\MONO #1}}
+      %% \\setCJKmainfont[Scale=0.9]{Adobe Heiti Std}%中文字体
+      %% \\setCJKmonofont[Scale=0.9]{Adobe Heiti Std}
+      \\hypersetup{unicode=true}
+      \\geometry{a4paper, textwidth=6.5in, textheight=10in,
+      marginparsep=7pt, marginparwidth=.6in}
+      \\definecolor{foreground}{RGB}{220,220,204}%浅灰
+      \\definecolor{background}{RGB}{62,62,62}%浅黑
+      \\definecolor{preprocess}{RGB}{250,187,249}%浅紫
+      \\definecolor{var}{RGB}{239,224,174}%浅肉色
+      \\definecolor{string}{RGB}{154,150,230}%浅紫色
+      \\definecolor{type}{RGB}{225,225,116}%浅黄
+      \\definecolor{function}{RGB}{140,206,211}%浅天蓝
+      \\definecolor{keyword}{RGB}{239,224,174}%浅肉色
+      \\definecolor{comment}{RGB}{180,98,4}%深褐色
+      \\definecolor{doc}{RGB}{175,215,175}%浅铅绿
+      \\definecolor{comdil}{RGB}{111,128,111}%深灰
+      \\definecolor{constant}{RGB}{220,162,170}%粉红
+      \\definecolor{buildin}{RGB}{127,159,127}%深铅绿
+      \\punctstyle{kaiming}
+      \\title{}
+      \\fancyfoot[C]{\\bfseries\\thepage}
+      \\chead{\\MakeUppercase\\sectionmark}
+      \\pagestyle{fancy}
+      \\tolerance=1000
+      [NO-DEFAULT-PACKAGES]
+      [NO-PACKAGES]"
+                                        ("\\section{%s}" . "\\section*{%s}")
+                                        ("\\subsection{%s}" . "\\subsection*{%s}")
+                                        ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                        ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                        ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+      (setq org-latex-default-class "article")
+      (setq org-latex-pdf-process
+            '(
+              "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "xelatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              ;; "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              ;; "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              ;; "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+              "rm -fr %b.out %b.log %b.tex auto"))
+
+      (setq org-latex-listings t)
+      (setq org-latex-minted-options
+            (quote
+             (("fontfamily" "courier")
+              ("fontsize" "\\footnotesize")
+              ("linenos" "true")
+              ("xleftmargin" "1em"))))
+      ;; Options for \lset command（reference to listing Manual)
+      (setq org-latex-listings-options
+            '(
+              ("basicstyle" "\\color{foreground}\\small\\mono") ; 源代码字体样式
+              ("keywordstyle" "\\color{function}\\bfseries\\small\\mono") ; 关键词字体样式
+              ("identifierstyle" "\\color{doc}\\small\\mono")
+              ("commentstyle" "\\color{comment}\\small\\itshape") ; 批注样式
+              ("stringstyle" "\\color{string}\\small")            ; 字符串样式
+              ("showstringspaces" "false")              ; 字符串空格显示
+              ("numbers" "left")                        ; 行号显示
+              ("numberstyle" "\\color{preprocess}")     ; 行号样式
+              ("stepnumber" "1")                        ; 行号递增
+              ("backgroundcolor" "\\color{background}") ; 代码框背景色
+              ("tabsize" "4")                           ; TAB等效空格数
+              ("captionpos" "t")           ; 标题位置 top or buttom(t|b)
+              ("breaklines" "true")        ; 自动断行
+              ("breakatwhitespace" "true") ; 只在空格分行
+              ("showspaces" "false")       ; 显示空格
+              ("columns" "flexible")       ; 列样式
+              ("frame" "single")           ; 代码框：阴影盒
+              ("frameround" "tttt")        ; 代码框： 圆角
+              ("framesep" "0pt")
+              ("framerule" "8pt")
+              ("rulecolor" "\\color{background}")
+              ("fillcolor" "\\color{white}")
+              ("rulesepcolor" "\\color{comdil}")
+              ("framexleftmargin" "10mm")
+              ))
+
+      ;; 导出Beamer的设置
+      ;; allow for export=>beamer by placing #+LaTeX_CLASS: beamer in org files
+      ;;-----------------------------------------------------------------------------
+      (add-to-list 'org-latex-classes
+                   ;; beamer class, for presentations
+                   '("beamer"
+                     "\\documentclass[11pt,professionalfonts]{beamer}
+      \\mode
+      \\usetheme{{{{Warsaw}}}}
+      %\\usecolortheme{{{{beamercolortheme}}}}
+
+      \\beamertemplateballitem
+      \\setbeameroption{show notes}
+      \\usepackage{graphicx}
+      \\usepackage{tikz}
+      \\usepackage{xcolor}
+      \\usepackage{xeCJK}
+      \\usepackage{amsmath}
+      \\usepackage{lmodern}
+      \\usepackage{fontspec,xunicode,xltxtra}
+      \\usepackage{polyglossia}
+      %% \\setmainfont{Times New Roman}
+      %% \\setCJKmainfont{DejaVu Sans YuanTi}
+      %% \\setCJKmonofont{DejaVu Sans YuanTi Mono}
+      \\usepackage{verbatim}
+      \\usepackage{listings}
+      \\institute{{{{beamerinstitute}}}}
+      \\subject{{{{beamersubject}}}}"
+                     ("\\section{%s}" . "\\section*{%s}")
+                     ("\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}"
+                      "\\begin{frame}[fragile]\\frametitle{%s}"
+                      "\\end{frame}")))
+
+      (setq ps-paper-type 'a4
+            ps-font-size 16.0
+            ps-print-header nil
+            ps-landscape-mode nil)
+
+      ;;reset subtask
+      (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))
+
+      ;; (add-hook 'org-after-todo-state-change-hook 'org-subtask-reset)
+
+      (setq org-plantuml-jar-path
+            (expand-file-name "~/.spacemacs.d/plantuml.jar"))
+      (setq org-ditaa-jar-path "~/.spacemacs.d/ditaa.jar")
+
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((perl . t)
+         ;; (R . t)
+         (gnuplot . t)
+         (haskell . nil)
+         (ledger . t)
+         (ocaml . nil)
+         (octave . t)
+         (restclient . t)
+         (ruby . t)
+         (shell . t)
+         ;; (sh . t)
+         (screen . nil)
+         (scala . t)
+         (clojure . t)
+         (coq . t)
+         (calc . t)
+         (css . t)
+         ;; (,(if (locate-library "ob-sh") 'sh 'shell) . t)
+         (sql . nil)
+         (sqlite . t)
+         (dot . t)
+         (js . t)
+         (latex .t)
+         (python . t)
+         (emacs-lisp . t)
+         (matlab . t)
+         (plantuml . t)
+         (C . t)
+         (ditaa . t)))
+
+
+      (require 'ox-md nil t)
+      ;; copy from chinese layer
+      (defadvice org-html-paragraph (before org-html-paragraph-advice
+                                            (paragraph contents info) activate)
+        "Join consecutive Chinese lines into a single long line without
+      unwanted space when exporting org-mode to html."
+        (let* ((origin-contents (ad-get-arg 1))
+               (fix-regexp "[[:multibyte:]]")
+               (fixed-contents
+                (replace-regexp-in-string
+                 (concat
+                  "\\(" fix-regexp "\\) *\n *\\(" fix-regexp "\\)") "\\1\\2" origin-contents)))
+          (ad-set-arg 1 fixed-contents)))
 
 
       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
