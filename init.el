@@ -923,8 +923,8 @@ before packages are loaded."
                (add-to-list 'org-file-apps '("\\.pdf\\'" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))))
 
   (add-hook 'ess-mode-hook
-            (lambda ()
-              (ess-toggle-underscore nil)))
+            '(lambda ()
+               (ess-toggle-underscore nil)))
 
   ;; Draw box with IBM single line box characters. - activate with C-x d
   ;;
