@@ -520,11 +520,9 @@ typical word processor."
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
                :empty-lines 2)
-              ("p" "Protocol" entry
-               (file+headline "~/Documents/tasks/todo.txt" "Inbox")
+              ("p" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE %^{Brief Description} %^g\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
-              ("L" "Protocol Link" entry
-               (file+headline "~/Documents/tasks/todo.txt" "Inbox")
+              ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE %^{Brief Description} %^g\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
