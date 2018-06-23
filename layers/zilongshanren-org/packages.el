@@ -478,62 +478,62 @@ typical word processor."
       ;; add multi-file journal
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
-               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
+               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
+               :empty-lines 2)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
-               "*  %^{Brief Description} :NOTE:\n %?\n %i\n :CREATED:  %U"
+               "* NOTE  %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
+               :empty-lines 2)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
+               :empty-lines 2)
               ("I" "Idea" entry (file+headline org-agenda-file-task "Ideas")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED:  %U"
+               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
-               "** TODO [#B] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n  %i\n :CREATED:  %U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
-               "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+               "* %^{Brief Description} %^g\n %?\n #+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Note" entry (file org-agenda-file-private-note)
-               "* %^{Topic} %T\n %i%?\n")
+               "* NOTE %^{Topic} %T\n %i\n %?\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
-               "* TODO [#C] %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n %U"
+               "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("p" "Protocol" entry
                (file+headline "~/Documents/tasks/todo.txt" "Inbox")
-               "* NOTE %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED:  %U\n:URL:      %c\n")
+               "* NOTE %^{Brief Description} %^g\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry
                (file+headline "~/Documents/tasks/todo.txt" "Inbox")
-               "* NOTE %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED:  %U\n:URL:      %c\n")
+               "* NOTE %^{Brief Description} %^g\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
-               "* TODO [#C] %?\n  %i\n %a\n :CREATED:  %U"
+               "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines 2)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
                "* %?"
                :clock-resume t
-               :empty-lines 1)))
+               :empty-lines 2)))
 
 ;;; Agenda views
       ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
