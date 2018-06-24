@@ -11,14 +11,16 @@
 - [[#key-bindings][Key bindings]]
 
 * Description
-This layer adds support for goldendict.
+This layer adds support for =goldendict=.
 
 ** Features:
+- Use =goldendict= as the dictionary of emacs
+- Add key binding for =goldendict=
 
 * Install
 To use this configuration layer, add it to your =~/.spacemacs=. You will need to
 add =goldendict= to the existing =dotspacemacs-configuration-layers= list in this
-file.
+file. Here, we add =goldendict= to the existing =zilongshanren= list.
 
 * Key bindings
 
