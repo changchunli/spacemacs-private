@@ -481,37 +481,37 @@ typical word processor."
                "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 2)
+               :empty-lines 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE  %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 2)
+               :empty-lines 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 2)
+               :empty-lines 1)
               ("I" "Idea" entry (file+headline org-agenda-file-task "Ideas")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
                "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
                "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %^{Brief Description} %^g\n %?\n #+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Note" entry (file org-agenda-file-private-note)
@@ -519,7 +519,7 @@ typical word processor."
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("p" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE %^{Brief Description} %^g\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
@@ -527,11 +527,11 @@ typical word processor."
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 2)
+               :empty-lines 1)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
                "* %?"
                :clock-resume t
-               :empty-lines 2)))
+               :empty-lines 1)))
 
 ;;; Agenda views
       ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
