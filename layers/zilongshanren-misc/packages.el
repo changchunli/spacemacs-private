@@ -45,7 +45,7 @@
         browse-at-remote
         ))
 
-(defun zilongshanren-misc/init-browse-at-remote ()
+(defun zilongshanren-misc/post-init-browse-at-remote ()
   (use-package browse-at-remote
     :defer t
     :init (spacemacs/set-leader-keys "gho" 'browse-at-remote)))
@@ -97,7 +97,7 @@
   (spacemacs/set-leader-keys "ar" 'my-ranger))
 
 ;; copy from spacemacs helm layer
-(defun zilongshanren-misc/init-helm-ag ()
+(defun zilongshanren-misc/post-init-helm-ag ()
   (use-package helm-ag
     :defer t
     :init
