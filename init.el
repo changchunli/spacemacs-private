@@ -42,7 +42,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     zilongshanren
+     zilongshanren ct
      agda ansible asciidoc asm autohotkey
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
@@ -159,14 +159,15 @@ This function should only modify configuration layer settings."
           org-enable-reveal-js-support t
           org-enable-hugo-support t
           org-enable-org-journal-support t
-          org-journal-dir "~/org-notes/journal/"
+          org-journal-dir "~/Org/journal/"
           org-journal-file-format "%Y-%m-%d"
           org-journal-date-prefix "#+TITLE: "
           org-journal-date-format "%A, %B %d %Y"
           org-journal-time-prefix "* "
           org-journal-time-format ""
           org-bullets-bullet-list '("■" "◆" "▲" "▶")
-          org-projectile-file "~/org-notes/TODOs.org"
+          org-bullets-bullet-list '("◉" "○" "✸" "◻︎" "❀" "✡")
+          org-projectile-file "~/Org/TODOs.org"
           spaceline-org-clock-p t
           org-startup-indented t
           org-startup-folded t)
@@ -232,7 +233,12 @@ This function should only modify configuration layer settings."
                       syntax-checking-enable-tooltips nil)
      systemd templates tern
      (terraform :variables terraform-auto-format-on-save t)
-     themes-megapack theming tmux
+     themes-megapack
+     (theming :variables
+              theming-headings-inherit-from-default 'all
+              theming-headings-same-size 'all
+              theming-headings-bold 'all)
+     tmux
      (treemacs :variables
                treemacs-use-follow-mode t
                treemacs-use-filewatch-mode t
@@ -420,6 +426,7 @@ It should only modify the values of Spacemacs settings."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 5)
+                                (bookmark . 5)
                                 (projects . 7))
 
    ;; True if the home buffer should respond to resize events. (default t)
@@ -437,6 +444,7 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(dracula
                          jazz
+                         monokai
                          spacemacs-dark
                          solarized-dark
                          solarized-light
@@ -527,7 +535,7 @@ It should only modify the values of Spacemacs settings."
    ;; Size (in MB) above which spacemacs will prompt to open the large file
    ;; literally to avoid performance issues. Opening a file literally means that
    ;; no major mode or minor modes are active. (default is 1)
-   dotspacemacs-large-file-size 1
+   dotspacemacs-large-file-size 10
 
    ;; Location where to auto-save files. Possible values are `original' to
    ;; auto-save the file in-place, `cache' to auto-save the file to another
@@ -750,11 +758,147 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; ss proxy. But it will cause anacond-mode failed.
   (setq socks-server '("Default server" "127.0.0.1" 1080 5))
-  (setq evil-shift-round nil)
+  ;; (setq evil-shift-round nil)
   (setq byte-compile-warnings '(not obsolete))
   (setq warning-minimum-level :error)
   ;; hack for remove purpose mode
   (setq purpose-mode nil)
+
+  ;; -----------------------------------------------------------------
+  ;; copy from https://github.com/noinil/spacemacs_layers/blob/master/init.el
+  (setq-default
+   ;; Miscellaneous
+   python-shell-interpreter-args "--simple-prompt"
+   exec-path-from-shell-arguments (quote ("-l"))
+
+   ;; Backups
+   auto-save-interval 600
+   auto-save-timeout 300
+   backup-by-copying t
+   delete-old-versions t
+   kept-new-versions 5
+   kept-old-versions 2
+   make-backup-files nil
+
+   ;; Evil
+   evil-shift-round nil
+
+   ;; Ranger
+   ranger-override-dired nil
+
+   ;; Theme modifications
+   spacemacs-evil-cursors '(("normal" "DarkGoldenrod2" box)
+                            ("insert" "chartreuse3" (bar . 2))
+                            ("emacs" "SkyBlue2" box)
+                            ("hybrid" "SkyBlue2" (bar . 2))
+                            ("replace" "chocolate" (hbar . 2))
+                            ("evilified" "LightGoldenrod3" box)
+                            ("visual" "gray" (hbar . 2))
+                            ("motion" "dark cyan" box)
+                            ("lisp" "HotPink1" box)
+                            ("iedit" "firebrick1" box)
+                            ("iedit-insert" "firebrick1" (bar . 2)))
+
+   theming-modifications
+   '((spacemacs-dark
+      ;; font-lock-faces
+      (font-lock-builtin-face :foreground "#b55353" :weight bold)
+      (font-lock-comment-delimiter-face :foreground "#62562c")
+      (font-lock-comment-face :foreground "#61524f")
+      (font-lock-warning-face :underline nil)
+      (font-lock-constant-face :foreground "#6f8bad")
+      (font-lock-doc-face :foreground "#5165b8" :slant italic)
+      (font-lock-string-face :foreground "#0083d9" :slant italic)
+      (font-lock-function-name-face :foreground "#408a9c")
+      (font-lock-variable-name-face :foreground "#5f995f")
+      (font-lock-keyword-face :foreground "DeepSkyBlue" :weight bold)
+      (font-lock-negation-char-face :foreground "SlateBlue")
+      (font-lock-reference-face :foreground "SlateBlue")
+      (font-lock-type-face :foreground "#725da8")
+
+      ;; latex-font-faces
+      (font-latex-sectioning-0-face :foreground "SpringGreen")
+      (font-latex-sectioning-1-face :foreground "OrangeRed")
+      (font-latex-sectioning-2-face :foreground "DarkOrange")
+      (font-latex-sectioning-3-face :foreground "Orange")
+      (font-latex-sectioning-4-face :foreground "Gold")
+      (font-latex-sedate-face :foreground "SteelBlue")
+      (font-latex-slide-title-face :foreground "DeepSkyBlue")
+      (font-latex-math-face :foreground "LawnGreen")
+      (font-latex-string-face :inherit font-lock-string-face)
+
+      ;; mode-line-faces
+      (mode-line :box (:color "dark cyan" :line-width 1.2))
+      (powerline-active1 :box (:color "dark cyan" :line-width 1.2) :background "gray20")
+      (powerline-active2 :box (:color "dark cyan" :line-width 1.2) :background "#363A3A")
+      (mode-line-inactive :box (:color "DarkSlateGray" :line-width 1.2))
+      (powerline-inactive1 :box (:color "DarkSlateGray" :line-width 1.2))
+      (powerline-inactive2 :box (:color "DarkSlateGray" :line-width 1.2))
+
+      ;; flycheck-faces
+      (flycheck-fringe-error :background nil)
+      (flycheck-fringe-warning :background nil)
+      (flycheck-fringe-info :background nil)
+
+      ;; misc
+      (helm-prefarg :foreground "PaleGreen")
+      (helm-source-header :background "dark cyan")
+      (mode-line-buffer-id :foreground "Turquoise")
+      (which-key-key-face :foreground "dark cyan")
+      (term :foreground nil :background nil))
+
+     (monokai
+      ;; Font locking
+      (default :foreground "#b2b2b2")
+      (font-lock-builtin-face :foreground "#81a618" :weight bold)
+      (font-lock-comment-delimiter-face :foreground "#78766c")
+      (font-lock-comment-face :foreground "#6e684c" :slant italic)
+      (font-lock-warning-face :underline nil)
+      (font-lock-constant-face :foreground "#e1a7a1")
+      (font-lock-doc-face :foreground "#5165b8" :slant italic)
+      (font-lock-function-name-face :foreground "#aadbdd")
+      (font-lock-keyword-face :foreground "#a7c98b" :weight bold)
+      (font-lock-negation-char-face :foreground "#8657a1")
+      (font-lock-reference-face :foreground "#8657a1")
+      (font-lock-string-face :foreground "#1aaeed" :slant italic)
+      (font-lock-type-face :foreground "#7aa183")
+      (font-lock-variable-name-face :foreground "#b8bfed")
+      (helm-prefarg :foreground "PaleGreen")
+      (mode-line-buffer-id :foreground "Turquoise")
+      (which-key-key-face :foreground "dark cyan")
+      (web-mode-html-attr-value-face
+       :inherit font-lock-string-face :foreground nil)
+      (web-mode-html-attr-name-face
+       :inherit font-lock-variable-name-face :foreground nil)
+      (web-mode-html-tag-face
+       :inherit font-lock-builtin-face :foreground nil :weight bold)
+      (web-mode-html-tag-bracket-face
+       :inherit web-mode-html-tag-face :foreground nil)
+      (web-mode-comment-face
+       :inherit font-lock-comment-face :foreground nil)
+
+      (mode-line :box (:color "dark cyan" :line-width 1.2))
+      (powerline-active1 :box (:color "dark cyan" :line-width 1.2) :background "gray20")
+      (powerline-active2 :box (:color "dark cyan" :line-width 1.2) :background "#363A3A")
+      (mode-line-inactive :box (:color "DarkSlateGray" :line-width 1.2))
+      (powerline-inactive1 :box (:color "DarkSlateGray" :line-width 1.2))
+      (powerline-inactive2 :box (:color "DarkSlateGray" :line-width 1.2))
+
+      ;; Flycheck
+      (flycheck-fringe-error :background nil)
+      (flycheck-fringe-warning :background nil)
+      (flycheck-fringe-info :background nil)
+
+      ;; Other
+      (company-tooltip-annotation
+       :foreground "#ff9eb8" :background "#49483e")
+      (erc-timestamp-face
+       :inherit font-lock-comment-face :foreground nil)
+      (evil-search-highlight-persist-highlight-face
+       :background "#fc5fef" :foreground "#000000")
+      (region :background "#998f84")
+      (term :foreground nil :background nil))))
+  ;; ---------------------------------------------------------------
   )
 
 (defun dotspacemacs/user-load ()
@@ -817,6 +961,88 @@ before packages are loaded."
      ((t (:inherit company-tooltip :weight bold :underline nil))))
    '(company-tooltip-common-selection
      ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+
+  ;; -----------------------------------------------------------------
+  ;; copy from https://github.com/noinil/spacemacs_layers/blob/master/init.el
+  ;; Misc
+  (add-hook 'after-save-hook
+            'executable-make-buffer-file-executable-if-script-p)
+
+  ;; Auto-completion: company
+  (global-company-mode)
+
+  ;; Utility Definitions
+  (defun ct-define-key (keymap &rest bindings)
+    (declare (indent 1))
+    (while bindings
+      (define-key keymap (pop bindings) (pop bindings))))
+
+  ;; Variable Definitions
+  (setq-default
+   ;; Google Translate
+   google-translate-default-source-language "en"
+   google-translate-default-target-language "zh-CN"
+
+   ;; calendar
+   calendar-chinese-all-holidays-flag t
+   calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
+   calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"]
+   calendar-chinese-location-name "京都"
+   calendar-latitude [35 1 north]
+   calendar-longitude [135 46 east]
+   calendar-week-start-day 1
+
+   ;; editor-misc
+   isearch-allow-scroll t
+   line-spacing 0.2
+   tab-width 4
+   ruler-mode-current-column-char 86
+   size-indication-mode t
+   smartparens-global-mode t
+   paradox-github-token t
+
+   spaceline-window-numbers-unicode t
+   spaceline-workspace-numbers-unicode t
+   spaceline-hud-p t
+   sentence-end-double-space t
+   powerline-default-separator nil
+   x-underline-at-descent-line nil)
+
+  ;; Keybindings
+  (ct-define-key evil-normal-state-map
+                 (kbd "C-+") 'spacemacs/zoom-frm-in
+                 (kbd "C--") 'spacemacs/zoom-frm-out
+                 (kbd "C-_") 'spacemacs/zoom-frm-unzoom
+                 (kbd "C-n") 'evil-next-line-first-non-blank
+                 (kbd "C-p") 'evil-previous-line-first-non-blank)
+
+  (ct-define-key yas-minor-mode-map
+                 ;; (kbd "TAB") 'yas-expand
+                 (kbd "C-S-n") 'yas-next-field
+                 (kbd "C-S-p") 'yas-prev-field)
+
+  ;; File Format Association
+  (dolist (e '(("pdb" . text-mode)
+               ("gp" . gnuplot-mode)
+               ("C" . c++-mode)
+               ("h" . c++-mode)))
+    (push (cons (concat "\\." (car e) "\\'") (cdr e)) auto-mode-alist))
+
+  ;; Mode hooks
+  (add-hook 'makefile-mode-hook 'whitespace-mode)
+  (remove-hook 'prog-mode-hook 'spacemacs//show-trailing-whitespace)
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (when (> (buffer-size) 100000)
+                (turn-off-show-smartparens-mode))))
+
+  ;; Diminish
+  (when (eq 'hybrid dotspacemacs-editing-style)
+    (diminish 'hybrid-mode))
+  (with-eval-after-load 'helm-gtags
+    (diminish 'helm-gtags-mode))
+
+  ;; -------------------------------------------------------------------
 
   (add-hook 'doc-view-mode-hook 'auto-revert-mode)
 
@@ -973,6 +1199,47 @@ before packages are loaded."
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
+;; -----------------------------------------------------------------
+;; copy from https://github.com/noinil/spacemacs_layers/blob/master/init.el
+(custom-set-faces
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(erc-input-face ((t (:foreground "green yellow"))))
+ '(erc-my-nick-face ((t (:foreground "lime green" :weight ultra-bold))))
+ '(erc-notice-face ((t (:foreground "#7F9F7F" :weight semi-light))))
+ '(erc-prompt-face ((t (:foreground "yellow1" :weight extra-bold))))
+ '(flycheck-warning ((t (:underline (:color "lime green" :style wave)))))
+ '(info-title-1 ((t (:inherit default :height 1.0 :weight bold))))
+ '(info-title-2 ((t (:inherit default :height 1.0 :weight bold))))
+ '(info-title-3 ((t (:inherit default :height 1.0 :weight bold))))
+ '(info-title-4 ((t (:inherit default :height 1.0 :weight bold))))
+ '(isearch ((t (:foreground "green yellow" :weight bold))))
+ '(lazy-highlight ((t (:foreground "orange" :weight bold))))
+ '(markdown-header-face ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-1 ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-2 ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-3 ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-4 ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-5 ((t (:inherit default :height 1.0 :weight bold))))
+ '(markdown-header-face-6 ((t (:inherit default :height 1.0 :weight bold))))
+ '(rainbow-delimiters-depth-1-face ((t (:foreground "red"))))
+ '(rainbow-delimiters-depth-2-face ((t (:foreground "orange"))))
+ '(rainbow-delimiters-depth-3-face ((t (:foreground "yellow"))))
+ '(rainbow-delimiters-depth-4-face ((t (:foreground "green"))))
+ '(rainbow-delimiters-depth-5-face ((t (:foreground "magenta"))))
+ '(rainbow-delimiters-depth-6-face ((t (:foreground "cyan"))))
+ '(rainbow-delimiters-depth-7-face ((t (:foreground "purple"))))
+ '(rainbow-delimiters-depth-8-face ((t (:foreground "blue1"))))
+ '(rainbow-delimiters-depth-9-face ((t (:foreground "dark green"))))
+ '(rainbow-delimiters-depth-10-face ((t (:foreground "#B4CDCD"))))
+ '(ruler-mode-column-number ((t (:inherit ruler-mode-default :foreground "#B4CDCD"))))
+ '(ruler-mode-comment-column ((t (:inherit ruler-mode-default :foreground "#CD3700"))))
+ '(ruler-mode-default ((t (:inherit default :background "#1D2D1D" :foreground "seagreen" :box (:line-width 1 :color "#ADFF2F" :style released-button)))))
+ '(ruler-mode-fill-column ((t (:inherit ruler-mode-default :foreground "#CD3700"))))
+ '(ruler-mode-pad ((t (:inherit ruler-mode-default))))
+ '(show-paren-mismatch ((t (:foreground "green yellow" :weight bold))))
+ '(widget-field ((t (:background "dark gray" :foreground "blue3")))))
+;; -----------------------------------------------------------------
 
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.

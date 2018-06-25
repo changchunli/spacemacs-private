@@ -64,6 +64,7 @@ Each entry is either:
 (defun goldendict/init-goldendict ()
   "Initialize Goldendict."
   (use-package goldendict
+    :init
     ;; :ensure t
     ;; :bind ("C-c g" . goldendict-dwim)
     ))

@@ -122,12 +122,21 @@
             org-edit-timestamp-down-means-later t
             org-archive-mark-done nil
             org-hide-emphasis-markers t
-            org-catch-invisible-edits 'show
+            org-catch-invisible-edits 'show-and-error
+            org-cycle-level-faces nil
             org-export-coding-system 'utf-8
             org-fast-tag-selection-single-key 'expert
+            org-footnote-auto-adjust t
+            org-footnote-auto-label 'confirm
             org-html-validation-link nil
+            org-list-demote-modify-bullet '(("-" . "*") ("*" . "+") ("+" . "-"))
+            org-list-allow-alphabetical t
+            org-image-actual-width 1000
             org-export-kill-product-buffer-when-displayed t
+            org-M-RET-may-split-line
+            '((headline . nil) (item . nil) (table . nil))
             org-tags-column 80
+            org-startup-align-all-tables t
             org-support-shift-select t)
       ;; from https://github.com/markus1189/org-pdfview/blob/master/org-pdfview.el
 
@@ -344,11 +353,15 @@ typical word processor."
       ;; will be included in the task notes.
 
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t!)" "STARTED(s!)" "WAITING(w)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
+            (quote ((sequence "TODO(t!)" "STARTED(s!)" "WAITING(w)" "NEXT(n)"
+                              "APPT(a@/!)" "INPROGRESS(I)"
                               "|" "DONE(d@/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
-                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "DELEGATED(e!)" "|" "DONE(d@/!)")
+                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "DELEGATED(e!)"
+                              "STARTED(s!)" "|" "DONE(d@/!)")
                     (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
-                    (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(f)")
+                    (sequence "NEXT(n)" "SPECIFIED(i!)")
+                    ;; (sequence "SUBMITTED(s!)" "REVISION(v)" "|" "ACCEPTED(a!)" "PUBLISHED(p!)")
+                    (sequence "REPORT(r@)" "BUG(b@)" "KNOWNCAUSE(k@)" "|" "FIXED(f!)")
                     (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)"
                               "HOLD(h)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
             org-todo-repeat-to-state "NEXT")
@@ -403,8 +416,15 @@ typical word processor."
       (setq org-agenda-file-code-snippet (expand-file-name "snippets.org" org-agenda-dir))
       (setq org-agenda-file-private-note (expand-file-name "privnotes.org" org-agenda-dir))
       (setq org-agenda-file-birthday (expand-file-name "birthday.org" org-agenda-dir))
+      (setq org-agenda-file-anniversary (expand-file-name "anniversary.org" org-agenda-dir))
+      (setq org-agenda-file-MOOC (expand-file-name "MOOC.org" org-agenda-dir))
+      (setq org-agenda-file-papers (expand-file-name "papers.org" org-agenda-dir))
+      (setq org-agenda-file-projects (expand-file-name "projects.org" org-agenda-dir))
+      (setq org-agenda-file-reading (expand-file-name "reading.org" org-agenda-dir))
+      (setq org-agenda-file-finance (expand-file-name "finance.org" org-agenda-dir))
+      (setq org-agenda-file-records (expand-file-name "records.org" org-agenda-dir))
       (setq org-agenda-file-trash (expand-file-name "trash.org" org-agenda-dir))
-      (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
+      (setq org-default-notes-file (expand-file-name "notes.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
       (setq org-pomodoro-keep-killed-pomodoro-time t)
@@ -481,37 +501,42 @@ typical word processor."
                "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE  %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
+               :empty-lines-after 1)
+              ("r" "Reading" entry (file+headline org-agenda-file-note "Books")
+               "* %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               :clock-resume t
+               :prepend t
+               :empty-lines-after 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
                "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines 1)
-              ("I" "Idea" entry (file+headline org-agenda-file-task "Ideas")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               :empty-lines-after 1)
+              ("I" "Idea" entry (file+headline org-agenda-file-notes "Ideas")
+               "** %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
-               "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
                "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %^{Brief Description} %^g\n %?\n #+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Note" entry (file org-agenda-file-private-note)
@@ -519,7 +544,7 @@ typical word processor."
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("p" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
                "* NOTE %^{Brief Description} %^g\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
@@ -527,11 +552,11 @@ typical word processor."
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
-               :empty-lines 1)
+               :empty-lines-after 1)
               ("j" "Journal" entry (file+datetree org-agenda-file-journal)
-               "* %?"
+               "* %?\n Logged at %T\n %i\n"
                :clock-resume t
-               :empty-lines 1)))
+               :empty-lines-after 1)))
 
 ;;; Agenda views
       ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
@@ -792,7 +817,8 @@ typical word processor."
 ;;; Archiving
 
       (setq org-archive-mark-done nil)
-      (setq org-archive-location "%s_archive::* Archive")
+      ;; (setq org-archive-location "%s_archive::* Archive")
+      (setq org-archive-location "~/Org/archive.org::* From %s")
       (setq org-archive-save-context-info (quote (time category itags)))
 
 ;;; Show the clocked-in task - if any - in the header line
@@ -1209,6 +1235,7 @@ typical word processor."
          (js . t)
          (latex .t)
          (python . t)
+         (lisp . t)
          (emacs-lisp . t)
          (matlab . t)
          (plantuml . t)
@@ -1247,9 +1274,9 @@ typical word processor."
       (setq org-publish-project-alist
             `(
               ("blog-notes"
-               :base-directory "~/org-notes"
+               :base-directory "~/Org"
                :base-extension "org"
-               :publishing-directory "~/org-notes/public_html/"
+               :publishing-directory "~/Org/public_html/"
 
                :recursive t
                :html-head , zilongshanren-website-html-blog-head
@@ -1269,9 +1296,9 @@ typical word processor."
                :sitemap-file-entry-format "%t" ; %d to output date, we don't need date here
                )
               ("blog-static"
-               :base-directory "~/org-notes"
+               :base-directory "~/Org"
                :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-               :publishing-directory "~/org-notes/public_html/"
+               :publishing-directory "~/Org/public_html/"
                :recursive t
                :publishing-function org-publish-attachment
                )
@@ -1364,7 +1391,31 @@ typical word processor."
                         ;; `org-info.js'.
                         (if (eq (org-element-type first-content) 'section) contents
                           (concat (org-html-section first-content "" info) contents))
-                        (org-html--container headline info))))))))))
+                        (org-html--container headline info)))))))))
+  ;; copy from https://github.com/noinil/spacemacs_layers/blob/archlinux/layers/ct-org/packages.el
+  (custom-set-faces
+   '(org-document-title ((t (:inherit default :height 1.0 :weight bold))))
+   '(org-todo ((t (:foreground "Palevioletred2" :background nil :weight bold))))
+   '(org-done ((t (:foreground "green yellow" :background nil :weight bold))))
+   '(org-level-1 ((t (:inherit outline-1 :height 1.0 :foreground  "#3399CC" :weight bold))))
+   '(org-level-2 ((t (:inherit outline-2 :height 1.0 :foreground  "#2299BB" :weight bold))))
+   '(org-level-3 ((t (:inherit outline-3 :height 1.0 :foreground  "#1199AA"))))
+   '(org-level-4 ((t (:inherit outline-3 :height 1.0 :foreground  "#009999"))))
+   '(org-level-5 ((t (:inherit outline-3 :height 1.0 :foreground  "#009999"))))
+   '(org-level-6 ((t (:inherit outline-3 :height 1.0 :foreground  "#008888"))))
+   '(org-level-7 ((t (:inherit outline-3 :height 1.0 :foreground  "#007777"))))
+   '(org-level-8 ((t (:inherit outline-3 :height 1.0 :foreground  "#006666"))))
+   '(org-scheduled-today ((t (:foreground "Yellow" :height 1.0))))
+   '(org-scheduled-previously ((t (:foreground "DarkGoldenrod1"))))
+   '(org-checkbox-statistics-done ((t (:inherit org-done))))
+   '(org-checkbox-statistics-todo ((t (:inherit org-todo))))
+   '(org-agenda-date ((t (:foreground "DimGray"))))
+   '(org-agenda-date-today ((t (:foreground "DarkGray"))))
+   '(org-agenda-calendar-event ((t (:foreground "DeepSkyBlue"))))
+   '(org-agenda-current-time ((t (:foreground "DeepSkyBlue3"))) t)
+   '(org-agenda-done ((t (:foreground "SeaGreen" :height 1.0))))
+   '(org-time-grid ((t (:foreground "light slate gray")))))
+  )
 
 (defun zilongshanren-org/init-org-mac-link ()
   (use-package org-mac-link
@@ -1395,7 +1446,7 @@ typical word processor."
 (defun zilongshanren-org/init-plain-org-wiki ()
   (use-package plain-org-wiki
     :init
-    (setq pow-directory "~/org-notes")))
+    (setq pow-directory "~/Org")))
 
 (defun zilongshanren-org/init-worf ()
   (use-package worf
