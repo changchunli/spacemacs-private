@@ -353,17 +353,15 @@ typical word processor."
       ;; will be included in the task notes.
 
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t!)" "STARTED(s!)" "WAITING(w)" "NEXT(n)"
-                              "APPT(a@/!)" "INPROGRESS(I)"
+            (quote ((sequence "TODO(t!)" "STARTED(s!)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
                               "|" "DONE(d@/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
-                    (sequence "TODO(t!)" "FEEDBACK(F)" "VERIFY(V)" "DELEGATED(e!)"
-                              "STARTED(s!)" "|" "DONE(d@/!)")
-                    (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
-                    (sequence "NEXT(n)" "SPECIFIED(i!)")
-                    ;; (sequence "SUBMITTED(s!)" "REVISION(v)" "|" "ACCEPTED(a!)" "PUBLISHED(p!)")
+                    (sequence "FEEDBACK(F)" "VERIFY(v)" "DELEGATED(e!)")
+                    ;; (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
+                    ;; (sequence "NEXT(n)" "SPECIFIED(i!)")
+                    (sequence "SUBMITTED(U!)" "REVISION(V)" "|" "ACCEPTED(A!)" "PUBLISHED(P!)")
                     (sequence "REPORT(r@)" "BUG(b@)" "KNOWNCAUSE(k@)" "|" "FIXED(f!)")
-                    (sequence "WAITING(w@/!)" "SOMEDAY(S)" "DELEGATED(e!)"
-                              "HOLD(h)" "|" "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
+                    (sequence "WAITING(w@/!)" "SOMEDAY(S)" "HOLD(h)" "|"
+                              "CANCELLED(c@/!)" "MEETING(m)" "PHONE(p)")))
             org-todo-repeat-to-state "NEXT")
 
       (setq org-todo-keyword-faces
@@ -497,13 +495,13 @@ typical word processor."
       ;; http://www.howardism.org/Technical/Emacs/journaling-org.html
       ;; add multi-file journal
       (setq org-capture-templates
-            '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Workspace")
-               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+            '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
+               "* TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
-               "* NOTE  %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "* %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
@@ -533,8 +531,8 @@ typical word processor."
                "** TODO [#A] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)
-              ("w" "Work" entry (file+headline org-agenda-file-task "Papers")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+              ("w" "Paper" entry (file+headline org-agenda-file-task "Papers")
+               "** TODO [#A] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
