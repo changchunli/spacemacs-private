@@ -672,12 +672,13 @@ typical word processor."
                                (quote ((agenda time-up priority-down tag-up))))
                               (org-deadline-warning-days 0)))))
 
-                ;; ("g" . "GTD contexts")
-                ;; ("go" "Office" tags-todo "office")
-                ;; ("gc" "Computer" tags-todo "computer")
-                ;; ("gp" "Phone" tags-todo "phone")
-                ;; ("gh" "Home" tags-todo "home")
-                ;; ("ge" "Errands" tags-todo "errands")
+                ("G" . "GTD contexts")
+                ("Go" "Office" tags-todo "OFFICE")
+                ("Gc" "Computer" tags-todo "COMPUTER")
+                ("Gp" "Project" tags-todo "PROJECT")
+                ("Gh" "Home" tags-todo "HOME")
+                ("GP" "Paper" tags-todo "PAPER")
+
                 ;; ("G" "GTD Block Agenda"
                 ;;  ((tags-todo "office")
                 ;;   (tags-todo "computer")
@@ -692,6 +693,8 @@ typical word processor."
                  ((agenda)
                   (tags-todo "OFFICE")
                   (tags-todo "HOME")
+                  (tags-todo "PROJECT")
+                  (tags-todo "PAPER")
                   (tags-todo "COMPUTER")
                   (tags-todo "DVD")
                   (tags-todo "READING")))
@@ -763,8 +766,8 @@ typical word processor."
                   ;; (stuck "")
                   (tags-todo "PROJECT") ;; review all projects (assuming you use
                   ;; todo keywords to designate projects)
-                  (todo "SOMEDAY")     ;; review someday/maybe items
-                  (todo "WAITING"))   ;; review waiting items
+                  (todo "SOMEDAY")  ;; review someday/maybe items
+                  (todo "WAITING")) ;; review waiting items
                  )
 
                 ("x" "With deadline columns" alltodo ""
@@ -772,6 +775,34 @@ typical word processor."
                   (org-agenda-view-columns-initially t)))
                 ;; limits agenda view to timestamped items
                 )))
+
+      ;; (defun air-org-skip-subtree-if-priority (priority)
+      ;;   "Skip an agenda subtree if it has a priority of PRIORITY.
+      ;;    PRIORITY may be one of the characters ?A, ?B, or ?C."
+      ;;   (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+      ;;         (pri-value (* 1000 (- org-lowest-priority priority)))
+      ;;         (pri-current (org-get-priority (thing-at-point 'line t))))
+      ;;     (if (= pri-value pri-current)
+      ;;         subtree-end
+      ;;       nil)))
+
+      ;; (defun air-org-skip-subtree-if-habit ()
+      ;;   "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+      ;;   (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      ;;     (if (string= (org-entry-get nil "STYLE") "habit")
+      ;;         subtree-end
+      ;;       nil)))
+
+      ;; (setq org-agenda-custom-commands
+      ;;       '(("c" "Simple agenda view"
+      ;;          ((tags "PRIORITY=\"A\""
+      ;;                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+      ;;                  (org-agenda-overriding-header "High-priority unfinished tasks:")))
+      ;;           (agenda "")
+      ;;           (alltodo ""
+      ;;                    ((org-agenda-skip-function
+      ;;                      '(or (air-org-skip-subtree-if-priority ?A)
+      ;;                           (org-agenda-skip-if nil '(scheduled deadline))))))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -818,7 +849,7 @@ typical word processor."
 
       (setq org-archive-mark-done nil)
       ;; (setq org-archive-location "%s_archive::* Archive")
-      (setq org-archive-location "~/Org/archive.org::* From %s")
+      (setq org-archive-location "~/org/archive.org::* From %s")
       (setq org-archive-save-context-info (quote (time category itags)))
 
 ;;; Show the clocked-in task - if any - in the header line
@@ -1274,9 +1305,9 @@ typical word processor."
       (setq org-publish-project-alist
             `(
               ("blog-notes"
-               :base-directory "~/Org"
+               :base-directory "~/org"
                :base-extension "org"
-               :publishing-directory "~/Org/public_html/"
+               :publishing-directory "~/org/public_html/"
 
                :recursive t
                :html-head , zilongshanren-website-html-blog-head
@@ -1296,9 +1327,9 @@ typical word processor."
                :sitemap-file-entry-format "%t" ; %d to output date, we don't need date here
                )
               ("blog-static"
-               :base-directory "~/Org"
+               :base-directory "~/org"
                :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-               :publishing-directory "~/Org/public_html/"
+               :publishing-directory "~/org/public_html/"
                :recursive t
                :publishing-function org-publish-attachment
                )
@@ -1446,7 +1477,7 @@ typical word processor."
 (defun zilongshanren-org/init-plain-org-wiki ()
   (use-package plain-org-wiki
     :init
-    (setq pow-directory "~/Org")))
+    (setq pow-directory "~/org")))
 
 (defun zilongshanren-org/init-worf ()
   (use-package worf

@@ -1010,7 +1010,7 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
       :name "Org wiki preview"
       :command "python"
       :args '("-m" "SimpleHTTPServer" "8088")
-      :cwd "~/Org/public_html"
+      :cwd "~/org/public_html"
       :tags '(org-mode)
       :init (lambda () (browse-url "http://localhost:8088"))
       :kill-signal 'sigkill

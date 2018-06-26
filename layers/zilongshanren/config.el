@@ -8,8 +8,8 @@
   "blog-admin files location")
 
 (setq-default
- org-agenda-dir "~/Org"
- deft-dir "~/Org"
+ org-agenda-dir "~/org"
+ deft-dir "~/org"
  blog-admin-dir "~/william.com")
 
 ;;load sensitive data

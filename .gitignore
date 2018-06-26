@@ -4,3 +4,4 @@ yasmate/
 .DS_Store
 /layers/zilongshanren-misc/.DS_Store
 tags
+spacemacs.env
