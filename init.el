@@ -132,7 +132,9 @@ This function should only modify configuration layer settings."
      ;; ivy
      jabber
      (java :variables java-backend 'meghanada)
-     (javascript :variables javascript-disable-tern-port-files t)
+     (javascript :variables
+                 javascript-backend 'nil
+                 javascript-disable-tern-port-files t)
      jr json
      ;; keyboard-layout
      kotlin
@@ -285,7 +287,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages
    '(
-     ;; magit-gh-pulls magit-gitflow evil-mc realgud
+     ;; magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
      ;; evil-args evil-ediff evil-exchange evil-unimpaired
      ;; evil-indent-plus volatile-highlights smartparens
      ;; spaceline holy-mode skewer-mode rainbow-delimiters
@@ -1136,6 +1138,9 @@ before packages are loaded."
         (set-auto-mode)
       (fundamental-mode)))
   (spacemacs/set-leader-keys "otm" 'zilongshanren/toggle-major-mode)
+
+  (setq inhibit-compacting-font-caches t)
+  (global-display-line-numbers-mode -1)
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
 
