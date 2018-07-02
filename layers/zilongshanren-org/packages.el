@@ -374,7 +374,7 @@ typical word processor."
                     ("DONE" :foreground "dark green" :background "azure" :weight bold)
                     ("RECUR" :foreground "cornflowerblue" :weight bold)
                     ("APPT" :foreground "medium blue" :weight bold)
-                    ("NOTE" :foreground "brown" :weight bold)
+                    ;; ("NOTE" :foreground "brown" :weight bold)
                     ("STARTED" :foreground "dark orange" :weight bold)
                     ("WAITING" :foreground "red" :weight bold)
                     ("DELEGATED" :foreground "dark violet" :weight bold)
@@ -411,6 +411,10 @@ typical word processor."
                               ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r)
                               ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?P"))
                     (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
+
+      (setq org-tag-faces
+            (quote (("NOTE" :foreground "brown" :weight bold)
+                    )))
 
       ;; define the refile targets
       (setq org-agenda-file-note (expand-file-name "notes.org" org-agenda-dir))
@@ -507,12 +511,12 @@ typical word processor."
                :prepend t
                :empty-lines-after 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
-               "* %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "* %^{Brief Description} :NOTE:\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
               ("r" "Reading" entry (file+headline org-agenda-file-reading "Books")
-               "* %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "* %^{Brief Description} :READING:\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
@@ -534,30 +538,30 @@ typical word processor."
                :clock-resume t
                :empty-lines-after 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
+               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n Caught on %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)
               ("w" "Paper" entry (file+headline org-agenda-file-task "Papers")
-               "** TODO [#A] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
+               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n Caught on %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %^{Brief Description} %^g\n %?\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Note" entry (file org-agenda-file-private-note)
-               "* NOTE %^{Topic} %T\n %i\n %?\n")
+               "* %^{Topic} %T\n %i\n %?\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
                :empty-lines-after 1)
               ("p" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
-               "* NOTE %^{Brief Description} %^g\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
+               "* %^{Brief Description} :NOTE:\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
-               "* NOTE %^{Brief Description} %^g\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
+               "* %^{Brief Description} :NOTE:\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
                :empty-lines-after 1)
-              ("j" "Journal" entry (file+datetree org-agenda-file-journal)
+              ("j" "Journal" entry (file+olp+datetree org-agenda-file-journal)
                "* %?\n Logged at %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)))
