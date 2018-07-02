@@ -106,6 +106,8 @@
             org-agenda-show-all-dates t
             org-agenda-skip-deadline-if-done t
             org-agenda-skip-scheduled-if-done t
+            ;; org-agenda-skip-deadline-prewarning-if-scheduled t
+            org-agenda-skip-scheduled-delay-if-deadline t
             org-agenda-sorting-strategy (quote ((agenda time-up priority-down tag-up) (todo tag-up)))
             org-agenda-start-on-weekday nil
             org-agenda-todo-ignore-deadlines t
@@ -114,12 +116,13 @@
             org-agenda-window-setup (quote other-window)
             org-deadline-warning-days 7
             org-export-html-style "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyles.css\">"
-            org-log-done (quote (done))
+            org-log-done (quote (done time note))
             org-reverse-note-order nil
             org-use-fast-todo-selection t
             org-use-tag-inheritance nil)
       (setq org-log-done t
             org-edit-timestamp-down-means-later t
+            org-enforce-todo-dependencies t
             org-archive-mark-done nil
             org-hide-emphasis-markers t
             org-catch-invisible-edits 'show-and-error
@@ -353,10 +356,11 @@ typical word processor."
       ;; will be included in the task notes.
 
       (setq org-todo-keywords
-            (quote ((sequence "TODO(t!)" "STARTED(s!)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
-                              "|" "DONE(d@/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
+            (quote (;; (type "工作(w!)" "学习(s!)" "休闲(l!)" "|")
+                    (sequence "TODO(t!)" "STARTED(s!)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
+                              "|" "DONE(d!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
                     (sequence "FEEDBACK(F)" "VERIFY(v)" "DELEGATED(e!)")
-                    ;; (sequence "PROJECT(P)" "|" "DONE(d@/!)" "CANCELLED(c@/!)")
+                    ;; (sequence "PROJECT(P)" "|" "DONE(d!)" "CANCELLED(c@/!)")
                     ;; (sequence "NEXT(n)" "SPECIFIED(i!)")
                     (sequence "SUBMITTED(U!)" "REVISION(V)" "|" "ACCEPTED(A!)" "PUBLISHED(P!)")
                     (sequence "REPORT(r@)" "BUG(b@)" "KNOWNCAUSE(k@)" "|" "FIXED(f!)")
@@ -367,6 +371,7 @@ typical word processor."
       (setq org-todo-keyword-faces
             (quote (("NEXT" :inherit warning)
                     ("TODO" :foreground "medium blue" :weight bold)
+                    ("DONE" :foreground "dark green" :background "azure" :weight bold)
                     ("RECUR" :foreground "cornflowerblue" :weight bold)
                     ("APPT" :foreground "medium blue" :weight bold)
                     ("NOTE" :foreground "brown" :weight bold)
@@ -375,6 +380,7 @@ typical word processor."
                     ("DELEGATED" :foreground "dark violet" :weight bold)
                     ("DEFERRED" :foreground "dark blue" :weight bold)
                     ("SOMEDAY" :foreground "dark blue" :weight bold)
+                    ("CANCELLED" :foreground "black" :background "gray")
                     ;; ("PROJECT" :foreground "#088e8e" :weight bold)
                     ("PROJECT" :inherit font-lock-string-face))))
 
@@ -416,11 +422,11 @@ typical word processor."
       (setq org-agenda-file-birthday (expand-file-name "birthday.org" org-agenda-dir))
       (setq org-agenda-file-anniversary (expand-file-name "anniversary.org" org-agenda-dir))
       (setq org-agenda-file-MOOC (expand-file-name "MOOC.org" org-agenda-dir))
-      (setq org-agenda-file-papers (expand-file-name "papers.org" org-agenda-dir))
-      (setq org-agenda-file-projects (expand-file-name "projects.org" org-agenda-dir))
+      (setq org-agenda-file-paper (expand-file-name "papers.org" org-agenda-dir))
+      (setq org-agenda-file-project (expand-file-name "projects.org" org-agenda-dir))
       (setq org-agenda-file-reading (expand-file-name "reading.org" org-agenda-dir))
       (setq org-agenda-file-finance (expand-file-name "finance.org" org-agenda-dir))
-      (setq org-agenda-file-records (expand-file-name "records.org" org-agenda-dir))
+      (setq org-agenda-file-record (expand-file-name "records.org" org-agenda-dir))
       (setq org-agenda-file-trash (expand-file-name "trash.org" org-agenda-dir))
       (setq org-default-notes-file (expand-file-name "notes.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
@@ -505,7 +511,7 @@ typical word processor."
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
-              ("r" "Reading" entry (file+headline org-agenda-file-note "Books")
+              ("r" "Reading" entry (file+headline org-agenda-file-reading "Books")
                "* %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
@@ -519,7 +525,7 @@ typical word processor."
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
-              ("I" "Idea" entry (file+headline org-agenda-file-notes "Ideas")
+              ("I" "Idea" entry (file+headline org-agenda-file-note "Ideas")
                "** %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
                :clock-resume t
                :empty-lines-after 1)
@@ -536,7 +542,7 @@ typical word processor."
                :clock-resume t
                :empty-lines-after 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
-               "* %^{Brief Description} %^g\n %?\n #+BEGIN_SRC %^{language}\n\n#+END_SRC")
+               "* %^{Brief Description} %^g\n %?\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("P" "Private Note" entry (file org-agenda-file-private-note)
                "* NOTE %^{Topic} %T\n %i\n %?\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
@@ -773,6 +779,19 @@ typical word processor."
                   (org-agenda-view-columns-initially t)))
                 ;; limits agenda view to timestamped items
                 )))
+
+      ;; 优先级范围和默认任务的优先级
+      (setq org-highest-priority ?A)
+      (setq org-lowest-priority  ?E)
+      (setq org-default-priority ?E)
+      ;; 优先级醒目外观
+      (setq org-priority-faces
+            '((?A . (:background "red" :foreground "white" :weight bold))
+              (?B . (:background "DarkOrange" :foreground "white" :weight bold))
+              (?C . (:background "yellow" :foreground "DarkGreen" :weight bold))
+              (?D . (:background "DodgerBlue" :foreground "black" :weight bold))
+              (?E . (:background "SkyBlue" :foreground "black" :weight bold))
+              ))
 
       ;; (defun air-org-skip-subtree-if-priority (priority)
       ;;   "Skip an agenda subtree if it has a priority of PRIORITY.

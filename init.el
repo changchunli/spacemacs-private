@@ -1010,18 +1010,43 @@ before packages are loaded."
    powerline-default-separator nil
    x-underline-at-descent-line nil)
 
+  (setq mark-holidays-in-calendar t)
+
+  ;; holiday-fixed 用于设定公历事件
+  ;; holiday-float 用于设定浮动公历事件
+  ;; holiday-lunar 用于设定农历事件，各项的意义参考后面的 diary-float 说明。
+  ;; holiday-solar-term 是一些预定义但还需要特殊计算的节日，如农历的24节气。
+  (setq my-holidays
+        '(;;公历节日
+          (holiday-fixed 2 14 "情人节")
+          (holiday-fixed 9 10 "教师节")
+          (holiday-float 6 0 3 "父亲节")
+          ;; 农历节日
+          (holiday-lunar 1 1 "春节" 0)
+          (holiday-lunar 1 15 "元宵节" 0)
+          (holiday-solar-term "清明" "清明节")
+          (holiday-lunar 5 5 "端午节" 0)
+          (holiday-lunar 7 7 "七夕情人节" 0)
+          (holiday-lunar 8 15 "中秋节" 0)
+          ;;纪念日
+          ;; (holiday-fixed 1 1 "儿子生日")
+          ;; (holiday-lunar 2 2 "老婆生日"  0)
+          (holiday-lunar 3 26 "我的生日" 0)
+          ))
+  (setq calendar-holidays my-holidays)  ;只显示我定制的节假日
+
   ;; Keybindings
   (ct-define-key evil-normal-state-map
-                 (kbd "C-+") 'spacemacs/zoom-frm-in
-                 (kbd "C--") 'spacemacs/zoom-frm-out
-                 (kbd "C-_") 'spacemacs/zoom-frm-unzoom
-                 (kbd "C-n") 'evil-next-line-first-non-blank
-                 (kbd "C-p") 'evil-previous-line-first-non-blank)
+    (kbd "C-+") 'spacemacs/zoom-frm-in
+    (kbd "C--") 'spacemacs/zoom-frm-out
+    (kbd "C-_") 'spacemacs/zoom-frm-unzoom
+    (kbd "C-n") 'evil-next-line-first-non-blank
+    (kbd "C-p") 'evil-previous-line-first-non-blank)
 
   (ct-define-key yas-minor-mode-map
-                 ;; (kbd "TAB") 'yas-expand
-                 (kbd "C-S-n") 'yas-next-field
-                 (kbd "C-S-p") 'yas-prev-field)
+    ;; (kbd "TAB") 'yas-expand
+    (kbd "C-S-n") 'yas-next-field
+    (kbd "C-S-p") 'yas-prev-field)
 
   ;; File Format Association
   (dolist (e '(("pdb" . text-mode)
