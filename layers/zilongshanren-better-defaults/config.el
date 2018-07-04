@@ -138,17 +138,17 @@ Single Capitals as you type."
       (add-hook 'post-self-insert-hook #'dcaps-to-scaps nil 'local)
     (remove-hook 'post-self-insert-hook #'dcaps-to-scaps 'local)))
 
-;; ;; Error (wrong-number-of-argument if 1)
-;; (defun spacemacs/check-large-file ()
-;;   (when (> (buffer-size) 500000)
-;;     (progn (fundamental-mode)
-;;            (hl-line-mode -1)))
-;;   (if (and (executable-find "wc")
-;;            (> (string-to-number (shell-command-to-string (format "wc -l %s" (buffer-file-name))))
-;;               5000))
-;;       nil))
-;; 
-;; (add-hook 'find-file-hook 'spacemacs/check-large-file)
+;; Error (wrong-number-of-argument if 1)
+(defun spacemacs/check-large-file ()
+  (when (> (buffer-size) 500000)
+    (progn (fundamental-mode)
+           (hl-line-mode -1)))
+  (if (and (executable-find "wc")
+           (> (string-to-number (shell-command-to-string (format "wc -l %s" (buffer-file-name))))
+              5000))
+      nil))
+
+(add-hook 'find-file-hook 'spacemacs/check-large-file)
 
 (defadvice find-file (before make-directory-maybe
                              (filename &optional wildcards) activate)
