@@ -209,6 +209,7 @@ e.g. Sunday, September 17, 2000."
 
 (define-minor-mode
   shadowsocks-proxy-mode
+  "Toggle `shadowsocks-proxy-mode'."
   :global t
   :init-value nil
   :lighter " SS"
