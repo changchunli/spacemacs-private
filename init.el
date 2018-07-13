@@ -1118,9 +1118,9 @@ before packages are loaded."
                            year path)))
       (setenv "PATH" path)))
 
-  (TeXlive 2017)
+  (TeXlive 2018)
   (setq exec-path (append exec-path
-                          '("/usr/local/texlive/2017/bin/x86_64-linux/")))
+                          '("/usr/local/texlive/2018/bin/x86_64-linux/")))
 
   ;; set TeX-view-program-list
   ;; use TeX-view-program-list-builtin, which is in auctex

@@ -506,7 +506,7 @@ typical word processor."
       ;; add multi-file journal
       (setq org-capture-templates
             '(("t" "Todo" entry (file+headline org-agenda-file-gtd "Inbox")
-               "* TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
@@ -521,42 +521,42 @@ typical word processor."
                :prepend t
                :empty-lines-after 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :empty-lines-after 1)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
-               "** TODO %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
               ("I" "Idea" entry (file+headline org-agenda-file-note "Ideas")
-               "** %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
+               "** %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :empty-lines-after 1)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
-               "** TODO [#B] %^{Brief Description} %^g\n %?\n Caught on %T\n %i\n"
+               "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :empty-lines-after 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
-               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n Caught on %T\n %i\n"
+               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :empty-lines-after 1)
               ("w" "Paper" entry (file+headline org-agenda-file-task "Papers")
-               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n Caught on %T\n %i\n"
+               "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :empty-lines-after 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %^{Brief Description} %^g\n %?\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-              ("P" "Private Note" entry (file org-agenda-file-private-note)
-               "* %^{Topic} %T\n %i\n %?\n")
+              ("N" "Private Note" entry (file org-agenda-file-private-note)
+               "* %^{Topic} %?\n %i\n Caught on %T\n")
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
                :empty-lines-after 1)
-              ("p" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
+              ("P" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
                "* %^{Brief Description} :NOTE:\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
-               "* %^{Brief Description} :NOTE:\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
+               "* %^{Brief Description} :NOTE:\n %?\n[[%:link][%:description]]\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n:URL: %c\n")
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
@@ -1438,8 +1438,8 @@ typical word processor."
                                  full-text)
                                 level)
                         ;; When there is no section, pretend there is an
-                        ;; empty one to get the correct <div
-                        ;; class="outline-...> which is needed by
+                        ;; empty one to get the correct
+                        ;; <div class="outline-...> which is needed by
                         ;; `org-info.js'.
                         (if (eq (org-element-type first-content) 'section) contents
                           (concat (org-html-section first-content "" info) contents))
