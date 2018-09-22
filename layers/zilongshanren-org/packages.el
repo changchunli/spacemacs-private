@@ -22,9 +22,9 @@
     ;; org-cliplink
     ;; writeroom-mode
     ;; grad-mac-link
-    ;; (blog-admin :location (recipe
-    ;;                        :fetcher github
-    ;;                        :repo "codefalling/blog-admin"))
+    (blog-admin :location (recipe
+                           :fetcher github
+                           :repo "codefalling/blog-admin"))
     ;; org-tree-slide
     ;; ox-reveal
     ;; worf
@@ -117,11 +117,11 @@
             org-deadline-warning-days 7
             org-export-html-style "<link rel=\"stylesheet\" type=\"text/css\" href=\"mystyles.css\">"
             org-log-done (quote (done time note))
+            ;; org-log-done t
             org-reverse-note-order nil
             org-use-fast-todo-selection t
             org-use-tag-inheritance nil)
-      (setq org-log-done t
-            org-edit-timestamp-down-means-later t
+      (setq org-edit-timestamp-down-means-later t
             org-enforce-todo-dependencies t
             org-archive-mark-done nil
             org-hide-emphasis-markers t
@@ -340,7 +340,7 @@ typical word processor."
       ;; STARTED
       ;; I should use this tag when I start on a task, but if I clock in to a
       ;; TODO item, I don't really need this task.
-      ;; WAITING
+      ;; WAITING(PENDING)
       ;; I did some work on this task but I am waiting for a response. If I use
       ;; this task I schedule the task into the future as a reminder to follow
       ;; up with some notes in the body of the task.
@@ -349,7 +349,7 @@ typical word processor."
       ;; date, instead of tasks that can be completed at any time.
       ;; DONE
       ;; The task is completed.
-      ;; CANCELLED
+      ;; CANCELLED(ABORT)
       ;; I decided not to do this task but have left the task on file with this status.
       ;; DEFERRED
       ;; Used to identify a task that will not be activated just yet. The reason
@@ -357,6 +357,7 @@ typical word processor."
 
       (setq org-todo-keywords
             (quote (;; (type "工作(w!)" "学习(s!)" "休闲(l!)" "|")
+                    ;; (sequence "PENDING(p!)" "TODO(t!)"  "|" "DONE(d!)" "ABORT(a@/!)")
                     (sequence "TODO(t!)" "STARTED(s!)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
                               "|" "DONE(d!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
                     (sequence "FEEDBACK(F)" "VERIFY(v)" "DELEGATED(e!)")
@@ -369,7 +370,15 @@ typical word processor."
             org-todo-repeat-to-state "NEXT")
 
       (setq org-todo-keyword-faces
-            (quote (("NEXT" :inherit warning)
+            (quote (
+                    ;; ("工作" .      (:background "red" :foreground "white" :weight bold))
+                    ;; ("学习" .      (:background "white" :foreground "red" :weight bold))
+                    ;; ("休闲" .      (:foreground "MediumBlue" :weight bold))
+                    ;; ("PENDING" .   (:background "LightGreen" :foreground "gray" :weight bold))
+                    ;; ("TODO" .      (:background "DarkOrange" :foreground "black" :weight bold))
+                    ;; ("DONE" .      (:background "azure" :foreground "Darkgreen" :weight bold))
+                    ;; ("ABORT" .     (:background "gray" :foreground "black"))
+                    ("NEXT" :inherit warning)
                     ("TODO" :foreground "medium blue" :weight bold)
                     ("DONE" :foreground "dark green" :background "azure" :weight bold)
                     ("RECUR" :foreground "cornflowerblue" :weight bold)
@@ -408,9 +417,10 @@ typical word processor."
       (setq org-tag-alist
             (quote ((sequence (:startgroup . nil) ("OFFICE" . ?o) ("HOME" . ?h)
                               ("TRAFFIC" . ?t) (:endgroup . nil)
-                              ("COMPUTER" . ?c) ("PROJECT" . ?p) ("READING" . ?r)
-                              ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?P"))
-                    (sequence ("DVD" . ?d) ("LUNCHTIME" . ?l)))))
+                              ("COMPUTER" . ?c)  ("LAPTOP" . ?l)
+                              ("PROJECT" . ?P) ("READING" . ?r)
+                              ("IDEA . ?i") ("NOTE . ?n") ("PAPER . ?p"))
+                    (sequence ("DVD" . ?d) ("LUNCHTIME" . ?L)))))
 
       (setq org-tag-faces
             (quote (("NOTE" :foreground "brown" :weight bold)
@@ -1437,10 +1447,9 @@ typical word processor."
                                        (mapconcat #'number-to-string numbers ".")))
                                  full-text)
                                 level)
-                        ;; When there is no section, pretend there is an
-                        ;; empty one to get the correct
-                        ;; <div class="outline-...> which is needed by
-                        ;; `org-info.js'.
+                        ;; When there is no section, pretend there is an empty
+                        ;; one to get the correct <div class="outline-...> which
+                        ;; is needed by `org-info.js'.
                         (if (eq (org-element-type first-content) 'section) contents
                           (concat (org-html-section first-content "" info) contents))
                         (org-html--container headline info)))))))))

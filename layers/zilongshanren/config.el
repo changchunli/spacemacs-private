@@ -12,6 +12,18 @@
  deft-dir "~/org"
  blog-admin-dir "~/william.com")
 
+;;(setq-default
+;;(if (and (spacemacs/system-is-mswindows) window-system)
+;;  (setq
+;; org-agenda-dir "f:/org-notes"
+;; deft-dir "f:/org-notes"
+;; blog-admin-dir "~/zilongshanren.com")
+;; blog-admin-dir "f:/zilongshanren.com")
+;;  (setq
+;; org-agenda-dir "~/org"
+;; deft-dir "~/org"
+;; blog-admin-dir "~/william.com"))
+
 ;;load sensitive data
 ;; or (like spacemacs init.el) put the above variable into it, then the own value separated from public config
 ;; .emacs.secrets.el for example:

@@ -80,240 +80,256 @@ This function should only modify configuration layer settings."
      (colors :variables
              colors-colorize-identifiers 'all
              colors-enable-nyan-cat-progress-bar t)
-     common-lisp command-log confluence coq crystal cscope csharp csv
-     d dash deft debug django docker elfeed
-     (elm :variables
-          elm-sort-imports-on-save t
-          elm-format-on-save t
-          elm-reactor-port "3000"
-          elm-reactor-address "0.0.0.0")
-     (elixir :variables flycheck-elixir-credo-strict t)
-     emacs-lisp emoji epub erc erlang
-     (ess :variables
-          ess-enable-smart-equals t
-          ess-use-auto-complete t
-          ess-use-eldoc t
-          ess-ask-about-transfile nil)
-     evernote evil-commentary
-     (evil-snipe :variables
-                 evil-snipe-enable-alternate-f-and-t-behaviors t)
-     factor fasd faust finance floobits forth fsharp games geolocation
-     (git :variables
-          git-magit-status-fullscreen t
-          magit-diff-refine-hunk 'all
-          magit-push-always-verify nil
-          magit-save-repository-buffers 'dontask
-          magit-revert-buffers 'silent
-          magit-refs-show-commit-count 'all
-          magit-revision-show-gravatars nil)
-     github gnus
-     (go :variables
-         go-use-gometalinter t
-         gofmt-command "goimports"
-         go-tab-width 4
-         go-use-gocheck-for-testing t
-         go-use-test-args "-test.v -failfast -count=1 -race -timeout 10s"
-         godoc-at-point-function 'godoc-gogetdoc
-         flycheck-gometalinter-vendor t
-         flycheck-gometalinter-fast t
-         flycheck-gometalinter-disable-linters '("goconst")
-         flycheck-gometalinter-deadline "10s")
-     gpu graphviz groovy
-     (gtags :variables gtags-enable-by-default t
-            :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
-     (haskell :variables
-              haskell-enable-ghci-ng-support t
-              haskell-enable-shm-support t
-              haskell-completion-backend 'dante
-              haskell-enable-hindent-style "andrew-gibiansky")
-     helm html hy
-     (ibuffer :variables ibuffer-group-buffers-by 'projects)
-     idris imenu-list ipython-notebook
-     ;; ivy
-     jabber
-     (java :variables java-backend 'meghanada)
-     (javascript :variables
-                 javascript-backend 'nil
-                 javascript-disable-tern-port-files t)
-     jr json
-     ;; keyboard-layout
-     kotlin
-     (latex :variables
-            latex-build-command "LaTeX"
-            latex-enable-auto-fill t
-            latex-enable-magic nil
-            latex-enable-folding t)
-     lsp lua major-modes
-     (markdown :variables markdown-live-preview-engine 'vmd)
-     ;; neotree
-     nginx nim
-     ;; nlinum
-     node notmuch
-     ;; ocaml
-     octave
-     (olivetti :variables
-               olivetti-body-width 0.6
-               olivetti-hide-mode t)
-     (org :variables
-          org-want-todo-bindings t
-          org-enable-github-support t
-          org-enable-bootstrap-support t
-          org-enable-reveal-js-support t
-          org-enable-hugo-support t
-          org-enable-org-journal-support t
-          org-journal-dir "~/org/journal/"
-          org-journal-file-format "%Y-%m-%d"
-          org-journal-date-prefix "#+TITLE: "
-          org-journal-date-format "%A, %B %d %Y"
-          org-journal-time-prefix "* "
-          org-journal-time-format ""
-          ;; org-bullets-bullet-list '("■" "◆" "▲" "▶")
-          org-bullets-bullet-list '("◉" "○" "✸" "◻" "❀" "✡")
-          org-projectile-file "~/org/TODOs.org"
-          spaceline-org-clock-p t
-          org-startup-indented t
-          org-startup-folded t)
-     (osx :variables
-          osx-dictionary-dictionary-choice "Simplified Chinese - English"
-          osx-use-option-as-meta t
-          osx-command-as 'super
-          osx-option-as 'meta
-          osx-control-as 'control
-          osx-function-as 'none
-          osx-right-command-as 'left
-          osx-right-option-as 'none
-          osx-right-control-as 'left)
-     pandoc parinfer pass pdf perl6 php
-     (plantuml :variables
-               plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
-               org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
-     prodigy protobuf puppet purescript
-     (python :variables
-             python-backend 'anaconda
-             python-enable-yapf-format-on-save t
-             python-fill-column 80
-             python-sort-imports-on-save t
-             ;; python-shell-completion-native-enable nil
-             python-test-runner '(nose pytest))
-     racket ranger rcirc react
-     (rebox :variables rebox-enable-in-text-mode t)
-     (restclient :variables restclient-use-org t)
-     restructuredtext
-     (ruby :variables
-           ruby-enable-enh-ruby-mode t
-           ruby-version-manager 'rvm)
-     ruby-on-rails
-     (rust :variables
-           rust-enable-rustfmt-on-save t
-           rust-format-on-save t)
-     salt
-     (scala :variables
-            scala-auto-insert-asterisk-in-comments t
-            scala-enable-eldoc t
-            scala-indent:use-javadoc-style t
-            scala-auto-start-ensime nil
-            scala-enable-eldoc-mode nil)
-     scheme search-engine selectric semantic semantic-web
-     (shell :variables
-            shell-enable-smart-eshell t
-            shell-default-shell 'ansi-term
-            shell-default-position 'bottom
-            shell-default-height 30
-            shell-default-full-span nil
-            shell-default-term-shell "/bin/zsh")
-     shell-scripts slack smex sml spacemacs-evil spacemacs-language
-     (spacemacs-layouts :variables
-                        layouts-enable-autosave nil
-                        layouts-autosave-delay 300)
-     speed-reading
-     (spell-checking :variables spell-checking-enable-by-default nil)
-     sphinx spotify
-     (sql :variables sql-capitalize-keywords t)
-     swift
-     (syntax-checking :variables
-                      syntax-checking-enable-by-default nil
-                      syntax-checking-enable-tooltips nil)
-     systemd templates tern
-     (terraform :variables terraform-auto-format-on-save t)
-     themes-megapack
-     (theming :variables
-              theming-headings-inherit-from-default 'all
-              theming-headings-same-size 'all
-              theming-headings-bold 'all)
-     tmux
-     (treemacs :variables
-               treemacs-use-follow-mode t
-               treemacs-use-filewatch-mode t
-               treemacs-use-collapsed-directories 3)
-     twitter
-     (typescript :variables
-                 tide-tsserver-executable "~/.config/yarn/global/node_modules/.bin/tsserver"
-                 typescript-fmt-on-save nil
-                 typescript-fmt-tool 'typescript-formatter)
-     (typography :variables typography-enable-typographic-editing nil)
-     ;; unicode-fonts
-     vagrant
-     (version-control :variables
-                      version-control-global-margin t
-                      version-control-diff-tool 'git-gutter
-                      version-control-diff-side 'left)
-     ;; if use .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el,
-     ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
-     ;; change .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el to
-     ;; https://github.com/hchbaw/vim-empty-lines-mode/blob/thb/vim-empty-lines-mode.el
-     ;; NOTE: this bug has been fixed.
-     vim-empty-lines vimscript
-     (vinegar :variables vinegar-reuse-dired-buffer t)
-     ;; wakatime
-     web-beautify windows-scripts xclipboard xkcd yaml
-     ;; ycmd
-     )
+     common-lisp command-log confluence
+     copy-as-format
+     coq crystal cscope csharp csv
+     d dash deft debug django docker
+     (elfeed :variables
+             rmh-elfeed-org-files (list
+                                   (concat dotspacemacs-directory "layers/README.org"))
+             elfeed-goodies/entry-pane-position 'bottom)
+   (elm :variables
+        elm-sort-imports-on-save t
+        elm-format-on-save t
+        elm-reactor-port "3000"
+        elm-reactor-address "0.0.0.0")
+   (elixir :variables flycheck-elixir-credo-strict t)
+   emacs-lisp emberjs emoji epub erc erlang
+   (ess :variables
+        ess-enable-smart-equals t
+        ess-use-auto-complete t
+        ess-use-eldoc t
+        ess-ask-about-transfile nil)
+   evernote evil-commentary
+   (evil-snipe :variables
+               evil-snipe-enable-alternate-f-and-t-behaviors t)
+   factor fasd faust finance floobits forth fsharp games geolocation
+   (git :variables
+        git-magit-status-fullscreen t
+        magit-diff-refine-hunk 'all
+        magit-push-always-verify nil
+        magit-save-repository-buffers 'dontask
+        magit-revert-buffers 'silent
+        magit-refs-show-commit-count 'all
+        magit-revision-show-gravatars nil)
+   github gnus
+   (go :variables
+       go-use-gometalinter t
+       gofmt-command "goimports"
+       go-tab-width 4
+       go-use-gocheck-for-testing t
+       go-use-test-args "-test.v -failfast -count=1 -race -timeout 10s"
+       godoc-at-point-function 'godoc-gogetdoc
+       flycheck-gometalinter-vendor t
+       flycheck-gometalinter-fast t
+       flycheck-gometalinter-disable-linters '("goconst")
+       flycheck-gometalinter-deadline "10s")
+   gpu graphviz groovy
+   (gtags :variables gtags-enable-by-default t
+          :disabled-for clojure emacs-lisp javascript latex python shell-scripts)
+   (haskell :variables
+            haskell-enable-ghci-ng-support t
+            haskell-enable-shm-support t
+            haskell-completion-backend 'dante
+            haskell-enable-hindent-style "andrew-gibiansky")
+   helm html hy
+   (ibuffer :variables ibuffer-group-buffers-by 'projects)
+   idris imenu-list ipython-notebook
+   ;; (ivy :variables ivy-enable-advanced-buffer-information t)
+   jabber
+   (java :variables java-backend 'meghanada)
+   (javascript :variables
+               javascript-backend 'nil
+               javascript-disable-tern-port-files t)
+   jr json julia
+   ;; keyboard-layout
+   kotlin
+   (latex :variables
+          latex-build-command "LaTeX"
+          latex-enable-auto-fill t
+          latex-enable-magic nil
+          latex-enable-folding t)
+   lsp lua major-modes
+   (markdown :variables markdown-live-preview-engine 'vmd)
+   ;; neotree
+   nginx nim
+   ;; nlinum
+   node notmuch
+   ;; ocaml
+   octave
+   (olivetti :variables
+             olivetti-body-width 0.6
+             olivetti-hide-mode t)
+   (org :variables
+        org-want-todo-bindings t
+        org-enable-github-support t
+        org-enable-bootstrap-support t
+        org-enable-reveal-js-support t
+        org-enable-hugo-support t
+        org-enable-org-journal-support t
+        org-journal-dir "~/org/journal/"
+        org-journal-file-format "%Y-%m-%d"
+        org-journal-date-prefix "#+TITLE: "
+        org-journal-date-format "%A, %B %d %Y"
+        org-journal-time-prefix "* "
+        org-journal-time-format ""
+        ;; org-bullets-bullet-list '("■" "◆" "▲" "▶")
+        org-bullets-bullet-list '("◉" "○" "✸" "◻" "❀" "✡")
+        org-projectile-file "~/org/TODOs.org"
+        spaceline-org-clock-p t
+        org-startup-indented t
+        org-startup-folded t)
+   (osx :variables
+        osx-dictionary-dictionary-choice "Simplified Chinese - English"
+        osx-use-option-as-meta t
+        osx-command-as 'super
+        osx-option-as 'meta
+        osx-control-as 'control
+        osx-function-as 'none
+        osx-right-command-as 'left
+        osx-right-option-as 'none
+        osx-right-control-as 'left)
+   pandoc parinfer pass pdf perl6 phoenix php
+   (plantuml :variables
+             plantuml-jar-path "~/.spacemacs.d/plantuml.jar"
+             org-plantuml-jar-path "~/.spacemacs.d/plantuml.jar")
+   prettier prodigy protobuf puppet purescript
+   (python :variables
+           python-backend 'anaconda
+           python-enable-yapf-format-on-save t
+           python-fill-column 80
+           python-sort-imports-on-save t
+           ;; python-shell-completion-native-enable nil
+           python-test-runner '(nose pytest))
+   racket
+   (ranger :variables
+           ranger-ignored-extensions '("mkv" "iso" "mp4" "pdf")
+           ranger-override-dired t
+           ranger-show-hidden nil)
+   rcirc react
+   (rebox :variables rebox-enable-in-text-mode t)
+   (restclient :variables restclient-use-org t)
+   restructuredtext
+   (ruby :variables
+         ruby-enable-enh-ruby-mode t
+         ruby-version-manager 'rvm)
+   ruby-on-rails
+   (rust :variables
+         rust-enable-rustfmt-on-save t
+         rust-format-on-save t)
+   salt
+   (scala :variables
+          scala-auto-insert-asterisk-in-comments t
+          scala-enable-eldoc t
+          scala-indent:use-javadoc-style t
+          scala-auto-start-ensime nil
+          scala-enable-eldoc-mode nil)
+   scheme search-engine selectric semantic semantic-web
+   (shell :variables
+          shell-enable-smart-eshell t
+          shell-default-shell 'eshell
+          shell-default-position 'bottom
+          shell-default-height 30
+          shell-default-full-span nil
+          shell-default-term-shell "/bin/zsh"
+          shell-protect-eshell-prompt t)
+   shell-scripts slack smex sml spacemacs-evil spacemacs-language
+   (spacemacs-layouts :variables
+                      layouts-enable-autosave nil
+                      layouts-autosave-delay 300)
+   spacemacs-org speed-reading
+   (spell-checking :variables
+                   ispell-program-name "aspell"
+                   ispell-dictionary "american"
+                   spell-checking-enable-by-default nil
+                   enable-flyspell-auto-completion t)
+   sphinx spotify
+   (sql :variables sql-capitalize-keywords t)
+   swift
+   (syntax-checking :variables
+                    syntax-checking-enable-by-default nil
+                    syntax-checking-enable-tooltips nil)
+   systemd templates tern
+   (terraform :variables terraform-auto-format-on-save t)
+   themes-megapack
+   (theming :variables
+            theming-headings-inherit-from-default 'all
+            theming-headings-same-size 'all
+            theming-headings-bold 'all)
+   tmux
+   (treemacs :variables
+             treemacs-use-follow-mode t
+             treemacs-use-filewatch-mode t
+             treemacs-use-collapsed-directories 3)
+   twitter
+   (typescript :variables
+               tide-tsserver-executable "~/.config/yarn/global/node_modules/.bin/tsserver"
+               typescript-fmt-on-save nil
+               typescript-fmt-tool 'typescript-formatter)
+   (typography :variables typography-enable-typographic-editing nil)
+   ;; unicode-fonts
+   vagrant
+   (version-control :variables
+                    version-control-global-margin t
+                    version-control-diff-tool 'git-gutter
+                    version-control-diff-side 'left)
+   ;; if use .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el,
+   ;; this causes a org-capture error: Capture template 'n': integer-or-marker-p.
+   ;; change .emacs.d/layer/+vim/vim-empty-lines/local/vim-empty-lines-mode/vim-empty-lines-mode.el to
+   ;; https://github.com/hchbaw/vim-empty-lines-mode/blob/thb/vim-empty-lines-mode.el
+   ;; NOTE: this bug has been fixed.
+   vim-empty-lines vimscript
+   (vinegar :variables vinegar-reuse-dired-buffer t)
+   ;; wakatime
+   web-beautify windows-scripts xclipboard xkcd yaml
+   ;; ycmd
+   )
 
-   ;; List of additional packages that will be installed without being
-   ;; wrapped in a layer. If you need some configuration for these
-   ;; packages, then consider creating a layer. You can also put the
-   ;; configuration in `dotspacemacs/user-config'.
-   ;; To use a local version of a package, use the `:location' property:
-   ;; '(your-package :location "~/path/to/your-package/")
-   ;; Also include the dependencies as they will not be resolved automatically.
-   ;; dotspacemacs-additional-packages '(sicp)
-   ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
-   ;; linum-relative llvm-mode sicp vline wolfram)
-   dotspacemacs-additional-packages '(linum-relative sicp wolfram)
+  ;; List of additional packages that will be installed without being
+  ;; wrapped in a layer. If you need some configuration for these
+  ;; packages, then consider creating a layer. You can also put the
+  ;; configuration in `dotspacemacs/user-config'.
+  ;; To use a local version of a package, use the `:location' property:
+  ;; '(your-package :location "~/path/to/your-package/")
+  ;; Also include the dependencies as they will not be resolved automatically.
+  ;; dotspacemacs-additional-packages '(sicp)
+  ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
+  ;; linum-relative llvm-mode sicp vline wolfram)
+  dotspacemacs-additional-packages '(linum-relative sicp wolfram)
 
-   ;; A list of packages that cannot be updated.
-   dotspacemacs-frozen-packages '()
+  ;; A list of packages that cannot be updated.
+  dotspacemacs-frozen-packages '()
 
-   ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages
-   '(
-     ;; magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
-     ;; evil-args evil-ediff evil-exchange evil-unimpaired
-     ;; evil-indent-plus volatile-highlights smartparens
-     ;; spaceline holy-mode skewer-mode rainbow-delimiters
-     ;; highlight-indentation vi-tilde-fringe eyebrowse
-     ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
-     ;; livid-mode git-gutter git-gutter-fringe  evil-escape
-     ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-     ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
-     ;; clang-format define-word google-translate disaster epic
-     ;; fancy-battery org-present orgit orglue spacemacs-theme
-     ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
-     ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
-     ;; helm-themes helm-swoop helm-spacemacs-help smeargle
-     ;; ido-vertical-mode flx-ido company-quickhelp
-     ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-     org-mac-link)
+  ;; A list of packages that will not be installed and loaded.
+  dotspacemacs-excluded-packages
+  '(
+    ;; magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
+    ;; evil-args evil-ediff evil-exchange evil-unimpaired
+    ;; evil-indent-plus volatile-highlights smartparens
+    ;; spaceline holy-mode skewer-mode rainbow-delimiters
+    ;; highlight-indentation vi-tilde-fringe eyebrowse
+    ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
+    ;; livid-mode git-gutter git-gutter-fringe  evil-escape
+    ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+    ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
+    ;; clang-format define-word google-translate disaster epic
+    ;; fancy-battery org-present orgit orglue spacemacs-theme
+    ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
+    ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
+    ;; helm-themes helm-swoop helm-spacemacs-help smeargle
+    ;; ido-vertical-mode flx-ido company-quickhelp
+    ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
+    org-mac-link)
 
-   ;; Defines the behaviour of Spacemacs when installing packages.
-   ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
-   ;; `used-only' installs only explicitly used packages and deletes any unused
-   ;; packages as well as their unused dependencies. `used-but-keep-unused'
-   ;; installs only the used packages but won't delete unused ones. `all'
-   ;; installs *all* packages supported by Spacemacs and never uninstalls them.
-   ;; (default is `used-only')
-   dotspacemacs-install-packages 'used-only
-   dotspacemacs-delete-orphan-packages t))
+  ;; Defines the behaviour of Spacemacs when installing packages.
+  ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
+  ;; `used-only' installs only explicitly used packages and deletes any unused
+  ;; packages as well as their unused dependencies. `used-but-keep-unused'
+  ;; installs only the used packages but won't delete unused ones. `all'
+  ;; installs *all* packages supported by Spacemacs and never uninstalls them.
+  ;; (default is `used-only')
+  dotspacemacs-install-packages 'used-only
+  dotspacemacs-delete-orphan-packages t))
 
 (defun dotspacemacs/init ()
   "Initialization function.
@@ -596,7 +612,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -997,7 +1013,7 @@ before packages are loaded."
    calendar-chinese-all-holidays-flag t
    calendar-chinese-celestial-stem ["甲" "乙" "丙" "丁" "戊" "己" "庚" "辛" "壬" "癸"]
    calendar-chinese-terrestrial-branch ["子" "丑" "寅" "卯" "辰" "巳" "午" "未" "申" "酉" "戌" "亥"]
-   calendar-chinese-location-name "京都"
+   calendar-chinese-location-name "北京"
    calendar-latitude [35 1 north]
    calendar-longitude [135 46 east]
    calendar-week-start-day 1
@@ -1029,6 +1045,7 @@ before packages are loaded."
           (holiday-fixed 2 14 "情人节")
           (holiday-fixed 9 10 "教师节")
           (holiday-float 6 0 3 "父亲节")
+          (holiday-float 5 0 2 "母亲节")
           ;; 农历节日
           (holiday-lunar 1 1 "春节" 0)
           (holiday-lunar 1 15 "元宵节" 0)
@@ -1174,6 +1191,12 @@ before packages are loaded."
 
   (setq inhibit-compacting-font-caches t)
   (global-display-line-numbers-mode -1)
+
+  (defun moon-override-yank-pop (&optional arg)
+      "Delete the region before inserting poped string."
+      (when (and evil-mode (eq 'visual evil-state))
+        (kill-region (region-beginning) (region-end))))
+  (advice-add 'counsel-yank-pop :before #'moon-override-yank-pop)
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
 
