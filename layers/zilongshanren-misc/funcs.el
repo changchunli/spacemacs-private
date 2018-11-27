@@ -9,6 +9,22 @@
 ;;
 ;;; License: GPLv3
 
+(defun ivy-with-thing-at-point (cmd)
+  (let ((ivy-initial-inputs-alist
+         (list
+          (cons cmd (thing-at-point 'symbol)))))
+    (funcall cmd)))
+
+;; Example 1
+(defun counsel-ag-thing-at-point ()
+  (interactive)
+  (ivy-with-thing-at-point 'counsel-ag))
+
+;; Example 2
+;; (defun swiper-thing-at-point ()
+;;   (interactive)
+;;   (ivy-with-thing-at-point 'swiper))
+
 ;; @see https://bitbucket.org/lyro/evil/issue/511/let-certain-minor-modes-key-bindings
 (defmacro adjust-major-mode-keymap-with-evil (m &optional r)
   `(eval-after-load (quote ,(if r r m))
@@ -16,6 +32,22 @@
         (evil-make-overriding-map ,(intern (concat m "-mode-map")) 'normal)
         ;; force update evil keymaps after git-timemachine-mode loaded
         (add-hook (quote ,(intern (concat m "-mode-hook"))) #'evil-normalize-keymaps))))
+
+(defun locate-current-file-in-explorer ()
+  (interactive)
+  (cond
+   ;; In buffers with file name
+   ((buffer-file-name)
+    (shell-command (concat "start explorer /e,/select,\"" (replace-regexp-in-string "/" "\\\\" (buffer-file-name)) "\"")))
+   ;; In dired mode
+   ((eq major-mode 'dired-mode)
+    (shell-command (concat "start explorer /e,\"" (replace-regexp-in-string "/" "\\\\" (dired-current-directory)) "\"")))
+   ;; In eshell mode
+   ((eq major-mode 'eshell-mode)
+    (shell-command (concat "start explorer /e,\"" (replace-regexp-in-string "/" "\\\\" (eshell/pwd)) "\"")))
+   ;; Use default-directory as last resource
+   (t
+    (shell-command (concat "start explorer /e,\"" (replace-regexp-in-string "/" "\\\\" default-directory) "\"")))))
 
 
 ;; insert ; at the end of current line
@@ -207,20 +239,20 @@ e.g. Sunday, September 17, 2000."
 " )))
 
 
-(define-minor-mode
-  shadowsocks-proxy-mode
-  "Toggle `shadowsocks-proxy-mode'."
-  :global t
-  :init-value nil
-  :lighter " SS"
-  (if shadowsocks-proxy-mode
-      (setq url-gateway-method 'socks)
-    (setq url-gateway-method 'native)))
+;; (define-minor-mode
+;;   shadowsocks-proxy-mode
+;;   "Toggle `shadowsocks-proxy-mode'."
+;;   :global t
+;;   :init-value nil
+;;   :lighter " SS"
+;;   (if shadowsocks-proxy-mode
+;;       (setq url-gateway-method 'socks)
+;;     (setq url-gateway-method 'native)))
 
 
-(define-global-minor-mode
-  global-shadowsocks-proxy-mode shadowsocks-proxy-mode shadowsocks-proxy-mode
-  :group 'shadowsocks-proxy)
+
+
+
 
 
 (defun zilongshanren/open-file-with-projectile-or-counsel-git ()
@@ -231,6 +263,15 @@ e.g. Sunday, September 17, 2000."
         (projectile-find-file)
       (counsel-file-jump))))
 
+(defun zilongshanren/pomodoro-notification ()
+  "show notifications when pomodoro end"
+  (if (spacemacs/system-is-mswindows)
+      (progn (add-hook 'org-pomodoro-finished-hook '(lambda () (sound-wav-play (expand-file-name "~/.spacemacs.d/game_win.wav"))))
+             (add-hook 'org-pomodoro-short-break-finished-hook '(lambda () (sound-wav-play (expand-file-name "~/.spacemacs.d/game_win.wav"))))
+             (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (sound-wav-play (expand-file-name "~/.spacemacs.d/game_win.wav")))))
+    (progn (add-hook 'org-pomodoro-finished-hook '(lambda () (zilongshanren/growl-notification "Pomodoro Finished" "☕️ Have a break!" t)))
+             (add-hook 'org-pomodoro-short-break-finished-hook '(lambda () (zilongshanren/growl-notification "Short Break" "🐝 Ready to Go?" t)))
+             (add-hook 'org-pomodoro-long-break-finished-hook '(lambda () (zilongshanren/growl-notification "Long Break" " 💪 Ready to Go?" t))))))
 
 ;; http://blog.lojic.com/2009/08/06/send-growl-notifications-from-carbon-emacs-on-osx/
 (defun zilongshanren/growl-notification (title message &optional sticky)
@@ -475,7 +516,7 @@ With PREFIX, cd to project root."
   (let ((current-prefix-arg nil))
     (call-interactively
      (if p #'spacemacs/swiper-region-or-symbol
-       #'counsel-grep-or-swiper))))
+       #'swiper))))
 
 (defun ivy-ff-checksum ()
   (interactive)

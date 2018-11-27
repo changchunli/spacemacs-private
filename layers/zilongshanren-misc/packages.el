@@ -690,7 +690,8 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
 
     ;; ;; change evil initial mode state
     (loop for (mode . state) in
-          '((shell-mode . normal))
+          '((shell-mode . normal)
+            (minibuffer-inactive-mode . emacs))
           do (evil-set-initial-state mode state))
 
     ;;mimic "nzz" behaviou in vim
@@ -1088,6 +1089,32 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
       (progn
         (spacemacs|hide-lighter ivy-mode)
 
+        (setq ivy-dynamic-exhibit-delay-ms 300)
+
+        (defun ivy-call-and-recenter ()
+          "Call action and recenter window according to the selected candidate."
+          (interactive)
+          (ivy-call)
+          (with-ivy-window
+            (evil-scroll-line-to-center (line-number-at-pos))))
+
+        ;; .projectile file will specify the search root
+        ;; add / to search when use expand region
+        ;; (when (configuration-layer/package-used-p 'counsel)
+        ;;   (defadvice er/prepare-for-more-expansions-internal
+        ;;       (around ivy-rg/prepare-for-more-expansions-internal activate)
+        ;;     ad-do-it
+        ;;     (let ((new-msg (concat (car ad-return-value)
+        ;;                            ", / to search in project, "))
+        ;;           (new-bindings (cdr ad-return-value)))
+        ;;       (cl-pushnew
+        ;;        '("/" (lambda ()
+        ;;                (call-interactively
+        ;;                 'spacemacs/search-project-auto-region-or-symbol)))
+        ;;        new-bindings)
+        ;;       (setq ad-return-value (cons new-msg new-bindings)))))
+
+
         (ivy-set-actions
          t
          '(("f" my-find-file-in-git-repo "find files")
@@ -1112,8 +1139,9 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
         (define-key ivy-minibuffer-map (kbd "C-c s") 'ivy-ff-checksum)
         (define-key ivy-minibuffer-map (kbd "s-o") 'ivy-dispatching-done-hydra)
         (define-key ivy-minibuffer-map (kbd "C-c C-e") 'spacemacs//counsel-edit)
+        (define-key ivy-minibuffer-map (kbd "C-l") 'ivy-call-and-recenter)
         (define-key ivy-minibuffer-map (kbd "<f3>") 'ivy-occur)
-        (define-key ivy-minibuffer-map (kbd "C-c j") 'ivy-immediate-done)
+        (define-key ivy-minibuffer-map (kbd "C-c d") 'ivy-immediate-done)
         (define-key ivy-minibuffer-map (kbd "C-j") 'ivy-next-line)
         (define-key ivy-minibuffer-map (kbd "C-k") 'ivy-previous-line)))
 

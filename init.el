@@ -37,6 +37,20 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ;; (ivy :variables ivy-enable-advanced-buffer-information nil)
+     ;; better-defaults
+     ;; ranger
+     ;; colors
+     ;; prodigy
+     ;; search-engine
+     ;; graphviz
+     ;; (syntax-checking :variables syntax-checking-enable-by-default nil
+     ;;                  syntax-checking-enable-tooltips nil)
+     ;; (spell-checking :variables spell-checking-enable-by-default nil)
+     ;; ;; (vinegar :variables vinegar-reuse-dired-buffer t)
+     ;; (spacemacs-layouts :variables layouts-enable-autosave nil
+     ;;                    layouts-autosave-delay 300)
+     
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
@@ -303,25 +317,24 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages
-   '(
-     ;; magit-gh-pulls magit-gitflow evil-mc realgud tern company-tern
-     ;; evil-args evil-ediff evil-exchange evil-unimpaired
-     ;; evil-indent-plus volatile-highlights smartparens
-     ;; spaceline holy-mode skewer-mode rainbow-delimiters
-     ;; highlight-indentation vi-tilde-fringe eyebrowse
-     ;; org-bullets smooth-scrolling org-repo-todo org-download org-timer
-     ;; livid-mode git-gutter git-gutter-fringe  evil-escape
-     ;; leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
-     ;; ac-ispell ace-jump-mode auto-complete auto-dictionary
-     ;; clang-format define-word google-translate disaster epic
-     ;; fancy-battery org-present orgit orglue spacemacs-theme
-     ;; helm-flyspell flyspell-correct-helm clean-aindent-mode
-     ;; helm-c-yasnippet ace-jump-helm-line helm-make magithub
-     ;; helm-themes helm-swoop helm-spacemacs-help smeargle
-     ;; ido-vertical-mode flx-ido company-quickhelp
-     ;; window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
-     org-mac-link)
+   dotspacemacs-excluded-packages '()
+   ;; '(magit-gh-pulls magit-gitflow  evil-mc realgud tern company-tern
+   ;;                  evil-args evil-ediff evil-exchange evil-unimpaired
+   ;;                  evil-indent-plus volatile-highlights smartparens
+   ;;                  spaceline holy-mode skewer-mode rainbow-delimiters
+   ;;                  highlight-indentation vi-tilde-fringe eyebrowse ws-butler
+   ;;                  org-bullets smooth-scrolling org-repo-todo org-download org-timer
+   ;;                  livid-mode git-gutter git-gutter-fringe  evil-escape
+   ;;                  leuven-theme gh-md evil-lisp-state spray lorem-ipsum symon
+   ;;                  ac-ispell ace-jump-mode auto-complete auto-dictionary
+   ;;                  clang-format define-word google-translate disaster epic
+   ;;                  fancy-battery org-present orgit orglue spacemacs-theme
+   ;;                  helm-flyspell flyspell-correct-helm clean-aindent-mode
+   ;;                  helm-c-yasnippet ace-jump-helm-line helm-make magithub
+   ;;                  helm-themes helm-swoop helm-spacemacs-help smeargle
+   ;;                  ido-vertical-mode flx-ido company-quickhelp ivy-rich
+   ;;                  window-purpose ivy-purpose helm-purpose spacemacs-purpose-popwin
+   ;;                  )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -1207,10 +1220,16 @@ before packages are loaded."
   (global-display-line-numbers-mode -1)
 
   (defun moon-override-yank-pop (&optional arg)
-      "Delete the region before inserting poped string."
-      (when (and evil-mode (eq 'visual evil-state))
-        (kill-region (region-beginning) (region-end))))
+    "Delete the region before inserting poped string."
+    (when (and evil-mode (eq 'visual evil-state))
+      (kill-region (region-beginning) (region-end))))
+
   (advice-add 'counsel-yank-pop :before #'moon-override-yank-pop)
+
+  ;; boost find file and load saved persp layout  performance
+  (setq find-file-hook nil)
+  (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))
+
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
 
@@ -1270,7 +1289,7 @@ before packages are loaded."
   ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
-  )
+    )
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)

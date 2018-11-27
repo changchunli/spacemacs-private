@@ -17,6 +17,7 @@
         css-mode
         paredit
         lispy
+        caps-lock
         cmake-font-lock
         cmake-mode
         flycheck
@@ -74,6 +75,12 @@
         "sl" 'zilongshanren/ruby-send-current-line
         "sL" 'zilongshanren/ruby-send-current-line-and-go
         "sI" 'zilongshanren/start-inf-ruby-and-robe))))
+
+(defun zilongshanren-programming/init-caps-lock ()
+  (use-package caps-lock
+    :init
+    (progn
+      (bind-key* "s-e" 'caps-lock-mode))))
 
 (defun zilongshanren-programming/init-editorconfig ()
   (use-package editorconfig
@@ -290,10 +297,8 @@
     (setq company-backends-js2-mode '((company-dabbrev-code :with company-keywords company-etags)
                                       company-files company-dabbrev))
 
-    ;; (zilongshanren|toggle-company-backends company-tern)
-
-    ;; (spacemacs/set-leader-keys-for-major-mode 'js2-mode
-    ;;   "tb" 'zilong/company-toggle-company-tern)
+    (setq company-backends-js-mode '((company-dabbrev-code :with company-keywords company-etags)
+                                     company-files company-dabbrev))
 
     (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 
@@ -528,7 +533,7 @@
           company-idle-delay 0.08)
 
     (when (configuration-layer/package-usedp 'company)
-      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode js2-mode))
+      (spacemacs|add-company-backends :modes shell-script-mode makefile-bsdmake-mode sh-mode lua-mode nxml-mode conf-unix-mode json-mode graphviz-dot-mode js2-mode js-mode))
     ))
 (defun zilongshanren-programming/post-init-company-c-headers ()
   (progn
