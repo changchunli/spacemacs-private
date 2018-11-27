@@ -530,6 +530,11 @@ typical word processor."
                :clock-resume t
                :prepend t
                :empty-lines-after 1)
+              ("R" "PaperReading" entry (file+headline org-agenda-file-reading "Papers")
+               "* %^{Title} :READING:\n %?\n %i\n :CREATED: %U"
+               :clock-resume t
+               :prepend t
+               :empty-lines-after 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t

@@ -22,7 +22,7 @@
         visual-regexp-steroids
         command-log
         evil
-        fcitx
+        ;; fcitx
         discover-my-major
         ace-window
         avy
@@ -560,8 +560,13 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
 
 
 
-(defun zilongshanren-misc/post-init-fcitx ()
-  (fcitx-aggressive-setup))
+;; (defun zilongshanren-misc/post-init-fcitx ()
+;;   ;; Make sure the following comes before `(fcitx-aggressive-setup)'
+;;   (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
+;;   (fcitx-aggressive-setup)
+;;   (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
+;;   (setq fcitx-use-dbus t) ; uncomment if you're using Linux 
+;;   )
 
 (defun zilongshanren-misc/post-init-command-log ()
   (with-eval-after-load 'global-command-log-mode
