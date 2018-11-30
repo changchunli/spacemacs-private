@@ -806,6 +806,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq byte-compile-warnings '(not obsolete))
   (setq warning-minimum-level :error)
   ;; hack for remove purpose mode
+<<<<<<< HEAD
   (setq purpose-mode nil)
 
   ;; -----------------------------------------------------------------
@@ -950,6 +951,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+||||||| merged common ancestors
+  (setq purpose-mode nil)
+=======
+  ;; (setq purpose-mode nil)
+>>>>>>> 31a93d2c92e7d1ff1869df99eb6a3e6b600a3855
   )
 
 (defun dotspacemacs/user-config ()
@@ -1227,11 +1233,16 @@ before packages are loaded."
   (advice-add 'counsel-yank-pop :before #'moon-override-yank-pop)
 
   ;; boost find file and load saved persp layout  performance
-  (setq find-file-hook nil)
-  (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))
+  ;; which will break some function on windows platform
+  ;; eg. known issues: magit related buffer color, reopen will fix it
+  (when (spacemacs/system-is-mswindows)
+    (progn (setq find-file-hook nil)
+           (add-hook 'find-file-hook 'spacemacs/check-large-file)
+           (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))))
 
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
+<<<<<<< HEAD
 
   ;; org-mode default open file function
   ;; (add-to-list 'org-file-apps '("\\.pdf\\" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
@@ -1290,6 +1301,11 @@ before packages are loaded."
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
     )
+||||||| merged common ancestors
+    )
+=======
+  )
+>>>>>>> 31a93d2c92e7d1ff1869df99eb6a3e6b600a3855
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
