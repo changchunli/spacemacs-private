@@ -806,8 +806,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq byte-compile-warnings '(not obsolete))
   (setq warning-minimum-level :error)
   ;; hack for remove purpose mode
-<<<<<<< HEAD
-  (setq purpose-mode nil)
+  ;; (setq purpose-mode nil)
 
   ;; -----------------------------------------------------------------
   ;; copy from https://github.com/noinil/spacemacs_layers/blob/master/init.el
@@ -951,11 +950,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-||||||| merged common ancestors
-  (setq purpose-mode nil)
-=======
-  ;; (setq purpose-mode nil)
->>>>>>> 31a93d2c92e7d1ff1869df99eb6a3e6b600a3855
   )
 
 (defun dotspacemacs/user-config ()
@@ -1242,7 +1236,6 @@ before packages are loaded."
 
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
-<<<<<<< HEAD
 
   ;; org-mode default open file function
   ;; (add-to-list 'org-file-apps '("\\.pdf\\" . (lambda (file link) (zilongshanren-org/org-pdfview-open link))))
@@ -1300,12 +1293,7 @@ before packages are loaded."
   ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
-    )
-||||||| merged common ancestors
-    )
-=======
   )
->>>>>>> 31a93d2c92e7d1ff1869df99eb6a3e6b600a3855
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
 (load custom-file 'no-error 'no-message)
