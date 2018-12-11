@@ -44,6 +44,8 @@ This function should only modify configuration layer settings."
      ;; prodigy
      ;; search-engine
      ;; graphviz
+     ;; (haskell :variables haskell-enable-hindent t
+     ;;          haskell-completion-backend 'intero)
      ;; (syntax-checking :variables syntax-checking-enable-by-default nil
      ;;                  syntax-checking-enable-tooltips nil)
      ;; (spell-checking :variables spell-checking-enable-by-default nil)
@@ -1226,6 +1228,10 @@ before packages are loaded."
 
   (advice-add 'counsel-yank-pop :before #'moon-override-yank-pop)
 
+  (setq ivy-more-chars-alist '((counsel-ag . 2)
+                               (counsel-grep .2)
+                               (t . 3)))
+
   ;; boost find file and load saved persp layout  performance
   ;; which will break some function on windows platform
   ;; eg. known issues: magit related buffer color, reopen will fix it
@@ -1233,7 +1239,6 @@ before packages are loaded."
     (progn (setq find-file-hook nil)
            (add-hook 'find-file-hook 'spacemacs/check-large-file)
            (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))))
-
 
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
 
