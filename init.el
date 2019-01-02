@@ -300,7 +300,7 @@ This function should only modify configuration layer settings."
      (vinegar :variables vinegar-reuse-dired-buffer t)
      ;; wakatime
      web-beautify windows-scripts xclipboard xkcd yaml
-     ;; ycmd
+     ycmd
      )
 
    ;; List of additional packages that will be installed without being
@@ -313,7 +313,7 @@ This function should only modify configuration layer settings."
    ;; dotspacemacs-additional-packages '(sicp)
    ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
    ;; linum-relative llvm-mode sicp vline wolfram)
-   dotspacemacs-additional-packages '(linum-relative sicp wolfram)
+   dotspacemacs-additional-packages '(linum-relative sicp wolfram key-chord)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -484,7 +484,14 @@ It should only modify the values of Spacemacs settings."
                          solarized-dark
                          solarized-light
                          spacemacs-light
-                         leuven)
+                         apropospriate-dark
+                         spolsky
+                         leuven
+                         grandshell
+                         farmhouse-dark
+                         afternoon
+                         molokai
+                         zenburn)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -501,7 +508,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Consolas"
+   dotspacemacs-default-font '("Consolas for Powerline"
                                :size 16
                                :weight normal
                                :width normal
@@ -581,6 +588,11 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum number of rollback slots to keep in the cache. (default 5)
    dotspacemacs-max-rollback-slots 5
 
+   ;; If non nil then `ido' replaces `helm' for some commands. For now only
+   ;; `find-files' (SPC f f), `find-spacemacs-file' (SPC f e s), and
+   ;; `find-contrib-file' (SPC f e c) are replaced. (default nil)
+   dotspacemacs-use-ido nil
+
    ;; ;; If non-nil, `helm' will try to minimize the space it uses. (default nil)
    ;; dotspacemacs-helm-resize nil
 
@@ -632,7 +644,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -815,6 +827,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq-default
    ;; Miscellaneous
    python-shell-interpreter-args "--simple-prompt"
+
+   ;; solution for initialization delay
    exec-path-from-shell-arguments (quote ("-l"))
 
    ;; Backups
@@ -1017,6 +1031,13 @@ before packages are loaded."
   ;; Auto-completion: company
   (global-company-mode)
 
+  ;; graphviz
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '(
+     (dot . t)
+     ))
+
   ;; ;; Enabling multi-dictionary support with hunspell
   ;; (with-eval-after-load "ispell"
   ;;   (setq ispell-program-name "hunspell")
@@ -1170,10 +1191,10 @@ before packages are loaded."
 
   ;; set TeX-view-program-list
   ;; use TeX-view-program-list-builtin, which is in auctex
-  ;; (setq TeX-view-program-list
-  ;; '(("Okular" "okular --unique %o#src:%n`pwd`/./%b")
-  ;; ("Skim" "displayline -b -g %n %o %b")
-  ;; ("Zathura" "zathura-sync.sh %n:1:%b %o")))
+  (setq TeX-view-program-list
+        '(("Skim" "displayline -b -g %n %o %b")
+          ("Okular" "okular --unique %o#src:%n`pwd`/./%b")
+          ("Zathura" "zathura-sync.sh %n:1:%b %o")))
 
   ;; set pdf viewer on OSX and Linux
   (cond
