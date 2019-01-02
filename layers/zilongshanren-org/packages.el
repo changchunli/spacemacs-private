@@ -513,47 +513,47 @@ typical word processor."
                "* TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("n" "Note" entry (file+headline org-agenda-file-note "Quick notes")
                "* %^{Brief Description} :NOTE:\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("r" "Reading" entry (file+headline org-agenda-file-reading "Books")
                "* %^{Brief Description} :READING:\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("R" "PaperReading" entry (file+headline org-agenda-file-reading "Papers")
                "* %^{Title} :READING:\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("T" "Task" entry (file+headline org-agenda-file-task "Tasks")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("C" "Calendar" entry (file+headline org-agenda-file-task "Calendar")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n :CREATED: %U"
                :clock-resume t
                :prepend t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("I" "Idea" entry (file+headline org-agenda-file-note "Ideas")
                "** %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("p" "Paper Idea" entry (file+headline org-agenda-file-task "Paper Ideas")
                "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n %i\n Caught on %T\n"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("w" "Paper" entry (file+headline org-agenda-file-task "Papers")
                "** TODO [#A] %^{Brief Description} :PAPER:\n %?\n %i\n Caught on %T\n"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("s" "Code Snippet" entry (file org-agenda-file-code-snippet)
                "* %^{Brief Description} %^g\n %?\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
               ("N" "Private Note" entry (file org-agenda-file-private-note)
@@ -561,7 +561,7 @@ typical word processor."
               ("c" "Chrome" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %(zilongshanren/retrieve-chrome-current-tab-url)\n %i\n :CREATED: %U"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("P" "Protocol" entry (file+headline org-agenda-file-note "Quick notes")
                "* %^{Brief Description} :NOTE:\n %?\n#+BEGIN_QUOTE\n%i\n#+END_QUOTE\n:PROPERTIES:\n:CREATED: %U\n :URL: %c\n")
               ("L" "Protocol Link" entry (file+headline org-agenda-file-note "Quick notes")
@@ -569,11 +569,11 @@ typical word processor."
               ("l" "Link" entry (file+headline org-agenda-file-note "Quick notes")
                "* TODO [#C] %^{Brief Description} %^g\n %?\n %i\n %a\n :CREATED: %U"
                :clock-resume t
-               :empty-lines-after 1)
+               :emtpy-lines 1)
               ("j" "Journal" entry (file+olp+datetree org-agenda-file-journal)
                "* %?\n Logged at %T\n %i\n"
                :clock-resume t
-               :empty-lines-after 1)))
+               :emtpy-lines 1)))
 
 ;;; Agenda views
       ;; this from https://github.com/purcell/emacs.d/blob/master/lisp/init-org.el
@@ -1260,6 +1260,63 @@ typical word processor."
             ps-font-size 16.0
             ps-print-header nil
             ps-landscape-mode nil)
+
+      (defun org-random-entry (&optional arg)
+    "Select and goto a random todo item from the global agenda"
+    (interactive "P")
+    (if org-agenda-overriding-arguments
+        (setq arg org-agenda-overriding-arguments))
+    (if (and (stringp arg) (not (string-match "\\S-" arg))) (setq arg nil))
+    (let* ((today (org-today))
+           (date (calendar-gregorian-from-absolute today))
+           (kwds org-todo-keywords-for-agenda)
+           (lucky-entry nil)
+           (completion-ignore-case t)
+           (org-agenda-buffer (when (buffer-live-p org-agenda-buffer)
+            org-agenda-buffer))
+           (org-select-this-todo-keyword
+            (if (stringp arg) arg
+              (and arg (integerp arg) (> arg 0)
+                   (nth (1- arg) kwds))))
+           rtn rtnall files file pos marker buffer)
+      (when (equal arg '(4))
+        (setq org-select-this-todo-keyword
+              (org-icompleting-read "Keyword (or KWD1|K2D2|...): "
+                                    (mapcar 'list kwds) nil nil)))
+      (and (equal 0 arg) (setq org-select-this-todo-keyword nil))
+      (catch 'exit
+        (org-compile-prefix-format 'todo)
+        (org-set-sorting-strategy 'todo)
+        (setq files (org-agenda-files nil 'ifmode)
+              rtnall nil)
+        (while (setq file (pop files))
+          (catch 'nextfile
+            (org-check-agenda-file file)
+            (setq rtn (org-agenda-get-day-entries file date :todo))
+            (setq rtnall (append rtnall rtn))))
+        
+        (when rtnall
+          (setq lucky-entry
+                (nth (random
+                      (safe-length
+                       (setq entries rtnall)))
+                     entries))
+          
+          (setq marker (or (get-text-property 0 'org-marker lucky-entry)
+                           (org-agenda-error)))
+          (setq buffer (marker-buffer marker))
+          (setq pos (marker-position marker))
+          (org-pop-to-buffer-same-window buffer)
+          (widen)
+          (goto-char pos)
+          (when (derived-mode-p 'org-mode)
+            (org-show-context 'agenda)
+            (save-excursion
+              (and (outline-next-heading)
+                   (org-flag-heading nil))) ; show the next heading
+            (when (outline-invisible-p)
+              (show-entry))                 ; display invisible text
+            (run-hooks 'org-agenda-after-show-hook))))))
 
       ;;reset subtask
       (setq org-default-properties (cons "RESET_SUBTASKS" org-default-properties))

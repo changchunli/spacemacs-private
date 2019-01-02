@@ -45,8 +45,16 @@
  '(paradox-github-token t)
  '(ring-bell-function 'ignore)
  '(safe-local-variable-values
-   '((eval setenv "PYTHONPATH" "/Users/guanghui/cocos2d-x/tools/cocos2d-console/plugins:/Users/guanghui/cocos2d-x/tools/cocos2d-console/bin")))
- '(sp-show-pair-from-inside t t)
+   (quote
+    ((eval progn
+           (pp-buffer)
+           (indent-buffer))
+     (typescript-backend . tide)
+     (typescript-backend . lsp)
+     (javascript-backend . tern)
+     (javascript-backend . lsp)
+     (eval setenv "PYTHONPATH" "/Users/guanghui/cocos2d-x/tools/cocos2d-console/plugins:/Users/guanghui/cocos2d-x/tools/cocos2d-console/bin"))))
+ '(sp-show-pair-from-inside t)
  '(tags-revert-without-query t)
  '(vc-follow-symlinks t)
  '(web-mode-markup-indent-offset 2)

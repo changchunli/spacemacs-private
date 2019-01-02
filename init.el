@@ -3,9 +3,6 @@
 ;; It must be stored in your home directory.
 
 (defun dotspacemacs/layers ()
-  "Configuration Layers declaration.
-You should not put any user code in this function besides modifying the variable
-values."
   "Layer configuration:
 This function should only modify configuration layer settings."
   (setq-default
@@ -349,11 +346,6 @@ This function should only modify configuration layer settings."
    dotspacemacs-delete-orphan-packages t))
 
 (defun dotspacemacs/init ()
-  "Initialization function.
-This function is called at the very startup of Spacemacs initialization
-before layers configuration.
-You should not put any user code in there besides modifying the variable
-values."
   "Initialization:
 This function is called at the very beginning of Spacemacs startup,
 before layer configuration.
@@ -610,11 +602,6 @@ It should only modify the values of Spacemacs settings."
    ;; ;; (default 'always)
    ;; dotspacemacs-helm-use-fuzzy 'always
 
-   ;; If non-nil the paste micro-state is enabled. When enabled, pressing `p`
-   ;; several times cycle between the kill ring content. (default nil)
-   ;; If non-nil, the paste transient-state is enabled. While enabled, pressing
-   ;; `p' several times cycles through the elements in the `kill-ring'.
-   ;; (default nil)
    ;; If non-nil, the paste transient-state is enabled. While enabled, after you
    ;; paste something, pressing `C-j' and `C-k' several times cycles through the
    ;; elements in the `kill-ring'. (default nil)
@@ -653,7 +640,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
-   dotspacemacs-maximized-at-startup nil
+   dotspacemacs-maximized-at-startup t
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
@@ -795,6 +782,13 @@ default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env))
+
+(defun dotspacemacs/user-load ()
+  "Library to load while dumping.
+This function is called only while dumping Spacemacs configuration. You can
+`require' or `load' the libraries of your choice that will be included in the
+dump."
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -1258,9 +1252,41 @@ before packages are loaded."
   ;; eg. known issues: magit related buffer color, reopen will fix it
   (when (spacemacs/system-is-mswindows)
     (progn (setq find-file-hook nil)
+           (setq vc-handled-backends nil)
+           (setq magit-refresh-status-buffer nil)
            (add-hook 'find-file-hook 'spacemacs/check-large-file)
+
+           ;; emax.7z in not under pdumper release
+           ;; https://github.com/m-parashar/emax64/releases/tag/pdumper-20180619
+           (defvar emax-root (concat (expand-file-name "~") "/emax"))
+
+           (when (file-exists-p emax-root)
+             (progn
+               (defvar emax-root (concat (expand-file-name "~") "/emax"))
+               (defvar emax-bin (concat emax-root "/bin"))
+               (defvar emax-bin64 (concat emax-root "/bin64"))
+               (defvar emax-mingw64 (concat emax-root "/mingw64/bin"))
+               (defvar emax-lisp (concat emax-root "/lisp"))
+
+               (setq exec-path (cons emax-bin exec-path))
+               (setenv "PATH" (concat emax-bin ";" (getenv "PATH")))
+
+               (setq exec-path (cons emax-bin64 exec-path))
+               (setenv "PATH" (concat emax-bin64 ";" (getenv "PATH")))
+
+               (setq exec-path (cons emax-mingw64 exec-path))
+               (setenv "PATH" (concat emax-mingw64 ";" (getenv "PATH")))))
+
            (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))))
 
+
+  (defun counsel-locate-cmd-es (input)
+    "Return a shell command based on INPUT."
+    (counsel-require-program "es.exe")
+    (encode-coding-string (format "es.exe -i -r -p %s"
+                                  (counsel-unquote-regex-parens
+                                   (ivy--regex input t)))
+                          'gbk))
   ;; (add-hook 'text-mode-hook 'spacemacs/toggle-spelling-checking-on)
 
   ;; org-mode default open file function

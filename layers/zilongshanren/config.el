@@ -7,15 +7,16 @@
 (defvar blog-admin-dir ""
   "blog-admin files location")
 
-(if (and (spacemacs/system-is-mswindows) window-system)
+(if (spacemacs/system-is-mswindows)
+    (setq
+     org-agenda-dir "f:/org"
+     deft-dir "f:/org"
+     blog-admin-dir "f:/william.com")
   (setq
- org-agenda-dir "f:/org"
- deft-dir "f:/org"
- blog-admin-dir "f:/william.com")
-  (setq
- org-agenda-dir "~/org"
- deft-dir "~/org"
- blog-admin-dir "~/william.com"))
+   org-agenda-dir "~/org"
+   deft-dir "~/org"
+   blog-admin-dir "~/william.com"))
+
 
 ;;load sensitive data
 ;; or (like spacemacs init.el) put the above variable into it, then the own value separated from public config
