@@ -195,14 +195,13 @@
   (progn
     (set-face-background 'secondary-selection "gray")
     (setq-default yas-prompt-functions '(yas-ido-prompt yas-dropdown-prompt))
+    (mapc #'(lambda (hook) (remove-hook hook 'spacemacs/load-yasnippet)) '(prog-mode-hook
+                                                                      org-mode-hook
+                                                                      markdown-mode-hook))
 
-    ;; (mapc #'(lambda (hook) (remove-hook hook 'spacemacs/load-yasnippet)) '(prog-mode-hook
-    ;;                                                                    org-mode-hook
-    ;;                                                                    markdown-mode-hook))
-    ;; (spacemacs/add-to-hooks 'zilongshanren/load-yasnippet '(prog-mode-hook
-    ;;                                                         markdown-mode-hook
-    ;;                                                         org-mode-hook))
-
+    (spacemacs/add-to-hooks 'zilongshanren/load-yasnippet '(prog-mode-hook
+                                                            markdown-mode-hook
+                                                            org-mode-hook))
     ))
 
 (defun zilongshanren-programming/post-init-racket-mode ()
@@ -576,7 +575,7 @@
   (progn
     (setq company-c-headers-path-system
           (quote
-           ("/usr/include/" "/usr/local/include/")))
+           ("/usr/include/" "/usr/local/include/" "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1")))
     (setq company-c-headers-path-user
           (quote
            (".")))))

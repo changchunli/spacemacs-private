@@ -22,7 +22,7 @@
         visual-regexp-steroids
         command-log
         evil
-        ;; fcitx
+        fcitx
         discover-my-major
         ace-window
         avy
@@ -166,7 +166,7 @@
   (spacemacs/set-leader-keys "ar" 'my-ranger))
 
 ;; copy from spacemacs helm layer
-(defun zilongshanren-misc/post-init-helm-ag ()
+(defun zilongshanren-misc/init-helm-ag ()
   (use-package helm-ag
     :defer t
     :init
@@ -631,6 +631,9 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
 
 
 
+(defun zilongshanren-misc/post-init-fcitx ()
+  (fcitx-aggressive-setup))
+
 ;; (defun zilongshanren-misc/post-init-fcitx ()
 ;;   ;; Make sure the following comes before `(fcitx-aggressive-setup)'
 ;;   (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
@@ -1092,7 +1095,7 @@ Search for a search tool in the order provided by `dotspacemacs-search-tools'."
     (prodigy-define-service
       :name "Debug Fireball"
       :command "npm"
-      ;; :args '("start" "--" "--nologin" "/Users/guanghui/Github/example-cases")
+      :args '("start" "--" "--nologin" "/Users/william/Github/example-cases")
       :cwd "~/Github/fireball/"
       :tags '(work)
       :kill-signal 'sigkill

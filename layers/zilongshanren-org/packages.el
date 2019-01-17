@@ -90,6 +90,7 @@
       (setq org-agenda-span 'day)
       (setq org-agenda-use-tag-inheritance nil) ;; 3-4x speedup
       (setq org-agenda-window-setup 'current-window)
+      (setq org-log-done t)
       (setq org-agenda-include-diary nil)
       (setq org-agenda-ndays 7)
       (setq org-timeline-show-empty-dates t)
@@ -353,7 +354,7 @@ typical word processor."
             (quote (;; (type "工作(w!)" "学习(s!)" "休闲(l!)" "|")
                     ;; (sequence "PENDING(p!)" "TODO(t!)"  "|" "DONE(d!)" "ABORT(a@/!)")
                     (sequence "TODO(t!)" "STARTED(s!)" "NEXT(n)" "APPT(a@/!)" "INPROGRESS(I)"
-                              "|" "DONE(d!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
+                              "|" "DONE(d!/!)" "CANCELLED(c@/!)" "DEFERRED(D@/!)")
                     (sequence "FEEDBACK(F)" "VERIFY(v)" "DELEGATED(e!)")
                     ;; (sequence "PROJECT(P)" "|" "DONE(d!)" "CANCELLED(c@/!)")
                     ;; (sequence "NEXT(n)" "SPECIFIED(i!)")
@@ -436,7 +437,7 @@ typical word processor."
       (setq org-agenda-file-finance (expand-file-name "finance.org" org-agenda-dir))
       (setq org-agenda-file-record (expand-file-name "records.org" org-agenda-dir))
       (setq org-agenda-file-trash (expand-file-name "trash.org" org-agenda-dir))
-      (setq org-default-notes-file (expand-file-name "notes.org" org-agenda-dir))
+      (setq org-default-notes-file (expand-file-name "gtd.org" org-agenda-dir))
       (setq org-agenda-files (list org-agenda-dir))
 
       (setq org-pomodoro-keep-killed-pomodoro-time t)
@@ -542,7 +543,7 @@ typical word processor."
                "** %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :emtpy-lines 1)
-              ("b" "Blog Idea" entry (file+headline org-agenda-file-task "Blog Ideas")
+              ("b" "Blog Idea" entry (file+headline org-agenda-file-note "Blog Ideas")
                "** TODO [#B] %^{Brief Description} %^g\n %?\n %i\n Caught on %T\n"
                :clock-resume t
                :emtpy-lines 1)
@@ -780,7 +781,7 @@ typical word processor."
                  ((agenda "" ((org-agenda-span 7))) ; review upcoming deadlines and appointments
                                         ; type "l" in the agenda to review logged items
                   ;; review stuck projects as designated by org-stuck-projects
-                  ;; (stuck "")
+                  (stuck "")
                   (tags-todo "PROJECT") ;; review all projects (assuming you use
                   ;; todo keywords to designate projects)
                   (todo "SOMEDAY")  ;; review someday/maybe items
@@ -1509,6 +1510,8 @@ typical word processor."
                         (if (eq (org-element-type first-content) 'section) contents
                           (concat (org-html-section first-content "" info) contents))
                         (org-html--container headline info)))))))))
+
+
   ;; copy from https://github.com/noinil/spacemacs_layers/blob/archlinux/layers/ct-org/packages.el
   (custom-set-faces
    '(org-document-title ((t (:inherit default :height 1.0 :weight bold))))
@@ -1532,7 +1535,7 @@ typical word processor."
    '(org-agenda-current-time ((t (:foreground "DeepSkyBlue3"))) t)
    '(org-agenda-done ((t (:foreground "SeaGreen" :height 1.0))))
    '(org-time-grid ((t (:foreground "light slate gray")))))
-  )
+)
 
 (defun zilongshanren-org/init-org-mac-link ()
   (use-package org-mac-link
@@ -1545,7 +1548,7 @@ typical word processor."
     :defer t))
 
 (defun zilongshanren-org/post-init-ox-reveal ()
-  (setq org-reveal-root "file:////home/william/.emacs.d/reveal-js"))
+  (setq org-reveal-root "file:///Users/william/.emacs.d/reveal-js"))
 
 
 (defun zilongshanren-org/init-org-tree-slide ()

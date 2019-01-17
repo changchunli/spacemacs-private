@@ -111,7 +111,7 @@
                  "] "
 
                  ;; anzu
-                 ;; anzu--mode-line-format
+                 anzu--mode-line-format
 
                  ;; relative position, size of file
                  "["
