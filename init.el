@@ -55,7 +55,7 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     zilongshanren ct
+     zilongshanren
      agda ansible asciidoc asm autohotkey
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
@@ -85,7 +85,7 @@ This function should only modify configuration layer settings."
      cfengine
      (chinese :packages youdao-dictionary fcitx
               :variables
-              chinese-enable-fcitx t
+              chinese-enable-fcitx nil
               chinese-enable-youdao-dict t)
      chrome
      (clojure :variables clojure-enable-fancify-symbols t)
@@ -145,7 +145,8 @@ This function should only modify configuration layer settings."
               haskell-enable-shm-support t
               haskell-completion-backend 'dante
               haskell-enable-hindent-style "andrew-gibiansky")
-     helm html hy
+     helm
+     html hy
      (ibuffer :variables ibuffer-group-buffers-by 'projects)
      idris imenu-list ipython-notebook
      ;; (ivy :variables ivy-enable-advanced-buffer-information t)
@@ -408,7 +409,7 @@ It should only modify the values of Spacemacs settings."
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'. (default 'emacs-version)
-   dotspacemacs-elpa-subdirectory nil
+   dotspacemacs-elpa-subdirectory 'emacs-version
 
    ;; One of `vim', `emacs' or `hybrid'.
    ;; `hybrid' is like `vim' except that `insert state' is replaced by the
@@ -1373,7 +1374,7 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-  )
+)
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

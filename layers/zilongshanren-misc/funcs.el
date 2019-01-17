@@ -264,9 +264,9 @@ e.g. Sunday, September 17, 2000."
 ;;     (setq url-gateway-method 'native)))
 
 
-
-
-
+;; (define-global-minor-mode
+;;   global-shadowsocks-proxy-mode shadowsocks-proxy-mode shadowsocks-proxy-mode
+;;   :group 'shadowsocks-proxy) 
 
 
 (defun zilongshanren/open-file-with-projectile-or-counsel-git ()
