@@ -317,7 +317,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(ebuild-mode)
    ;; '(magit-gh-pulls magit-gitflow  evil-mc realgud tern company-tern
    ;;                  evil-args evil-ediff evil-exchange evil-unimpaired
    ;;                  evil-indent-plus volatile-highlights smartparens
