@@ -127,8 +127,11 @@ This function should only modify configuration layer settings."
           magit-revision-show-gravatars nil)
      github gnus
      (go :variables
+         go-backend 'lsp
          go-use-gometalinter t
          gofmt-command "goimports"
+         go-format-before-save t
+         go-use-gometalinter t
          go-tab-width 4
          go-use-gocheck-for-testing t
          go-use-test-args "-test.v -failfast -count=1 -race -timeout 10s"
@@ -153,15 +156,15 @@ This function should only modify configuration layer settings."
      jabber
      (java :variables java-backend 'meghanada)
      (javascript :variables
-                 javascript-backend 'nil
+                 javascript-backend 'lsp
                  javascript-disable-tern-port-files t)
-     jr json julia
+     jr json jsonnet julia
      ;; keyboard-layout
      kotlin
      (latex :variables
             latex-build-command "LaTeX"
             latex-enable-auto-fill t
-            latex-enable-magic nil
+            ;; latex-enable-magic nil
             latex-enable-folding t)
      lsp lua major-modes
      (markdown :variables markdown-live-preview-engine 'vmd)
@@ -235,6 +238,7 @@ This function should only modify configuration layer settings."
      salt
      (scala :variables
             scala-auto-insert-asterisk-in-comments t
+            scala-use-unicode-arrows t
             scala-enable-eldoc t
             scala-indent:use-javadoc-style t
             scala-auto-start-ensime nil
@@ -265,14 +269,16 @@ This function should only modify configuration layer settings."
      (syntax-checking :variables
                       syntax-checking-enable-by-default nil
                       syntax-checking-enable-tooltips nil)
-     systemd templates tern
+     systemd
+     (templates :variables templates-private-directory "~/.spacemacs.d/templates")
+     tern
      (terraform :variables terraform-auto-format-on-save t)
      themes-megapack
      (theming :variables
               theming-headings-inherit-from-default 'all
               theming-headings-same-size 'all
               theming-headings-bold 'all)
-     tmux
+     tmux transmission
      (treemacs :variables
                treemacs-use-follow-mode t
                treemacs-use-filewatch-mode t
@@ -283,8 +289,7 @@ This function should only modify configuration layer settings."
                  typescript-fmt-on-save nil
                  typescript-fmt-tool 'typescript-formatter)
      (typography :variables typography-enable-typographic-editing nil)
-     ;; unicode-fonts
-     vagrant
+     unicode-fonts vagrant
      (version-control :variables
                       version-control-global-margin t
                       version-control-diff-tool 'git-gutter
@@ -296,8 +301,7 @@ This function should only modify configuration layer settings."
      ;; NOTE: this bug has been fixed.
      vim-empty-lines vimscript
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     ;; wakatime
-     web-beautify windows-scripts xclipboard xkcd yaml
+     wakatime web-beautify windows-scripts xclipboard xkcd yaml
      ycmd
      )
 
@@ -797,10 +801,10 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
-  (setq-default configuration-layer-elpa-archives
-                '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
-                  ("org-cn"   . "http://elpa.emacs-china.org/org/")
-                  ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
+  ;; (setq-default configuration-layer-elpa-archives
+  ;;               '(("melpa-cn" . "http://elpa.emacs-china.org/melpa/")
+  ;;                 ("org-cn"   . "http://elpa.emacs-china.org/org/")
+  ;;                 ("gnu-cn"   . "http://elpa.emacs-china.org/gnu/")))
 
   ;; (setq debug-on-error t)
 
