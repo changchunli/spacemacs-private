@@ -1323,6 +1323,7 @@ before packages are loaded."
   ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
+
   )
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
