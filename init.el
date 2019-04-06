@@ -158,7 +158,9 @@ This function should only modify configuration layer settings."
      (javascript :variables
                  javascript-backend 'lsp
                  javascript-disable-tern-port-files t)
-     jr json jsonnet julia
+     jr json 
+     ;; jsonnet 
+     julia
      ;; keyboard-layout
      kotlin
      (latex :variables
@@ -301,8 +303,11 @@ This function should only modify configuration layer settings."
      ;; NOTE: this bug has been fixed.
      vim-empty-lines vimscript
      (vinegar :variables vinegar-reuse-dired-buffer t)
-     wakatime web-beautify windows-scripts xclipboard xkcd yaml
-     ycmd
+     (wakatime :variables
+               wakatime-api-key  "a8537d5b-3041-4ca6-a427-de5f54d7fc84"
+               ;; use the actual wakatime path
+               wakatime-cli-path "/usr/local/anaconda3/bin/wakatime")
+     web-beautify windows-scripts xclipboard xkcd yaml ycmd
      )
 
    ;; List of additional packages that will be installed without being
