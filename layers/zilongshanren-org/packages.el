@@ -1394,7 +1394,6 @@ typical word processor."
 
       (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 
-
       (defvar zilongshanren-website-html-preamble
         "<div class='nav'>
       <ul>

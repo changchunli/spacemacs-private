@@ -311,7 +311,7 @@ This function should only modify configuration layer settings."
    ;; dotspacemacs-additional-packages '(sicp)
    ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
    ;; linum-relative llvm-mode sicp vline wolfram)
-   dotspacemacs-additional-packages '(linum-relative sicp wolfram)
+   dotspacemacs-additional-packages '(linum-relative sicp ssh-agency wolfram)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -343,6 +343,7 @@ This function should only modify configuration layer settings."
    ;; installs only the used packages but won't delete unused ones. `all'
    ;; installs *all* packages supported by Spacemacs and never uninstalls them.
    ;; (default is `used-only')
+
    dotspacemacs-install-packages 'used-only
    dotspacemacs-delete-orphan-packages t))
 
@@ -1242,19 +1243,16 @@ before packages are loaded."
            (when (file-exists-p emax-root)
              (progn
                (defvar emax-root (concat (expand-file-name "~") "/emax"))
-               (defvar emax-bin (concat emax-root "/bin"))
                (defvar emax-bin64 (concat emax-root "/bin64"))
                (defvar emax-mingw64 (concat emax-root "/mingw64/bin"))
                (defvar emax-lisp (concat emax-root "/lisp"))
-
-               (setq exec-path (cons emax-bin exec-path))
-               (setenv "PATH" (concat emax-bin ";" (getenv "PATH")))
 
                (setq exec-path (cons emax-bin64 exec-path))
                (setenv "PATH" (concat emax-bin64 ";" (getenv "PATH")))
 
                (setq exec-path (cons emax-mingw64 exec-path))
-               (setenv "PATH" (concat emax-mingw64 ";" (getenv "PATH")))))
+               (setenv "PATH" (concat emax-mingw64 ";" (getenv "PATH")))
+               ))
 
            (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))))
 
@@ -1323,6 +1321,8 @@ before packages are loaded."
   ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
+  (with-eval-after-load 'transient
+    (transient-bind-q-to-quit))
 
   )
 
