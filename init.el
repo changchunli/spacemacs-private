@@ -320,7 +320,7 @@ This function should only modify configuration layer settings."
    ;; dotspacemacs-additional-packages '(sicp)
    ;; dotspacemacs-additional-packages '(column-marker dired+ framemove
    ;; linum-relative llvm-mode sicp vline wolfram)
-   dotspacemacs-additional-packages '(linum-relative sicp wolfram key-chord)
+   dotspacemacs-additional-packages '(linum-relative sicp ssh-agency wolfram key-chord)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -1272,19 +1272,16 @@ before packages are loaded."
            (when (file-exists-p emax-root)
              (progn
                (defvar emax-root (concat (expand-file-name "~") "/emax"))
-               (defvar emax-bin (concat emax-root "/bin"))
                (defvar emax-bin64 (concat emax-root "/bin64"))
                (defvar emax-mingw64 (concat emax-root "/mingw64/bin"))
                (defvar emax-lisp (concat emax-root "/lisp"))
-
-               (setq exec-path (cons emax-bin exec-path))
-               (setenv "PATH" (concat emax-bin ";" (getenv "PATH")))
 
                (setq exec-path (cons emax-bin64 exec-path))
                (setenv "PATH" (concat emax-bin64 ";" (getenv "PATH")))
 
                (setq exec-path (cons emax-mingw64 exec-path))
-               (setenv "PATH" (concat emax-mingw64 ";" (getenv "PATH")))))
+               (setenv "PATH" (concat emax-mingw64 ";" (getenv "PATH")))
+               ))
 
            (add-hook 'projectile-mode-hook '(lambda () (remove-hook 'find-file-hook #'projectile-find-file-hook-function)))))
 
@@ -1353,7 +1350,8 @@ before packages are loaded."
   ;;                   ("r" (lambda () (interactive) (insert "─")) "horizontal ─")
   ;;                   ("v" (lambda () (interactive) (insert "│")) "vertical │")))
 
-
+  (with-eval-after-load 'transient
+    (transient-bind-q-to-quit))
   )
 
 (setq custom-file (expand-file-name "custom.el" dotspacemacs-directory))
